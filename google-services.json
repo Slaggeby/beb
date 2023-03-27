@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "463976209434",
+    "project_id": "billigt-e-bra",
+    "storage_bucket": "billigt-e-bra.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:463976209434:android:b5765b0350aa24990445a3",
+        "android_client_info": {
+          "package_name": "se.billigtebra.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "463976209434-8verpgp0tahln1gfhamb5nl2s4u7vec6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBIUP4ibQNwPRUT6AERm7af3sO7bQ3uUCc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "463976209434-8verpgp0tahln1gfhamb5nl2s4u7vec6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
