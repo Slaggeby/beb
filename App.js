@@ -21,28 +21,24 @@ function ChatStack(){
 }
 
 function RootNavigator(){
-  <NavigationContainer>
-    <ChatStack/>
-    <Chat/>
-    <SignUp/>
+  return(
+  <NavigationContainer>{
+    <Chat/>}
+    
+    
+   
   </NavigationContainer>
+  );
 }
 
 
 export default function App() {
-  return (
-    <View>
-       
-       
+  return <RootNavigator/>
       
        
-       <NavigationContainer>{ 
        
-       <Chat/>}
-       <Chat/>
-       </NavigationContainer>
-    </View>
+   
 
 
-  );
+  
 };
