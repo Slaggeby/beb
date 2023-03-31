@@ -7,7 +7,7 @@ export default function Chat(){
     return(
     <View>
         <TextInput placeholder ="name" onChangeText={(text) => SetName(text)}/>
-        <Button title="greeting bitch" onPress={()=> console.log(name)}></Button>
+        <Button title="det banne mig funkar" onPress={()=> console.log(name)}></Button>
     </View>
 
 );}

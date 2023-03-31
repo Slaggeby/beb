@@ -32,10 +32,15 @@ function RootNavigator(){
 export default function App() {
   return (
     <View>
-       <Text>HEHJJEHEUHDHIAUWHUDhAWUId</Text>
+       
+       
+      
+       
+       <NavigationContainer>{ 
+       
+       <Chat/>}
        <Chat/>
-       <SignUp/>
-       <RootNavigator/>
+       </NavigationContainer>
     </View>
 
 
