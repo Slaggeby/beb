@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-
+//import { registerRootComponent } from 'expo';
 import SignUp from './screens/Signup';
 import Chat from './screens/Chat';
 import Login from './screens/Login';
