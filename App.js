@@ -23,7 +23,7 @@ function ChatStack(){
 function RootNavigator(){
   return(
   <NavigationContainer>{
-    <Chat/>}
+    <ChatStack/>}
     
     
    
@@ -34,11 +34,5 @@ function RootNavigator(){
 
 export default function App() {
   return <RootNavigator/>
-      
-       
-       
-   
 
-
-  
 };
