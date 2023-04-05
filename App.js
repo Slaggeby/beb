@@ -17,6 +17,7 @@ function BebStack(){
       <Stack.Navigator>
         
         <Stack.Screen name = "Login" component = {Login}/>
+        <Stack.Screen name = "Signup" component = {SignUp}/>
       </Stack.Navigator>
 
 
