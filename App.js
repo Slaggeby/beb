@@ -8,7 +8,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 //import { registerRootComponent } from 'expo';
 import SignUp from './screens/Signup';
 import Chat from './screens/Chat';
-//import Login from './screens/Login';
+import Login from './screens/Login';
 
 const Stack = createStackNavigator();
 
@@ -16,7 +16,7 @@ function BebStack(){
   return(
       <Stack.Navigator>
         
-        <Stack.Screen name = "Chat" component = {Chat}/>
+        <Stack.Screen name = "Login" component = {Login}/>
       </Stack.Navigator>
 
 
