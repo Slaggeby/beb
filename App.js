@@ -9,15 +9,17 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Signup from './screens/Signup';
 import Chat from './screens/Chat';
 import Login from './screens/Login';
+import Account from './screens/Account';
+
 
 const Stack = createStackNavigator();
 
 function BebStack(){
   return(
       <Stack.Navigator>
-        
         <Stack.Screen name = "Login" component = {Login}/>
         <Stack.Screen name = "Signup" component = {Signup}/>
+        <Stack.Screen name ="Account" component = {Account}/>
       </Stack.Navigator>
 
 

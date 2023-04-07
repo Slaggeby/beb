@@ -17,6 +17,7 @@ export default function Login({ navigation }) {
     }
   };
   
+  
   return (
     <View style={styles.container}>
       <Image source={backImage} style={styles.backImage} />
@@ -54,6 +55,13 @@ export default function Login({ navigation }) {
       </View>
       </SafeAreaView>
       <StatusBar barStyle="light-content" />
+    
+     <Button
+      style={{fontSize: 20, color: 'green'}}
+        onPress={() => navigation.navigate("Account")}
+        title="Navigate to Account"
+>
+</Button>
     </View>
   );
 }
