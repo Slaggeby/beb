@@ -65,6 +65,14 @@ export default function Login({ navigation }) {
         title="Navigate to Account"
 >
 </Button>
+
+<Button
+      style={{fontSize: 20, color: 'green'}}
+        onPress={() => navigation.navigate("Home")}
+        title="Navigate to Home"
+>
+</Button>
+
     </View>
   );
 }
