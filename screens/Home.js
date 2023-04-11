@@ -28,7 +28,7 @@ export default function Home({navigation}){
               <Text style = {styles.title}>Weekly Offers</Text>
           </View>
           {/* ICA VIEWN */}
-          <View style={{ flex: 1,backgroundColor: 'white', margin:10, borderColor:"red", borderTopWidth:12, borderLeftWidth:8, borderRightWidth:8,}}>
+          <View style={{ flex: 1,backgroundColor: '#FEF5F5', margin:10, borderColor:"red", borderTopWidth:12, borderLeftWidth:8, borderRightWidth:8,}}>
           <Image source={backImage} style={styles.backImage} />
           
           <Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}>Apelsinjuice</Text>
@@ -41,7 +41,7 @@ export default function Home({navigation}){
       
           </View >
           {/* COOP VIEWN */}
-          <View style ={{ flex: 1,backgroundColor: 'white', margin:10, borderColor:"green", borderTopWidth:12, borderLeftWidth:8, borderRightWidth:8,}}>
+          <View style ={{ flex: 1,backgroundColor: '#FEF5F5', margin:10, borderColor:"green", borderTopWidth:12, borderLeftWidth:8, borderRightWidth:8,}}>
           <Image source={backImage} style={styles.backImage} />
           <Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}>Bregott</Text>
           <Text style={{ left:150, fontSize:15}}>Arla</Text>
@@ -53,7 +53,7 @@ export default function Home({navigation}){
 
           </View>
           {/* Willys VIEWN */}
-          <View style = {{ flex: 1,backgroundColor: 'white', margin:10, borderColor:"black", borderTopWidth:12, borderLeftWidth:8, borderRightWidth:8,}}>
+          <View style = {{ flex: 1,backgroundColor: '#FEF5F5', margin:10, borderColor:"black", borderTopWidth:12, borderLeftWidth:8, borderRightWidth:8,}}>
           <Image source={backImage} style={styles.backImage} />
           
           <Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}>Paprika</Text>
@@ -78,16 +78,16 @@ export default function Home({navigation}){
         </ScrollView>
         <View style ={styles.footerbuttonContainer}>
           <TouchableOpacity  onPress={() => navigation.navigate("Home")}>
-          <Text style={styles.footerbutton}>Home</Text>
+          <Text style={styles.footerbutton}>⌂</Text>
           </TouchableOpacity>
           <TouchableOpacity  onPress={() => navigation.navigate("Account")}>
           <Text style={styles.footerbutton}>Account</Text>
           </TouchableOpacity>
           <TouchableOpacity  onPress={() => navigation.navigate("Account")}>
-          <Text style={styles.footerbutton}>Best Deals</Text>
+          <Text style={styles.footerbutton}>%</Text>
           </TouchableOpacity>
           <TouchableOpacity  onPress={() => navigation.navigate("Account")}>
-          <Text style={styles.footerbutton}>Search</Text>
+          <Text style={styles.footerbutton}>🔍</Text>
           </TouchableOpacity>
          
         </View>
@@ -106,9 +106,10 @@ const styles = StyleSheet.create({
     title: {
       fontSize: 36,
       fontWeight: 'bold',
-      color: "#B4131B",
+      color: "black",
       marginLeft:10,
       marginTop:10,
+      marginBottom:20,
       
     },
     input: {
@@ -169,6 +170,8 @@ const styles = StyleSheet.create({
       backgroundColor:"#B4131B",
       flexDirection:"row",
       justifyContent:"space-evenly",
+      width:"100%"
+
       
 
     },

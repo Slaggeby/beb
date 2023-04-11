@@ -20,7 +20,7 @@ function BebStack(){
         <Stack.Screen name = "Login" component = {Login}/>
         <Stack.Screen name = "Signup" component = {Signup}/>
         <Stack.Screen name = "Account" component = {Account}/>
-        <Stack.Screen name = "Home" component = {Home} />
+        <Stack.Screen name = "Home" component = {Home} options={{ title: 'My home', headerTintColor:"black", headerStyle:{ backgroundColor: '#B4131B'}, }} />
       </Stack.Navigator>
 
 
