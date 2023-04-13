@@ -11,16 +11,17 @@ import Chat from './screens/Chat';
 import Login from './screens/Login';
 import Account from './screens/Account';
 import Home from './screens/Home';
-
+import Search from './screens/Search';
 const Stack = createStackNavigator();
 
 function BebStack(){
   return(
       <Stack.Navigator>
-        <Stack.Screen name = "Login" component = {Login}/>
-        <Stack.Screen name = "Signup" component = {Signup}/>
+        <Stack.Screen name = "Login" component = {Login} options ={{headerShown:false}}/>
+        <Stack.Screen name = "Signup" component = {Signup} options ={{headerShown:false}}/>
         <Stack.Screen name = "Account" component = {Account}/>
         <Stack.Screen name = "Home" component = {Home} options={{ title: 'My home', headerTintColor:"black", headerStyle:{ backgroundColor: '#B4131B'}, }} />
+        <Stack.Screen name = "Search" component = {Search} />
       </Stack.Navigator>
 
 

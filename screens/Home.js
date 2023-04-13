@@ -86,7 +86,7 @@ export default function Home({navigation}){
           <TouchableOpacity  onPress={() => navigation.navigate("Account")}>
           <Text style={styles.footerbutton}>%</Text>
           </TouchableOpacity>
-          <TouchableOpacity  onPress={() => navigation.navigate("Account")}>
+          <TouchableOpacity  onPress={() => navigation.navigate("Search")}>
           <Text style={styles.footerbutton}>🔍</Text>
           </TouchableOpacity>
          
