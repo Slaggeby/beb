@@ -3,6 +3,7 @@ import {StyleSheet, View, TextInput, Button, Text, Image, SafeAreaView, Touchabl
 
 
 const backImage = require("../assets/backImage.png");
+const bebLogo = require("../assets/bebLogo.png");
 
 
 export default function Account({navigation}){
@@ -13,6 +14,13 @@ export default function Account({navigation}){
     }
    return(
     <View style={styles.container}>
+
+      <View>
+      <Image source={bebLogo} style={styles.bebLogo}/>
+      </View>
+      
+
+
             <View styles={{flex: 3}}>
                 <Image source={backImage} style={styles.backImage} />
             </View>
@@ -32,10 +40,21 @@ export default function Account({navigation}){
             </View>
        
         </View>
-        <View style ={{flex:1,flexDirection:'row',justifyContent:"space-evenly"}}>
-        <Button onPress={() => changeTheme()} title="Change Theme" ></Button>
-        <Button onPress={() => changeTheme()} title="Notifications" ></Button>
-        <Button onPress={() => changeTheme()} title="Language" ></Button>
+
+        <View style ={styles.footerbuttonContainer}>
+          <TouchableOpacity  onPress={() => navigation.navigate("Home")}>
+          <Text style={styles.footerbutton}>⌂</Text>
+          </TouchableOpacity>
+          <TouchableOpacity  onPress={() => navigation.navigate("Account")}>
+          <Text style={styles.footerbutton}>Account</Text>
+          </TouchableOpacity>
+          <TouchableOpacity  onPress={() => navigation.navigate("Account")}>
+          <Text style={styles.footerbutton}>%</Text>
+          </TouchableOpacity>
+          <TouchableOpacity  onPress={() => navigation.navigate("Search")}>
+          <Text style={styles.footerbutton}>🔍</Text>
+          </TouchableOpacity>
+         
         </View>
        
 
@@ -47,8 +66,8 @@ export default function Account({navigation}){
 }
 const styles = StyleSheet.create({
     container: {
-      flex: 3,
-      backgroundColor: "red",
+      flex: 1,
+      backgroundColor: "white",
 
       
     },
@@ -80,6 +99,29 @@ const styles = StyleSheet.create({
       borderRadius:100/2,
       
     },
+    bebLogo:{
+      width: "100%",
+      height: 50,
+      top: 30,
+      resizeMode: 'contain',
+    
+    },
+    footerbuttonContainer:{
+      position:"absolute",
+      bottom:0,
+      flex:1,
+      backgroundColor:"#B4131B",
+      flexDirection:"row",
+      justifyContent:"space-evenly",
+      width:"100%"
+    },
+    footerbutton:{
+        color: 'black', 
+        fontWeight: '600', 
+        fontSize: 20,
+        margin:10, 
+      },
+
     whiteSheet: {
       width: '100%',
       height: '75%',
@@ -102,4 +144,5 @@ const styles = StyleSheet.create({
       marginTop: 40,
       
     },
+    
   });
