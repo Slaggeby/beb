@@ -1,9 +1,28 @@
-import React, {useState} from "react";
+
+import React, { useState, useEffect } from 'react';
+
 import {StyleSheet, View, TextInput, Button, Text, Image, SafeAreaView, TouchableOpacity, StatusBar, ScrollView, Pressable} from "react-native"
+//import firestore from '@react-native-firebase/firestore';
+import { collection, getDocs } from "firebase/firestore";
+import {db} from '../config/firebase';
+
+
+
 const backImage = require("../assets/backImage.png");
 
 
+const querySnapshot = await getDocs(collection(db, "products"));
+querySnapshot.forEach((doc) => {
+  console.log(`${doc.id} => ${doc.data()}`);
+});
+
+
+
 export default function Home({navigation}){
+
+ 
+  
+  
     const [isActive, setIsActive] = useState(false)
     const [people, setPeople]=useState([
       {name:"Anton1", key:"1"},

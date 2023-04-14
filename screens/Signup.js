@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {GiftedChat} from "react-native-gifted-chat";
+
 import {StyleSheet, View, TextInput, Button, Text, Image, SafeAreaView, TouchableOpacity, StatusBar} from "react-native"
 const backImage = require("../assets/bebLogo.png");
 

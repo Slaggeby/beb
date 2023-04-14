@@ -34,13 +34,16 @@ const firebaseConfig = {
 
   measurementId: Constants.manifest.extra.measurementId
 
+  
+
 };
 
 
 // Initialize Firebase
 
-initializeApp(firebaseConfig);
+const app= initializeApp(firebaseConfig);
+
 
 //const analytics = getAnalytics();
 export const auth = getAuth();
-export const database = getFirestore();
+export const db = getFirestore();
