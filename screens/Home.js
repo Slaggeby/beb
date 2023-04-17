@@ -19,7 +19,7 @@ export default function Home({navigation}){
   
   const fetchProducts = async () => {
     try {
-      const querySnapshot = await getDocs(collection(database, "testproducts"));
+      const querySnapshot = await getDocs(collection(database, "products"));
       const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
       console.log(newData);
       setImportedDb(newData);
@@ -46,25 +46,6 @@ export default function Home({navigation}){
     const [isActive, setIsActive] = useState(false)
 
 
-
-
-    
-    const [people, setPeople]=useState([
-      {name:"Anton1", key:"1"},
-      {name:"Anton2", key:"2"},
-      {name:"Anton3", key:"3"},
-      {name:"Anton4", key:"4"},
-      {name:"Anton5", key:"5"},
-      {name:"Anton6", key:"6"},
-      {name:"Anton7", key:"7"},
-      {name:"Anton8", key:"8"},
-      {name:"Anton9", key:"9"},
-      {name:"Anton10", key:"10"},
-      {name:"Anton11", key:"11"},
-      {name:"Anton12", key:"12"},
-      {name:"Anton13", key:"13"},
-      {name:"Anton14", key:"14"},
-    ])
    return(
     <View style={styles.container}>
         <ScrollView>
@@ -108,13 +89,21 @@ export default function Home({navigation}){
           <Image source={backImage} style ={styles.grocerImage} />
           </View>
   
-          <View>
-      {importedDb.map((item) => (
-        <View key={item.id}>
-          <Text>Butik: {item.butik}</Text>
-          <Text>ID: {item.id}</Text>
-          <Image source={{ uri: item.url }} style ={styles.grocerImage} />
-        </View>
+          <View >
+            {importedDb.map((item) => (
+            <View  style = {{ flex: 1,backgroundColor: '#FEF5F5', margin:10, borderColor:"black", borderTopWidth:12, borderLeftWidth:8, borderRightWidth:8,}}key={item.id}>
+              <Image source={{ uri: item.bildurl }} style ={styles.grocerImage} />
+              <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.id}</Text>
+              <Text  >{item.butik}</Text> 
+              <Text style={{ fontWeight:"bold", left:150,fontSize:15}}> {item.leverantör}</Text>
+              <Text style={{ fontWeight:"bold", left:150,fontSize:15}}>{item.pristext}</Text>
+              
+             
+                <Text>
+
+
+                </Text>
+            </View>
       ))}
     </View>
           
