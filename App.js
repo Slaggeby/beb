@@ -7,7 +7,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 //import { registerRootComponent } from 'expo';
 import Signup from './screens/Signup';
-import Chat from './screens/Chat';
+
 import Login from './screens/Login';
 import Account from './screens/Account';
 import Home from './screens/Home';

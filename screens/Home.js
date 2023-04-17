@@ -1,9 +1,33 @@
 import React, {useState} from "react";
 import {StyleSheet, View, TextInput, Button, Text, Image, SafeAreaView, TouchableOpacity, StatusBar, ScrollView, Pressable} from "react-native"
+
+import { collection, addDoc, getDocs } from '@firebase/firestore';
+import {database} from '../config/firebase';
+
+
 const backImage = require("../assets/backImage.png");
 
 
+
+
+
 export default function Home({navigation}){
+
+  const fetchProducts = async () => {
+
+    await getDocs(collection(database, "products"))
+        .then((QuerySnapshot)=>{
+            const newData = QuerySnapshot.docs
+                .map((doc)=>({...doc.data(),id:doc.id }));
+                
+                console.log(newData);
+        })
+      };
+ 
+  fetchProducts();
+
+
+
     const [isActive, setIsActive] = useState(false)
     const [people, setPeople]=useState([
       {name:"Anton1", key:"1"},
