@@ -1,5 +1,5 @@
-import React, {useState} from "react";
-import {StyleSheet, View, TextInput, Button, Text, Image, SafeAreaView, TouchableOpacity, StatusBar, ScrollView, Pressable} from "react-native"
+import React, {useEffect,useState} from "react";
+import { FlatList, StyleSheet, View, TextInput, Button, Text, Image, SafeAreaView, TouchableOpacity, StatusBar, ScrollView, Pressable} from "react-native"
 
 import { collection, addDoc, getDocs } from '@firebase/firestore';
 import {database} from '../config/firebase';
@@ -13,22 +13,42 @@ const backImage = require("../assets/backImage.png");
 
 export default function Home({navigation}){
 
+  const [importedDb, setImportedDb] = useState([]);
+
+
+  
   const fetchProducts = async () => {
-
-    await getDocs(collection(database, "products"))
-        .then((QuerySnapshot)=>{
-            const newData = QuerySnapshot.docs
-                .map((doc)=>({...doc.data(),id:doc.id }));
-                
-                console.log(newData);
-        })
-      };
+    try {
+      const querySnapshot = await getDocs(collection(database, "testproducts"));
+      const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      console.log(newData);
+      setImportedDb(newData);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      throw error;
+    }
+  };
  
-  fetchProducts();
-
-
-
+      // (async () => {
+      //   try {
+      //     const importedDb = await fetchProducts();
+      
+      //   } catch (error) {
+      //     console.error("Error:", error);
+      //   }
+      // })();
+      
+      useEffect(() => {
+        fetchProducts();
+      }, []);
+    
+   
     const [isActive, setIsActive] = useState(false)
+
+
+
+
+    
     const [people, setPeople]=useState([
       {name:"Anton1", key:"1"},
       {name:"Anton2", key:"2"},
@@ -88,16 +108,19 @@ export default function Home({navigation}){
           <Image source={backImage} style ={styles.grocerImage} />
           </View>
   
-        <View>
-          {people.map((item)=> {
-            return(
-              <View key={item.key}>
-                <Text style={{fontSize:36}}>{item.name}</Text>
-              </View>
-            )
-          })}
+          <View>
+      {importedDb.map((item) => (
+        <View key={item.id}>
+          <Text>Butik: {item.butik}</Text>
+          <Text>ID: {item.id}</Text>
+          <Image source={{ uri: item.url }} style ={styles.grocerImage} />
         </View>
-
+      ))}
+    </View>
+          
+      
+        
+       
 
         </ScrollView>
         <View style ={styles.footerbuttonContainer}>
