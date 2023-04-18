@@ -2,7 +2,7 @@ import React, {useEffect,useState} from "react";
 import { FlatList, StyleSheet, View, TextInput, Button, Text, Image, SafeAreaView, TouchableOpacity, StatusBar, ScrollView, Pressable} from "react-native"
 
 import { collection, addDoc, getDocs } from '@firebase/firestore';
-import {database} from '../config/firebase';
+import {database, auth, signOut} from '../config/firebase';
 
 
 const backImage = require("../assets/backImage.png");
@@ -12,6 +12,8 @@ const coopLogo =require("../assets/coop-logotyp.png")
 
 
 export default function Home({navigation}){
+  console.log("loggedUser",auth.currentUser)
+ 
 
   const [importedDb, setImportedDb] = useState([]);
 
@@ -23,6 +25,7 @@ export default function Home({navigation}){
       const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
      
       setImportedDb(newData);
+      
     } catch (error) {
       console.error("Error fetching products:", error);
       throw error;
@@ -77,13 +80,21 @@ export default function Home({navigation}){
     const [isActive, setIsActive] = useState(false)
 
       
-      const LogOut = () =>{
-        console.log("yo looged out")
+    const LogOut = () => {
+      console.log("you logged out");
+      
+      
       }
    return(
     <View style={styles.container}>
       <View>
-        <TouchableOpacity onPress={() => LogOut()}>        
+        <TouchableOpacity onPress={() => LogOut()} style={{backgroundColor: '#CB131C',
+    height:58,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 40,
+  }}>        
           <Text style={{color: '#E7141F', fontWeight: '600', fontSize: 20, position:"absolute", right:15,}}> Log Out</Text></TouchableOpacity>
       </View>
 
