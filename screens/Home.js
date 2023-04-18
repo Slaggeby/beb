@@ -6,9 +6,9 @@ import {database} from '../config/firebase';
 
 
 const backImage = require("../assets/backImage.png");
-
-
-
+const willysLogo =require("../assets/Willys-logotyp.png")
+const icaLogo =require("../assets/ICA-logotyp.png")
+const coopLogo =require("../assets/coop-logotyp.png")
 
 
 export default function Home({navigation}){
@@ -33,31 +33,34 @@ export default function Home({navigation}){
     if (item.butik ==="COOP"){
       
       return <View style = {{ flex: 1,backgroundColor: '#FEF5F5', margin:10, borderColor:"green", borderTopWidth:12, borderLeftWidth:8, borderRightWidth:8,}}>
-        <Image source={{ uri: item.bildurl }} style ={styles.grocerImage} />
+        <Image source={{ uri: item.bildurl }} style ={styles.productImage} />
+        <Image source={coopLogo} style ={styles.grocerImage} />
               <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.id}</Text>
-              <Text  >{item.butik}</Text> 
-              <Text style={{ fontWeight:"bold", left:150,fontSize:15}}> {item.leverantör}</Text>
-              <Text style={{ fontWeight:"bold", left:150,fontSize:15}}>{item.pristext}</Text>
-              <Text style={{ left:150}}>{item.jmfpris} :-/kg</Text>
+               
+              <Text style={styles.productSubtext}> {item.leverantör}</Text>
+              <Text style={styles.productSubtext}>{item.pristext}</Text>
+              <Text style={styles.productSubtext}>{item.jmfpris} :-/kg</Text>
       </View>
       }
       else if (item.butik ==="ICA"){
         return <View style = {{ flex: 1,backgroundColor: '#FEF5F5', margin:10, borderColor:"red", borderTopWidth:12, borderLeftWidth:8, borderRightWidth:8,}}>
-        <Image source={{ uri: item.bildurl }} style ={styles.grocerImage} />
+        <Image source={{ uri: item.bildurl }} style ={styles.productImage} />
+        <Image source={icaLogo} style ={styles.grocerImage} />
               <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.id}</Text>
-              <Text  >{item.butik}</Text> 
-              <Text style={{ fontWeight:"bold", left:150,fontSize:15}}> {item.leverantör}</Text>
-              <Text style={{ fontWeight:"bold", left:150,fontSize:15}}>{item.pristext}</Text>
-              <Text style={{ left:150}}>{item.jmfpris} :-/kg</Text>
+               
+              <Text style={styles.productSubtext}> {item.leverantör}</Text>
+              <Text style={styles.productSubtext}>{item.pristext}</Text>
+              <Text style={styles.productSubtext}>{item.jmfpris} :-/kg</Text>
       </View>
       }
       else {return <View style = {{ flex: 1,backgroundColor: '#FEF5F5', margin:10, borderColor:"black", borderTopWidth:12, borderLeftWidth:8, borderRightWidth:8,}}>
-      <Image source={{ uri: item.bildurl }} style ={styles.grocerImage} />
+      <Image source={{ uri: item.bildurl }} style ={styles.productImage} />
+      <Image source={willysLogo} style ={styles.grocerImage} />
             <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.id}</Text>
-            <Text  >{item.butik}</Text> 
-            <Text style={{ fontWeight:"bold", left:150,fontSize:15}}> {item.leverantör}</Text>
-            <Text style={{ fontWeight:"bold", left:150,fontSize:15}}>{item.pristext}</Text>
-            <Text style={{ left:150}}>{item.jmfpris} :-/kg</Text>
+             
+            <Text style={styles.productSubtext}> {item.leverantör}</Text>
+            <Text style={styles.productSubtext}>{item.pristext}</Text>
+            <Text style={styles.productSubtext}>{item.jmfpris} :-/kg</Text>
     </View>}
       
     
@@ -77,7 +80,7 @@ export default function Home({navigation}){
 
    return(
     <View style={styles.container}>
-        <ScrollView>
+        <ScrollView style= {{flex: 1}} contentContainerStyle={styles.scrollViewContent}>
           <View style= {{flex:1 }}>
               <Text style = {styles.title}>Weekly Offers</Text>
           </View>    
@@ -127,6 +130,11 @@ const styles = StyleSheet.create({
 
       
     },
+
+    scrollViewContent: {
+      flexGrow: 1,
+    },
+
     title: {
       fontSize: 36,
       fontWeight: 'bold',
@@ -136,6 +144,13 @@ const styles = StyleSheet.create({
       marginBottom:20,
       
     },
+    productSubtext: 
+    { fontWeight:"bold",
+     left:150,
+     fontSize:15
+    },
+
+
     input: {
       backgroundColor: "#F6F7FB",
       height: 58,
@@ -158,13 +173,23 @@ const styles = StyleSheet.create({
     },
     grocerImage:{
         position: "absolute",
-      top: 5,
-      right:0,
-      resizeMode: 'cover',
+      top: 50,
+      right:2,
+      resizeMode: 'contain',
       width:70,
       height:70,
 
     },
+
+    productImage:{
+      position: "absolute",
+    top: 5,
+    left:0,
+    resizeMode: 'cover',
+    width:70,
+    height:70,
+
+  },
     whiteSheet: {
       width: '100%',
       height: '75%',
