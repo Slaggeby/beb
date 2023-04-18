@@ -29,14 +29,42 @@ export default function Home({navigation}){
     }
   };
  
-      // (async () => {
-      //   try {
-      //     const importedDb = await fetchProducts();
+  const renderBorder= (item)=>{
+    if (item.butik ==="COOP"){
       
-      //   } catch (error) {
-      //     console.error("Error:", error);
-      //   }
-      // })();
+      return <View style = {{ flex: 1,backgroundColor: '#FEF5F5', margin:10, borderColor:"green", borderTopWidth:12, borderLeftWidth:8, borderRightWidth:8,}}>
+        <Image source={{ uri: item.bildurl }} style ={styles.grocerImage} />
+              <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.id}</Text>
+              <Text  >{item.butik}</Text> 
+              <Text style={{ fontWeight:"bold", left:150,fontSize:15}}> {item.leverantör}</Text>
+              <Text style={{ fontWeight:"bold", left:150,fontSize:15}}>{item.pristext}</Text>
+              <Text style={{ left:150}}>{item.jmfpris} :-/kg</Text>
+      </View>
+      }
+      else if (item.butik ==="ICA"){
+        return <View style = {{ flex: 1,backgroundColor: '#FEF5F5', margin:10, borderColor:"red", borderTopWidth:12, borderLeftWidth:8, borderRightWidth:8,}}>
+        <Image source={{ uri: item.bildurl }} style ={styles.grocerImage} />
+              <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.id}</Text>
+              <Text  >{item.butik}</Text> 
+              <Text style={{ fontWeight:"bold", left:150,fontSize:15}}> {item.leverantör}</Text>
+              <Text style={{ fontWeight:"bold", left:150,fontSize:15}}>{item.pristext}</Text>
+              <Text style={{ left:150}}>{item.jmfpris} :-/kg</Text>
+      </View>
+      }
+      else {return <View style = {{ flex: 1,backgroundColor: '#FEF5F5', margin:10, borderColor:"black", borderTopWidth:12, borderLeftWidth:8, borderRightWidth:8,}}>
+      <Image source={{ uri: item.bildurl }} style ={styles.grocerImage} />
+            <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.id}</Text>
+            <Text  >{item.butik}</Text> 
+            <Text style={{ fontWeight:"bold", left:150,fontSize:15}}> {item.leverantör}</Text>
+            <Text style={{ fontWeight:"bold", left:150,fontSize:15}}>{item.pristext}</Text>
+            <Text style={{ left:150}}>{item.jmfpris} :-/kg</Text>
+    </View>}
+      
+    
+    }
+
+
+  
       
       useEffect(() => {
         fetchProducts();
@@ -52,62 +80,17 @@ export default function Home({navigation}){
         <ScrollView>
           <View style= {{flex:1 }}>
               <Text style = {styles.title}>Weekly Offers</Text>
-          </View>
-          {/* ICA VIEWN */}
-          <View style={{ flex: 1,backgroundColor: '#FEF5F5', margin:10, borderColor:"red", borderTopWidth:12, borderLeftWidth:8, borderRightWidth:8,}}>
-          <Image source={backImage} style={styles.backImage} />
-          
-          <Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}>Apelsinjuice</Text>
-          <Text style={{ left:150, fontSize:15}}>God Morgon</Text>
-          <Text style={{ fontWeight:"bold", left:150,fontSize:15}}>2 för 35kr</Text>
-          <Text style={{ left:150}}>17:50kr/liter</Text>
-          {/* Ska bli ICA bilden */}
-          <Image source={backImage} style ={styles.grocerImage} />
-        
-      
-          </View >
-          {/* COOP VIEWN */}
-          <View style ={{ flex: 1,backgroundColor: '#FEF5F5', margin:10, borderColor:"green", borderTopWidth:12, borderLeftWidth:8, borderRightWidth:8,}}>
-          <Image source={backImage} style={styles.backImage} />
-          <Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}>Bregott</Text>
-          <Text style={{ left:150, fontSize:15}}>Arla</Text>
-          <Text style={{ fontWeight:"bold", left:150,fontSize:15}}>500kr</Text>
-          <Text style={{ left:150}}>1000kr/kg</Text>
-          {/* Ska bli COOP bilden */}
-          <Image source={backImage} style ={styles.grocerImage} />
-
-
-          </View>
-          {/* Willys VIEWN */}
-          <View style = {{ flex: 1,backgroundColor: '#FEF5F5', margin:10, borderColor:"black", borderTopWidth:12, borderLeftWidth:8, borderRightWidth:8,}}>
-          <Image source={backImage} style={styles.backImage} />
-          
-          <Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}>Paprika</Text>
-          <Text style={{ left:150, fontSize:15}}>Eldorado</Text>
-          <Text style={{ fontWeight:"bold", left:150,fontSize:15}}>2 för mycket</Text>
-          <Text style={{ left:150}}>dyr kr/liter</Text>
-          {/* Ska bli Willys bilden */}
-          <Image source={backImage} style ={styles.grocerImage} />
-          </View>
-
+          </View>    
 
           {/* final view */}
           <View >
             {importedDb.map((item) => (
-            <View  style = {{ flex: 1,backgroundColor: '#FEF5F5', margin:10, borderColor:"black", borderTopWidth:12, borderLeftWidth:8, borderRightWidth:8,}}key={item.id}>
-
+            <View  key={item.id}>
+               { renderBorder(item) }
             
-              <Image source={{ uri: item.bildurl }} style ={styles.grocerImage} />
-              <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.id}</Text>
-              <Text  >{item.butik}</Text> 
-              <Text style={{ fontWeight:"bold", left:150,fontSize:15}}> {item.leverantör}</Text>
-              <Text style={{ fontWeight:"bold", left:150,fontSize:15}}>{item.pristext}</Text>
-              <Text style={{ left:150}}>{item.jmfpris} :-/kg</Text>
+              
              
-                <Text>
-
-
-                </Text>
+              
             </View>
       ))}
     </View>
