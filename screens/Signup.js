@@ -3,11 +3,28 @@ import React, {useState} from "react";
 import {StyleSheet, View, TextInput, Button, Text, Image, SafeAreaView, TouchableOpacity, StatusBar} from "react-native"
 const backImage = require("../assets/bebLogo.png");
 
+import { auth } from '../config/firebase';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+
+
+
+
+
+
+
 export default function Signup({navigation}){
-    const [name,SetName]=useState("")
-    const onHandleLogin = () => {
-        console.log("hej")
-      };
+   
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  
+  const onHandleSignup = () => {
+    if (email !== '' && password !== '') {
+  createUserWithEmailAndPassword(auth, email, password)
+        .then(() => console.log('Signup success'))
+        .catch((err) => Alert.alert("Login error", err.message));
+    }
+  };
+
     return(
     <View style={styles.container}>
       <Image source={backImage} style={styles.backImage} />
@@ -21,8 +38,8 @@ export default function Signup({navigation}){
         keyboardType="email-address"
         textContentType="emailAddress"
         autoFocus={true}
-        //value={email}
-        //onChangeText={(text) => setEmail(text)}
+        value={email}
+        onChangeText={(text) => setEmail(text)}
       />
        <TextInput
         style={styles.input}
@@ -31,8 +48,8 @@ export default function Signup({navigation}){
         keyboardType="email-address"
         textContentType="emailAddress"
         autoFocus={true}
-        //value={email}
-        //onChangeText={(text) => setEmail(text)}
+        value={email}
+        onChangeText={(text) => setEmail(text)}
       />
       <TextInput
         style={styles.input}
@@ -41,8 +58,8 @@ export default function Signup({navigation}){
         autoCorrect={false}
         secureTextEntry={true}
         textContentType="password"
-        //value={password}
-        //onChangeText={(text) => setPassword(text)}
+        value={password}
+        onChangeText={(text) => setPassword(text)}
       />
       <TextInput
         style={styles.input}
@@ -51,10 +68,10 @@ export default function Signup({navigation}){
         autoCorrect={false}
         secureTextEntry={true}
         textContentType="password"
-        //value={password}
-        //onChangeText={(text) => setPassword(text)}
+        value={password}
+        onChangeText={(text) => setPassword(text)}
       />
-      <TouchableOpacity style={styles.button} onPress={onHandleLogin}>
+      <TouchableOpacity style={styles.button} onPress={onHandleSignup}>
         <Text style={{fontWeight: 'bold', color: '#FFFFFF', fontSize: 18}}> Create Account</Text>
       </TouchableOpacity>
       <View style={{marginTop: 20, flexDirection: 'row', alignItems: 'center', alignSelf: 'center'}}>
