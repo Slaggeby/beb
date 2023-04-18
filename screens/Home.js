@@ -77,9 +77,16 @@ export default function Home({navigation}){
     const [isActive, setIsActive] = useState(false)
 
       
-
+      const LogOut = () =>{
+        console.log("yo looged out")
+      }
    return(
     <View style={styles.container}>
+      <View>
+        <TouchableOpacity onPress={() => LogOut()}>        
+          <Text style={{color: '#E7141F', fontWeight: '600', fontSize: 20, position:"absolute", right:15,}}> Log Out</Text></TouchableOpacity>
+      </View>
+
         <ScrollView style= {{flex: 1}} contentContainerStyle={styles.scrollViewContent}>
           <View style= {{flex:1 }}>
               <Text style = {styles.title}>Weekly Offers</Text>
