@@ -1,10 +1,11 @@
 import React, {useState} from "react";
 
-import {StyleSheet, View, TextInput, Button, Text, Image, SafeAreaView, TouchableOpacity, StatusBar} from "react-native"
+import {StyleSheet, View, TextInput, Button, Text, Image, SafeAreaView, TouchableOpacity, StatusBar, Alert} from "react-native"
 const backImage = require("../assets/bebLogo.png");
 
 import { auth } from '../config/firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 
 
@@ -14,15 +15,26 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 export default function Signup({navigation}){
    
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  
+ 
+  const [email1, setEmail1] = useState('');
+  const [email2, setEmail2] = useState('');
+  const [password1, setPassword1] = useState('');
+  const [password2, setPassword2] = useState('');
+
+   
+
   const onHandleSignup = () => {
-    if (email !== '' && password !== '') {
-  createUserWithEmailAndPassword(auth, email, password)
+    if (email1===email2 && email1 !=='' && password1==password2 && password1!== '') {
+  createUserWithEmailAndPassword(auth, email1, password1)
         .then(() => console.log('Signup success'))
+        .then(() =>signInWithEmailAndPassword(auth, email1, password1))
+        .then(()=> navigation.navigate("Home"))
+
         .catch((err) => Alert.alert("Login error", err.message));
     }
+    else{
+      (Alert.alert("Login Error", "Invalid Email or Password")); 
+    console.log("singup failed")  }
   };
 
     return(
@@ -38,19 +50,25 @@ export default function Signup({navigation}){
         keyboardType="email-address"
         textContentType="emailAddress"
         autoFocus={true}
-        value={email}
-        onChangeText={(text) => setEmail(text)}
+        value={email1}
+        onChangeText={(text) => setEmail1(text)}
       />
-       <TextInput
+
+<TextInput
         style={styles.input}
         placeholder="Re-enter email"
         autoCapitalize="none"
         keyboardType="email-address"
         textContentType="emailAddress"
         autoFocus={true}
-        value={email}
-        onChangeText={(text) => setEmail(text)}
+        value={email2}
+        onChangeText={(text) => setEmail2(text)}
       />
+
+
+
+      
+       
       <TextInput
         style={styles.input}
         placeholder="Enter password"
@@ -58,19 +76,21 @@ export default function Signup({navigation}){
         autoCorrect={false}
         secureTextEntry={true}
         textContentType="password"
-        value={password}
-        onChangeText={(text) => setPassword(text)}
+        value={password1}
+        onChangeText={(text) => setPassword1(text)}
       />
-      <TextInput
+
+<TextInput
         style={styles.input}
-        placeholder="Re-enter password"
+        placeholder="Enter password"
         autoCapitalize="none"
         autoCorrect={false}
         secureTextEntry={true}
         textContentType="password"
-        value={password}
-        onChangeText={(text) => setPassword(text)}
+        value={password2}
+        onChangeText={(text) => setPassword2(text)}
       />
+      
       <TouchableOpacity style={styles.button} onPress={onHandleSignup}>
         <Text style={{fontWeight: 'bold', color: '#FFFFFF', fontSize: 18}}> Create Account</Text>
       </TouchableOpacity>

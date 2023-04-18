@@ -4,6 +4,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config/firebase";
 const backImage = require("../assets/bebLogo.png");
 
+
 export default function Login({ navigation }) {
 
   const [email, setEmail] = useState("");
