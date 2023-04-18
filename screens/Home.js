@@ -21,7 +21,7 @@ export default function Home({navigation}){
     try {
       const querySnapshot = await getDocs(collection(database, "products"));
       const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-      console.log(newData);
+     
       setImportedDb(newData);
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -45,6 +45,7 @@ export default function Home({navigation}){
    
     const [isActive, setIsActive] = useState(false)
 
+      
 
    return(
     <View style={styles.container}>
@@ -88,16 +89,20 @@ export default function Home({navigation}){
           {/* Ska bli Willys bilden */}
           <Image source={backImage} style ={styles.grocerImage} />
           </View>
-  
+
+
+          {/* final view */}
           <View >
             {importedDb.map((item) => (
             <View  style = {{ flex: 1,backgroundColor: '#FEF5F5', margin:10, borderColor:"black", borderTopWidth:12, borderLeftWidth:8, borderRightWidth:8,}}key={item.id}>
+
+            
               <Image source={{ uri: item.bildurl }} style ={styles.grocerImage} />
               <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.id}</Text>
               <Text  >{item.butik}</Text> 
               <Text style={{ fontWeight:"bold", left:150,fontSize:15}}> {item.leverantör}</Text>
               <Text style={{ fontWeight:"bold", left:150,fontSize:15}}>{item.pristext}</Text>
-              
+              <Text style={{ left:150}}>{item.jmfpris} :-/kg</Text>
              
                 <Text>
 
