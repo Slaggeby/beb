@@ -11,25 +11,16 @@ const bebLogo = require("../assets/bebLogo.png");
 const user = auth.currentUser;
 
 export default function Account({navigation}){
-
+//console.log(user)
   
  
- 
-
-
-
-
-  
-
-
-
 
   
   Logout=() =>{
+    auth()
+  .signOut()
+  .then(() => navigation.navigate("Signup"));
     
-    return(
-      console.log("JIJAI")
-    )
   }
 
     const [isActive, setIsActive] = useState(false)
@@ -56,6 +47,7 @@ export default function Account({navigation}){
             <View styles = {styles.input}>
                 <View>
                     <Text style={styles.input}>Name 
+                    
                     </Text>
                   
                 </View>
@@ -131,7 +123,7 @@ const styles = StyleSheet.create({
     },
     input: {
       backgroundColor: "#F6F7FB",
-      height: 58,
+      height: 70,
       marginBottom: 20,
       fontSize: 16,
       borderRadius: 10,

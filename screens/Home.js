@@ -5,7 +5,7 @@ import { collection, addDoc, getDocs } from '@firebase/firestore';
 import {database, auth, signOut} from '../config/firebase';
 
 
-const backImage = require("../assets/backImage.png");
+const backImage = require("../assets/bebLogo.png");
 const willysLogo =require("../assets/Willys-logotyp.png")
 const icaLogo =require("../assets/ICA-logotyp.png")
 const coopLogo =require("../assets/coop-logotyp.png")
@@ -35,10 +35,12 @@ export default function Home({navigation}){
     }
   };
  
+  //#00AA46 coops gröna färg
+  // rgba(232,23,0,255) ICAS
   const renderBorder= (item)=>{
     if (item.butik ==="COOP"){
       
-      return <View style = {{ flex: 1,backgroundColor: '#FEF5F5', margin:10, borderColor:"green", borderTopWidth:12, borderLeftWidth:8, borderRightWidth:8,}}>
+      return <View style = {{ flex: 1,backgroundColor: '#FEF5F5', margin:10, borderColor:"#00AA46", borderTopWidth:12, borderLeftWidth:8, borderRightWidth:8,}}>
         <Image source={{ uri: item.bildurl }} style ={styles.productImage} />
         <Image source={coopLogo} style ={styles.grocerImage} />
               <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.id}</Text>
@@ -49,7 +51,7 @@ export default function Home({navigation}){
       </View>
       }
       else if (item.butik ==="ICA"){
-        return <View style = {{ flex: 1,backgroundColor: '#FEF5F5', margin:10, borderColor:"red", borderTopWidth:12, borderLeftWidth:8, borderRightWidth:8,}}>
+        return <View style = {{ flex: 1,backgroundColor: '#FEF5F5', margin:10, borderColor:"rgba(232,23,0,255)", borderTopWidth:12, borderLeftWidth:8, borderRightWidth:8,}}>
         <Image source={{ uri: item.bildurl }} style ={styles.productImage} />
         <Image source={icaLogo} style ={styles.grocerImage} />
               <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.id}</Text>
@@ -59,7 +61,7 @@ export default function Home({navigation}){
               <Text style={styles.productSubtext}>{item.jmfpris} :-/kg</Text>
       </View>
       }
-      else {return <View style = {{ flex: 1,backgroundColor: '#FEF5F5', margin:10, borderColor:"black", borderTopWidth:12, borderLeftWidth:8, borderRightWidth:8,}}>
+      else {return <View style = {{ flex: 1,backgroundColor: '#FEF5F5', margin:10, borderColor:"black", borderTopWidth:12, borderLeftWidth:8, borderRightWidth:8 }}>
       <Image source={{ uri: item.bildurl }} style ={styles.productImage} />
       <Image source={willysLogo} style ={styles.grocerImage} />
             <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.id}</Text>
@@ -92,9 +94,14 @@ export default function Home({navigation}){
     <View style={styles.container}>
       
       
+        <View style={{}}>
+        <Image source={backImage} style={styles.bebLogo} />
+        </View>
 
         <ScrollView style= {{flex: 1}} contentContainerStyle={styles.scrollViewContent}>
+          
           <View style= {{flex:1 }}>
+
               <Text style = {styles.title}>Weekly Offers</Text>
           </View>    
 
@@ -138,7 +145,7 @@ export default function Home({navigation}){
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor:"#FFFFFF"
+      backgroundColor:"#FAF9F6"
       
 
       
@@ -149,12 +156,12 @@ const styles = StyleSheet.create({
     },
 
     title: {
-      fontSize: 36,
+      fontSize: 26,
       fontWeight: 'bold',
       color: "black",
       marginLeft:10,
       marginTop:10,
-      marginBottom:20,
+      marginBottom:10,
       
     },
     productSubtext: 
@@ -174,14 +181,12 @@ const styles = StyleSheet.create({
       marginTop:25,
       
     },
-    backImage: {
-      position: "absolute",
-      top: 15,
-      left:15,
-      resizeMode: 'cover',
-      width:100,
-      height:100,
+    bebLogo: {
       
+      width: "100%",
+      height: 50,
+      top: 10,
+      resizeMode: 'contain',
       
     },
     grocerImage:{
