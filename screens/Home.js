@@ -40,7 +40,7 @@ export default function Home({navigation}){
   const renderBorder= (item)=>{
     if (item.butik ==="COOP"){
       
-      return <View style = {{ flex: 1,backgroundColor: '#FEF5F5', margin:10, borderColor:"#00AA46", borderTopWidth:12, borderLeftWidth:8, borderRightWidth:8,}}>
+      return <View style = {{ flex: 1,borderRadius: 5,borderTopRightRadius: 50, margin:10, backgroundColor:'#fffafa', borderColor:"#00AA46", borderWidth:12,}}>
         <Image source={{ uri: item.bildurl }} style ={styles.productImage} />
         <Image source={coopLogo} style ={styles.grocerImage} />
               <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.id}</Text>
@@ -51,7 +51,7 @@ export default function Home({navigation}){
       </View>
       }
       else if (item.butik ==="ICA"){
-        return <View style = {{ flex: 1,backgroundColor: '#FEF5F5', margin:10, borderColor:"rgba(232,23,0,255)", borderTopWidth:12, borderLeftWidth:8, borderRightWidth:8,}}>
+        return <View style = {{ flex: 1, borderRadius: 5,borderTopRightRadius: 50, backgroundColor: '#fffafa', margin:10, borderColor:"rgba(232,23,0,255)", borderWidth:12,}}>
         <Image source={{ uri: item.bildurl }} style ={styles.productImage} />
         <Image source={icaLogo} style ={styles.grocerImage} />
               <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.id}</Text>
@@ -61,7 +61,7 @@ export default function Home({navigation}){
               <Text style={styles.productSubtext}>{item.jmfpris} :-/kg</Text>
       </View>
       }
-      else {return <View style = {{ flex: 1,backgroundColor: '#FEF5F5', margin:10, borderColor:"black", borderTopWidth:12, borderLeftWidth:8, borderRightWidth:8 }}>
+      else {return <View style = {{ flex: 1,borderRadius: 5,borderTopRightRadius: 50, backgroundColor: '#fffafa', margin:10, borderColor:"black", borderWidth:12, }}>
       <Image source={{ uri: item.bildurl }} style ={styles.productImage} />
       <Image source={willysLogo} style ={styles.grocerImage} />
             <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.id}</Text>
@@ -145,7 +145,7 @@ export default function Home({navigation}){
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor:"#FAF9F6"
+      backgroundColor:"#F9EFEB"
       
 
       
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
     title: {
       fontSize: 26,
       fontWeight: 'bold',
-      color: "black",
+      color: "#D82401",
       marginLeft:10,
       marginTop:10,
       marginBottom:10,
@@ -231,10 +231,12 @@ const styles = StyleSheet.create({
       
     },
     footerbuttonContainer:{
+      borderTopLeftRadius: 10,
+      borderTopRightRadius: 10,
       position:"absolute",
       bottom:0,
       flex:0.3,
-      backgroundColor:"#B4131B",
+      backgroundColor:"#D82401",
       flexDirection:"row",
       justifyContent:"space-evenly",
       width:"100%"

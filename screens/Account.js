@@ -153,13 +153,18 @@ const styles = StyleSheet.create({
     
     },
     footerbuttonContainer:{
+      borderTopLeftRadius: 10,
+      borderTopRightRadius: 10,
       position:"absolute",
       bottom:0,
-      flex:1,
-      backgroundColor:"#B4131B",
+      flex:0.3,
+      backgroundColor:"#D82401",
       flexDirection:"row",
       justifyContent:"space-evenly",
       width:"100%"
+
+      
+
     },
     footerbutton:{
         color: 'black', 
