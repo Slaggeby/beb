@@ -1,12 +1,37 @@
 import React, {useState} from "react";
 import {StyleSheet, View, TextInput, Button, Text, Image, SafeAreaView, TouchableOpacity, StatusBar} from "react-native"
 
+import firebase from 'firebase/app';
+
+
+
 
 const backImage = require("../assets/backImage.png");
 const bebLogo = require("../assets/bebLogo.png");
 
 
 export default function Account({navigation}){
+
+  
+
+ 
+
+
+
+
+  
+
+
+
+
+  
+  Logout=() =>{
+    
+    return(
+      console.log("JIJAI")
+    )
+  }
+
     const [isActive, setIsActive] = useState(false)
     const changeTheme = () =>{
         setIsActive(current => !current)
@@ -35,11 +60,21 @@ export default function Account({navigation}){
 
                 <View>
                   <Text style = {styles.input}>Email adress</Text>
+                  
                 </View>
 
             </View>
        
         </View>
+        
+        <View style={{marginBottom:50,width:100,left:300,}}>
+          
+         <TouchableOpacity style={styles.button} onPress={Logout} >
+
+            <Text style={{fontWeight: 'bold', color: '#FFFFFF', fontSize: 18}}> Log In</Text>
+          </TouchableOpacity>
+        </View>
+    
 
         <View style ={styles.footerbuttonContainer}>
           <TouchableOpacity  onPress={() => navigation.navigate("Home")}>
@@ -54,7 +89,10 @@ export default function Account({navigation}){
           <TouchableOpacity  onPress={() => navigation.navigate("Search")}>
           <Text style={styles.footerbutton}>🔍</Text>
           </TouchableOpacity>
+          
          
+       
+
         </View>
        
 
@@ -70,6 +108,15 @@ const styles = StyleSheet.create({
       backgroundColor: "white",
 
       
+    },
+    button: {
+      backgroundColor: '#CB131C',
+      height:58,
+      borderRadius: 10,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: 40,
+      marginBottom:140,
     },
     title: {
       fontSize: 36,

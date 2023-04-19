@@ -12,7 +12,18 @@ const coopLogo =require("../assets/coop-logotyp.png")
 
 
 export default function Home({navigation}){
-  console.log("loggedUser",auth.currentUser)
+
+  const user = auth.currentUser;
+  if (user) {
+    console.log("loggedUser",user)
+    // User is signed in, see docs for a list of available properties
+    // https://firebase.google.com/docs/reference/js/firebase.User
+    // ...
+  } else {
+    // No user is signed in.
+    console.log("no user loggedf in blay")
+  } 
+  
  
 
   const [importedDb, setImportedDb] = useState([]);
@@ -87,16 +98,8 @@ export default function Home({navigation}){
       }
    return(
     <View style={styles.container}>
-      <View>
-        <TouchableOpacity onPress={() => LogOut()} style={{backgroundColor: '#CB131C',
-    height:58,
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 40,
-  }}>        
-          <Text style={{color: '#E7141F', fontWeight: '600', fontSize: 20, position:"absolute", right:15,}}> Log Out</Text></TouchableOpacity>
-      </View>
+      
+      
 
         <ScrollView style= {{flex: 1}} contentContainerStyle={styles.scrollViewContent}>
           <View style= {{flex:1 }}>

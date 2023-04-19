@@ -28,6 +28,10 @@ export default function Signup({navigation}){
   createUserWithEmailAndPassword(auth, email1, password1)
         .then(() => console.log('Signup success'))
         .then(() =>signInWithEmailAndPassword(auth, email1, password1))
+        .then (userCredentials => {
+          const user = userCredentials.user;
+          //console.log("användaren", user.email)
+        })
         .then(()=> navigation.navigate("Home"))
 
         .catch((err) => Alert.alert("Login error", err.message));
