@@ -16,10 +16,6 @@ export default function Account({navigation}){
 //console.log(user)
   
  
-<<<<<<< HEAD
-=======
- 
->>>>>>> d60162094b22c069cca5bdf4037bd2f53d941671
 
   
   Logout=() =>{
