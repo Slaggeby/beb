@@ -12,16 +12,30 @@ export default function Login({ navigation }) {
 
   const onHandleLogin = () => {
     if (email !== "" && password !== "") {
-      signInWithEmailAndPassword(auth, email, password)
       
-        .then(() => console.log("Login success"),
-        //Navigate homescreen
-        navigation.navigate("Home")
-        )
+        signInWithEmailAndPassword(auth, email, password)
+        
         .catch((err) => Alert.alert("Login error", err.message));
-    }
+        
+        //de här kan vi fan inte ha. Lösning vi lägger till en loading animation xd xd xd xd
+        setTimeout(() => {
+          const user = auth.currentUser;
+          if (user){ 
+
+            console.log("Login success"),
+            //Navigate homescreen
+            navigation.navigate("Home")
+          
+          } 
+
+
+        }, 1000);
+
+      
+      }
+      
   };
-  
+ 
   
   return (
     <View style={styles.container}>
