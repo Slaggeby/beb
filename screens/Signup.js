@@ -3,10 +3,10 @@ import React, {useState} from "react";
 import {StyleSheet, View, TextInput, Button, Text, Image, SafeAreaView, TouchableOpacity, StatusBar, Alert} from "react-native"
 const backImage = require("../assets/bebLogo.png");
 
-import { auth } from '../config/firebase';
+import { database, auth } from '../config/firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { signInWithEmailAndPassword } from "firebase/auth";
-
+import { collection, addDoc,setDoc, getDocs, doc } from '@firebase/firestore';
 
 
 
@@ -20,25 +20,26 @@ export default function Signup({navigation}){
   const [email2, setEmail2] = useState('');
   const [password1, setPassword1] = useState('');
   const [password2, setPassword2] = useState('');
-
+  const [user, setUser] = useState("");
    
 
-  const onHandleSignup = () => {
-    if (email1===email2 && email1 !=='' && password1==password2 && password1!== '') {
-  createUserWithEmailAndPassword(auth, email1, password1)
-        .then(() => console.log('Signup success'))
-        .then(() =>signInWithEmailAndPassword(auth, email1, password1))
-        .then (userCredentials => {
-          const user = userCredentials.user;
-          //console.log("användaren", user.email)
-        })
-        .then(()=> navigation.navigate("Home"))
-
-        .catch((err) => Alert.alert("Login error", err.message));
+  const onHandleSignup = async() => {
+    if (email1 === email2 && email1 !== '' && password1 === password2 && password1 !== '') {
+      try {
+        await createUserWithEmailAndPassword(auth, email1, password1);
+        const userCreds = await signInWithEmailAndPassword(auth, email1, password1);
+        const user = userCreds.user;
+        await setUser(user);
+        console.log("user", user.uid);
+        await setDoc(doc(database, "users", user.uid), { name: "billy" });
+        navigation.navigate("Home");
+      } catch (err) {
+        Alert.alert("Login error", err.message);
+      }
+    } else {
+      Alert.alert("Login Error", "Invalid Email or Password"); 
+      console.log("singup failed");
     }
-    else{
-      (Alert.alert("Login Error", "Invalid Email or Password")); 
-    console.log("singup failed")  }
   };
 
     return(
