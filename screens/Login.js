@@ -10,32 +10,25 @@ export default function Login({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const onHandleLogin = () => {
-    if (email !== "" && password !== "") {
-      
-        signInWithEmailAndPassword(auth, email, password)
+  const onHandleLogin = async() => {
+    try {
+      if (email !== "" && password !== "") {
+        await signInWithEmailAndPassword(auth, email, password);
+        const user = auth.currentUser;
+        if (user){ 
+
+          console.log("Login success"),
+          //Navigate homescreen
+          navigation.navigate("Home")
+
+        } 
         
-        .catch((err) => Alert.alert("Login error", err.message));
-        
-        //de här kan vi fan inte ha. Lösning vi lägger till en loading animation xd xd xd xd
-        setTimeout(() => {
-          const user = auth.currentUser;
-          if (user){ 
-
-            console.log("Login success"),
-            //Navigate homescreen
-            navigation.navigate("Home")
-          
-          } 
-
-
-        }, 1000);
-
-      
       }
-      
+    } catch (err) {
+      Alert.alert("Login error", err.message);
+    }
   };
- 
+  
   
   return (
     <View style={styles.container}>

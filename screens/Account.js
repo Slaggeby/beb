@@ -2,18 +2,18 @@ import React, {useState} from "react";
 import {StyleSheet, View, TextInput, Button, Text, Image, SafeAreaView, TouchableOpacity, StatusBar} from "react-native"
 
 import firebase from 'firebase/app';
-
+import {database, auth, signOut} from '../config/firebase';
 
 
 
 const backImage = require("../assets/backImage.png");
 const bebLogo = require("../assets/bebLogo.png");
-
+const user = auth.currentUser;
 
 export default function Account({navigation}){
 
   
-
+ 
  
 
 
@@ -55,11 +55,15 @@ export default function Account({navigation}){
 
             <View styles = {styles.input}>
                 <View>
-                    <Text style={styles.input}>Name</Text>
+                    <Text style={styles.input}>Name 
+                    </Text>
+                  
                 </View>
 
                 <View>
-                  <Text style = {styles.input}>Email adress</Text>
+                  <Text style = {styles.input}>Email adress{"\n"}
+                  
+                  {user.email}</Text>
                   
                 </View>
 
@@ -71,7 +75,7 @@ export default function Account({navigation}){
           
          <TouchableOpacity style={styles.button} onPress={Logout} >
 
-            <Text style={{fontWeight: 'bold', color: '#FFFFFF', fontSize: 18}}> Log In</Text>
+            <Text style={{fontWeight: 'bold', color: '#FFFFFF', fontSize: 18}}> Log Out</Text>
           </TouchableOpacity>
         </View>
     
