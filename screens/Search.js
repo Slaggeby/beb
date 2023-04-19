@@ -7,8 +7,6 @@ import {database} from '../config/firebase';
 
 
 
-
-
 export default function Search({navigation}) {
     const [search, setSearch] = useState('');
     const [filteredDataSource, setFilteredDataSource] = useState([]);
@@ -24,16 +22,16 @@ export default function Search({navigation}) {
           const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
          
           setImportedDb(newData);
-    
 
+          let DataList = [];
+          mappedData= newData.map((item) => {
+            //console.log(item.id)
+             DataList.push(item.id)
+          })
+        console.log(DataList)
           
-          console.log("Datan",newData)
-          
 
-                
-
-
-
+            
         } catch (error) {
           console.error("Error fetching products:", error);
           throw error;
@@ -45,15 +43,15 @@ export default function Search({navigation}) {
       }, []);
 
 
-
-
     useEffect(() => {
         fetch('https://jsonplaceholder.typicode.com/posts')
+       
 
           .then((response) => response.json())
           .then((responseJson) => {
             setFilteredDataSource(responseJson);
             setMasterDataSource(responseJson);
+            //console.log(responseJson.title)
           })
           .catch((error) => {
             console.error(error);
