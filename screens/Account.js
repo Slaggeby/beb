@@ -8,6 +8,8 @@ import {database, auth, signOut} from '../config/firebase';
 
 const backImage = require("../assets/backImage.png");
 const bebLogo = require("../assets/bebLogo.png");
+
+
 const user = auth.currentUser;
 
 export default function Account({navigation}){
@@ -15,14 +17,6 @@ export default function Account({navigation}){
   
  
  
-
-
-
-
-  
-
-
-
 
   
   Logout=() =>{
@@ -63,7 +57,8 @@ export default function Account({navigation}){
                 <View>
                   <Text style = {styles.input}>Email adress{"\n"}
                   
-                  {user.email}</Text>
+                  {user ? user.email : "Loading..."}
+                  </Text>
                   
                 </View>
 
