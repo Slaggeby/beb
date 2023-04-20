@@ -11,7 +11,15 @@ export default function Search({navigation}) {
     const [search, setSearch] = useState('');
     const [filteredDataSource, setFilteredDataSource] = useState([]);
     const [masterDataSource, setMasterDataSource] = useState([]);
+    //den här ger hur datan ser ut 
+    async function logJSONData() {
+      const response = await fetch('https://jsonplaceholder.typicode.com/posts');
+      const jsonData = await response.json();
+      //console.log(jsonData);
+    }
     
+
+    logJSONData()
     
     const [importedDb, setImportedDb] = useState([]);
 
@@ -26,9 +34,12 @@ export default function Search({navigation}) {
           let DataList = [];
           mappedData= newData.map((item) => {
             //console.log(item.id)
-             DataList.push(item.id)
+             DataList.push(item)
           })
+        
         console.log(DataList)
+        //let obj = JSON.parse(DataList);
+        //console.log(obj)
           
 
             
@@ -41,6 +52,7 @@ export default function Search({navigation}) {
       useEffect(() => {
         fetchProducts();
       }, []);
+
 
 
     useEffect(() => {
