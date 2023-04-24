@@ -10,18 +10,16 @@ const backImage = require("../assets/backImage.png");
 const bebLogo = require("../assets/bebLogo.png");
 
 
-const user = auth.currentUser;
+
 
 export default function Account({navigation}){
-//console.log(user)
-  
- 
-
+  const user = auth.currentUser;
+  //console.log(user)
   
   Logout=() =>{
-    auth()
-  .signOut()
-  .then(() => navigation.navigate("Signup"));
+    //console.log(user)
+    
+     auth().signOut().then(() => navigation.navigate("Signup"));
     
   }
 
@@ -68,7 +66,7 @@ export default function Account({navigation}){
         
         <View style={{marginBottom:50,width:100,left:300,}}>
           
-         <TouchableOpacity style={styles.button} onPress={Logout} >
+         <TouchableOpacity style={styles.button} onPress={()=>Logout()} >
 
             <Text style={{fontWeight: 'bold', color: '#FFFFFF', fontSize: 18}}> Log Out</Text>
           </TouchableOpacity>

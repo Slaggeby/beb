@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 
+
 import {StyleSheet, View, TextInput, Button, Text, Image, SafeAreaView, TouchableOpacity, StatusBar, Alert} from "react-native"
 const backImage = require("../assets/bebLogo.png");
 

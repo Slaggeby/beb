@@ -22,9 +22,6 @@ export default function Search({navigation}) {
     //console.log(user)
 
     
-    
-    
-
   const addToGroceryList = async (item) =>{
     console.log("FRÅN ADDDTOGROCERYLIST",item.id)
     const userRef = doc(database, "users", user.uid);
@@ -35,12 +32,6 @@ export default function Search({navigation}) {
     });
 
   }
-
-
-
-  
-
-
 
     const fetchProducts = async () => {
         try {
