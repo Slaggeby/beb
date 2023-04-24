@@ -11,15 +11,7 @@ export default function Search({navigation}) {
     const [search, setSearch] = useState('');
     const [filteredDataSource, setFilteredDataSource] = useState([]);
     const [masterDataSource, setMasterDataSource] = useState([]);
-    //den här ger hur datan ser ut 
-    async function logJSONData() {
-      const response = await fetch('https://jsonplaceholder.typicode.com/posts');
-      const jsonData = await response.json();
-      //console.log(jsonData);
-    }
-    
-
-    logJSONData()
+    const [JSONLIST, setJSONLIST] = useState('');
     
     const [importedDb, setImportedDb] = useState([]);
 
@@ -33,14 +25,14 @@ export default function Search({navigation}) {
 
           let DataList = [];
           mappedData= newData.map((item) => {
-            //console.log(item.id)
+            
              DataList.push(item)
           })
-        
-        console.log(DataList)
-        //let obj = JSON.parse(DataList);
-        //console.log(obj)
+        //console.log(DataList)
+        setJSONLIST(JSON.stringify(DataList));
+        console.log("JSONLIST",JSONLIST)
           
+        
 
             
         } catch (error) {
@@ -55,20 +47,14 @@ export default function Search({navigation}) {
 
 
 
-    useEffect(() => {
-        fetch('https://jsonplaceholder.typicode.com/posts')
-       
-
-          .then((response) => response.json())
-          .then((responseJson) => {
-            setFilteredDataSource(responseJson);
-            setMasterDataSource(responseJson);
-            //console.log(responseJson.title)
-          })
-          .catch((error) => {
-            console.error(error);
-          });
-      }, []);
+      useEffect(() => {
+        if (JSONLIST !==""){
+          const responseJson = JSON.parse(JSONLIST);
+          setFilteredDataSource(responseJson);
+          setMasterDataSource(responseJson);
+        }
+        
+      }, [JSONLIST])
 
       const searchFilterFunction = (text) => {
         // Check if searched text is not blank
@@ -77,11 +63,14 @@ export default function Search({navigation}) {
           // Filter the masterDataSource
           // Update FilteredDataSource
           const newData = masterDataSource.filter(
+            
             function (item) {
-              const itemData = item.title
-                ? item.title.toUpperCase()
+               //console.log("item",item)
+              const itemData = item.id
+                ? item.id.toUpperCase()
                 : ''.toUpperCase();
               const textData = text.toUpperCase();
+              
               return itemData.indexOf(textData) > -1;
           });
           setFilteredDataSource(newData);
@@ -99,10 +88,11 @@ export default function Search({navigation}) {
           // Flat List Item
           <Text
             style={styles.itemStyle}
-            onPress={() => getItem(item)}>
+            >
+            
             {item.id}
             {'.'}
-            {item.title.toUpperCase()}
+            
           </Text>
         );
       };
@@ -119,10 +109,7 @@ export default function Search({navigation}) {
         );
       };
 
-      const getItem = (item) => {
-        // Function for click on an item
-        alert('Id : ' + item.id + ' Title : ' + item.title);
-      };
+      
 
 
 
