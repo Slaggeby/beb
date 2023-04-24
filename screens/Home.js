@@ -40,7 +40,7 @@ export default function Home({navigation}){
   const renderBorder= (item)=>{
     if (item.butik ==="COOP"){
       
-      return <View style = {{ flex: 1,borderRadius: 5,borderTopRightRadius: 50, margin:10, backgroundColor:'#fffafa', borderColor:"#00AA46", borderWidth:12,}}>
+      return <View style = {{ flex: 1,borderRadius: 5,borderTopRightRadius: 50, margin:10, backgroundColor:'#fafeff', borderColor:"#00AA46", borderWidth:12,}}>
         <Image source={{ uri: item.bildurl }} style ={styles.productImage} />
         <Image source={coopLogo} style ={styles.grocerImage} />
               <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.id}</Text>
@@ -51,7 +51,7 @@ export default function Home({navigation}){
       </View>
       }
       else if (item.butik ==="ICA"){
-        return <View style = {{ flex: 1, borderRadius: 5,borderTopRightRadius: 50, backgroundColor: '#fffafa', margin:10, borderColor:"rgba(232,23,0,255)", borderWidth:12,}}>
+        return <View style = {{ flex: 1, borderRadius: 5,borderTopRightRadius: 50, backgroundColor: '#fafeff', margin:10, borderColor:"rgba(232,23,0,255)", borderWidth:12,}}>
         <Image source={{ uri: item.bildurl }} style ={styles.productImage} />
         <Image source={icaLogo} style ={styles.grocerImage} />
               <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.id}</Text>
@@ -61,7 +61,7 @@ export default function Home({navigation}){
               <Text style={styles.productSubtext}>{item.jmfpris} :-/kg</Text>
       </View>
       }
-      else {return <View style = {{ flex: 1,borderRadius: 5,borderTopRightRadius: 50, backgroundColor: '#fffafa', margin:10, borderColor:"black", borderWidth:12, }}>
+      else {return <View style = {{ flex: 1,borderRadius: 5,borderTopRightRadius: 50, backgroundColor: '#fafeff', margin:10, borderColor:"black", borderWidth:12, }}>
       <Image source={{ uri: item.bildurl }} style ={styles.productImage} />
       <Image source={willysLogo} style ={styles.grocerImage} />
             <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.id}</Text>

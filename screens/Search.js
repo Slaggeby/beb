@@ -46,6 +46,7 @@ export default function Search({navigation}) {
       }, []);
 
 
+
       useEffect(() => {
         if (JSONLIST !==""){
           const responseJson = JSON.parse(JSONLIST);
