@@ -9,6 +9,7 @@ const backImage = require("../assets/bebLogo.png");
 const willysLogo =require("../assets/Willys-logotyp.png")
 const icaLogo =require("../assets/ICA-logotyp.png")
 const coopLogo =require("../assets/coop-logotyp.png")
+const listIcon=require('../assets/list-icon.png')
 
 
 
@@ -211,20 +212,20 @@ return(
        
       </View>
       <View style ={styles.footerbuttonContainer}>
-          <TouchableOpacity  onPress={() => navigation.navigate("Home")}>
-          <Text style={styles.footerbutton}>⌂</Text>
-          </TouchableOpacity>
-          <TouchableOpacity  onPress={() => navigation.navigate("Account")}>
-          <Text style={styles.footerbutton}>Account</Text>
-          </TouchableOpacity>
-          <TouchableOpacity  onPress={() => navigation.navigate("Grocery")}>
-          <Text style={styles.footerbutton}>grocery list</Text>
-          </TouchableOpacity>
-          <TouchableOpacity  onPress={() => navigation.navigate("Search")}>
-          <Text style={styles.footerbutton}>🔍</Text>
-          </TouchableOpacity>
-         
-        </View>
+                    <TouchableOpacity  onPress={() => navigation.navigate("Home")}>
+                    <Text style={styles.footerbutton}>⌂</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity  onPress={() => navigation.navigate("Account")}>
+                    <Text style={styles.footerbutton}>Account</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity  onPress={() => navigation.navigate("Grocery")}>
+                    <Image source={listIcon} style ={styles.iconImage} />
+                    </TouchableOpacity>
+                    <TouchableOpacity  onPress={() => navigation.navigate("Search")}>
+                    <Text style={styles.footerbutton}>🔍</Text>
+                    </TouchableOpacity>
+
+                  </View>
     </SafeAreaView>
 )
 }
@@ -279,6 +280,13 @@ const styles = StyleSheet.create({
       marginTop: 15,
       
     },
+    iconImage:{
+        
+        top:2,
+        width:40,
+        height:40,
+  
+      },
     bebLogo: {
       
       width: "100%",

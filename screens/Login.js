@@ -7,6 +7,8 @@ const backImage = require("../assets/bebLogo.png");
 
 export default function Login({ navigation }) {
 
+
+  //this is the real login fields, the other ones are just for ease
   // const [email, setEmail] = useState("");
   // const [password, setPassword] = useState("");
   
@@ -74,7 +76,7 @@ export default function Login({ navigation }) {
       </SafeAreaView>
       <StatusBar barStyle="light-content" />
     
-     <Button
+     {/* <Button
       style={{fontSize: 20, color: 'green'}}
         onPress={() => navigation.navigate("Account")}
         title="Navigate to Account">
@@ -84,7 +86,7 @@ export default function Login({ navigation }) {
             style={{fontSize: 20, color: 'green'}}
               onPress={() => navigation.navigate("Home")}
               title="Navigate to Home">
-      </Button>
+      </Button> */}
 
     </View>
   );

@@ -3,14 +3,78 @@ import { FlatList, StyleSheet, View, TextInput, Button, Text, Image, SafeAreaVie
 
 
 import {database, auth, s} from '../config/firebase';
-import { collection, addDoc,setDoc, getDocs, doc } from '@firebase/firestore';
+import { collection, addDoc,setDoc, getDocs, doc, query, where } from '@firebase/firestore';
 
 const backImage = require("../assets/bebLogo.png");
 const listIcon=require('../assets/list-icon.png')
+const willysLogo =require("../assets/Willys-logotyp.png")
+const icaLogo =require("../assets/ICA-logotyp.png")
+const coopLogo =require("../assets/coop-logotyp.png")
 
 export default function Home({navigation}){
 
   const user = auth.currentUser;
+
+   
+ 
+
+  const [importedDb, setImportedDb] = useState([]);
+
+
+  
+  const fetchProducts = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(doc(database, "users", user.uid), "grocerylist"));
+      const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+  
+      setImportedDb(newData);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      throw error;
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const renderBorder= (item)=>{
+    item=item.item
+    if (item.butik ==="COOP"){
+      
+      return <View style = {{ flex: 1,borderRadius: 5,borderTopRightRadius: 50, margin:10, backgroundColor:'#fafeff', borderColor:"#00AA46", borderWidth:12,}}>
+        <Image source={{ uri: item.bildurl }} style ={styles.productImage} />
+        <Image source={coopLogo} style ={styles.grocerImage} />
+              <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.id}</Text>
+               
+              <Text style={styles.productSubtext}> {item.leverantör}</Text>
+              <Text style={styles.productSubtext}>{item.pristext}</Text>
+              <Text style={styles.productSubtext}>{item.jmfpris} :-/kg</Text>
+      </View>
+      }
+      else if (item.butik ==="ICA"){
+        return <View style = {{ flex: 1, borderRadius: 5,borderTopRightRadius: 50, backgroundColor: '#fafeff', margin:10, borderColor:"rgba(232,23,0,255)", borderWidth:12,}}>
+        <Image source={{ uri: item.bildurl }} style ={styles.productImage} />
+        <Image source={icaLogo} style ={styles.grocerImage} />
+              <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.id}</Text>
+               
+              <Text style={styles.productSubtext}> {item.leverantör}</Text>
+              <Text style={styles.productSubtext}>{item.pristext}</Text>
+              <Text style={styles.productSubtext}>{item.jmfpris} :-/kg</Text>
+      </View>
+      }
+      else {return <View style = {{ flex: 1,borderRadius: 5,borderTopRightRadius: 50, backgroundColor: '#fafeff', margin:10, borderColor:"black", borderWidth:12, }}>
+      <Image source={{ uri: item.bildurl }} style ={styles.productImage} />
+      <Image source={willysLogo} style ={styles.grocerImage} />
+            <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.id}</Text>
+             
+            <Text style={styles.productSubtext}> {item.leverantör}</Text>
+            <Text style={styles.productSubtext}>{item.pristext}</Text>
+            <Text style={styles.productSubtext}>{item.jmfpris} :-/kg</Text>
+    </View>}
+      
+    
+    }
 
 return(
 
@@ -21,20 +85,35 @@ return(
 
     <View style={styles.container}>
 
-<View style={{}}>
+      <View style={{}}>
         <Image source={backImage} style={styles.bebLogo} />
-        </View>
+      </View>
 
-        <ScrollView style= {{flex: 1}} contentContainerStyle={styles.scrollViewContent}>
-          
-          <View style= {{flex:1 }}>
-
-              <Text style = {styles.title}>Your Grocery List</Text>
-          </View> 
-        </ScrollView>
+      <ScrollView style= {{flex: 1}} contentContainerStyle={styles.scrollViewContent}>
+        
 
 
 
+        <View style= {{flex:1 }}>
+
+          <Text style = {styles.title}>Your Grocery List</Text>
+        </View> 
+        
+        <View >
+            {importedDb.map((item) => (
+            <View  key={item.id}>
+               { renderBorder(item) }
+            
+              
+             
+              
+            </View>
+      ))}
+    </View>
+
+
+        
+      </ScrollView>
 
 
 
@@ -46,21 +125,24 @@ return(
 
 
 
-<View style ={styles.footerbuttonContainer}>
-          <TouchableOpacity  onPress={() => navigation.navigate("Home")}>
-          <Text style={styles.footerbutton}>⌂</Text>
-          </TouchableOpacity>
-          <TouchableOpacity  onPress={() => navigation.navigate("Account")}>
-          <Text style={styles.footerbutton}>Account</Text>
-          </TouchableOpacity>
-          <TouchableOpacity  onPress={() => navigation.navigate("Grocery")}>
-          <Image source={listIcon} style ={styles.iconImage} />
-          </TouchableOpacity>
-          <TouchableOpacity  onPress={() => navigation.navigate("Search")}>
-          <Text style={styles.footerbutton}>🔍</Text>
-          </TouchableOpacity>
 
-        </View>
+
+
+          <View style ={styles.footerbuttonContainer}>
+                    <TouchableOpacity  onPress={() => navigation.navigate("Home")}>
+                    <Text style={styles.footerbutton}>⌂</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity  onPress={() => navigation.navigate("Account")}>
+                    <Text style={styles.footerbutton}>Account</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity  onPress={() => navigation.navigate("Grocery")}>
+                    <Image source={listIcon} style ={styles.iconImage} />
+                    </TouchableOpacity>
+                    <TouchableOpacity  onPress={() => navigation.navigate("Search")}>
+                    <Text style={styles.footerbutton}>🔍</Text>
+                    </TouchableOpacity>
+
+                  </View>
 
         </View>
 

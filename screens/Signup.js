@@ -39,7 +39,7 @@ export default function Signup({navigation}){
   
         const grocerylistRef = collection(userRef, "grocerylist");
         await setDoc(doc(grocerylistRef), {
-          test: 1
+          
         });
   
         navigation.navigate("Home");

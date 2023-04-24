@@ -8,6 +8,7 @@ import {database, auth, signOut} from '../config/firebase';
 
 const backImage = require("../assets/backImage.png");
 const bebLogo = require("../assets/bebLogo.png");
+const listIcon=require('../assets/list-icon.png')
 
 
 const user = auth.currentUser;
@@ -76,20 +77,20 @@ export default function Account({navigation}){
     
 
         <View style ={styles.footerbuttonContainer}>
-          <TouchableOpacity  onPress={() => navigation.navigate("Home")}>
-          <Text style={styles.footerbutton}>⌂</Text>
-          </TouchableOpacity>
-          <TouchableOpacity  onPress={() => navigation.navigate("Account")}>
-          <Text style={styles.footerbutton}>Account</Text>
-          </TouchableOpacity>
-          <TouchableOpacity  onPress={() => navigation.navigate("Grocery")}>
-          <Text style={styles.footerbutton}>grocery list</Text>
-          </TouchableOpacity>
-          <TouchableOpacity  onPress={() => navigation.navigate("Search")}>
-          <Text style={styles.footerbutton}>🔍</Text>
-          </TouchableOpacity>
+                    <TouchableOpacity  onPress={() => navigation.navigate("Home")}>
+                    <Text style={styles.footerbutton}>⌂</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity  onPress={() => navigation.navigate("Account")}>
+                    <Text style={styles.footerbutton}>Account</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity  onPress={() => navigation.navigate("Grocery")}>
+                    <Image source={listIcon} style ={styles.iconImage} />
+                    </TouchableOpacity>
+                    <TouchableOpacity  onPress={() => navigation.navigate("Search")}>
+                    <Text style={styles.footerbutton}>🔍</Text>
+                    </TouchableOpacity>
 
-        </View>
+                  </View>
        
 
        
@@ -161,6 +162,13 @@ const styles = StyleSheet.create({
       width:"100%"
 
       
+
+    },
+    iconImage:{
+        
+      top:2,
+      width:40,
+      height:40,
 
     },
     footerbutton:{
