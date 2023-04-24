@@ -7,8 +7,12 @@ const backImage = require("../assets/bebLogo.png");
 
 export default function Login({ navigation }) {
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
+  
+  const email="test@test.se"
+  const password="123456"
+  
 
   const onHandleLogin = async() => {
     try {

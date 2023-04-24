@@ -201,11 +201,10 @@ const styles = StyleSheet.create({
     },
 
      iconImage:{
-        position: "absolute",
-      right:2,
-      resizeMode: 'contain',
-      width:70,
-      height:70,
+        
+      top:2,
+      width:40,
+      height:40,
 
     },
 

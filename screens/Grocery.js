@@ -1,14 +1,16 @@
 import React, {useEffect,useState} from "react";
 import { FlatList, StyleSheet, View, TextInput, Button, Text, Image, SafeAreaView, TouchableOpacity, StatusBar, ScrollView, Pressable} from "react-native"
 
-import { collection, addDoc, getDocs } from '@firebase/firestore';
-import {database, auth, signOut} from '../config/firebase';
+
+import {database, auth, s} from '../config/firebase';
+import { collection, addDoc,setDoc, getDocs, doc } from '@firebase/firestore';
 
 const backImage = require("../assets/bebLogo.png");
+const listIcon=require('../assets/list-icon.png')
 
 export default function Home({navigation}){
 
-
+  const user = auth.currentUser;
 
 return(
 
@@ -52,7 +54,7 @@ return(
           <Text style={styles.footerbutton}>Account</Text>
           </TouchableOpacity>
           <TouchableOpacity  onPress={() => navigation.navigate("Grocery")}>
-          <Text style={styles.footerbutton}>grocery list</Text>
+          <Image source={listIcon} style ={styles.iconImage} />
           </TouchableOpacity>
           <TouchableOpacity  onPress={() => navigation.navigate("Search")}>
           <Text style={styles.footerbutton}>🔍</Text>
@@ -120,6 +122,13 @@ const styles = StyleSheet.create({
         resizeMode: 'contain',
         width:70,
         height:70,
+  
+      },
+      iconImage:{
+        
+        top:2,
+        width:40,
+        height:40,
   
       },
   
