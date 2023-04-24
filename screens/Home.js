@@ -191,11 +191,12 @@ const styles = StyleSheet.create({
     },
     grocerImage:{
         position: "absolute",
-      top: 50,
+      top: 45,
       right:2,
       resizeMode: 'contain',
       width:70,
       height:70,
+      
 
     },
 
