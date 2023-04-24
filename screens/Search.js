@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import {SafeAreaView,Text, StyleSheet,View,FlatList,TextInput,} from 'react-native';
+import {SafeAreaView,Text, StyleSheet,View,FlatList,TextInput, Image,TouchableOpacity, TouchableOpacityComponent} from 'react-native';
 
 import { collection, addDoc, getDocs } from '@firebase/firestore';
 import {database} from '../config/firebase';
 
+const willysLogo =require("../assets/Willys-logotyp.png")
+const icaLogo =require("../assets/ICA-logotyp.png")
+const coopLogo =require("../assets/coop-logotyp.png")
 
 
 
@@ -12,8 +15,15 @@ export default function Search({navigation}) {
     const [filteredDataSource, setFilteredDataSource] = useState([]);
     const [masterDataSource, setMasterDataSource] = useState([]);
     const [JSONLIST, setJSONLIST] = useState('');
-    
     const [importedDb, setImportedDb] = useState([]);
+
+
+  const addToGroceryList = (item) =>{
+    console.log("FRÅN ADDDTOGROCERYLIST",item.id)
+  }
+
+
+
 
 
     const fetchProducts = async () => {
@@ -30,7 +40,7 @@ export default function Search({navigation}) {
           })
         //console.log(DataList)
         setJSONLIST(JSON.stringify(DataList));
-        console.log("JSONLIST",JSONLIST)
+        //console.log("JSONLIST",JSONLIST)
           
         
 
@@ -85,17 +95,57 @@ export default function Search({navigation}) {
       
       const ItemView = ({item}) => {
         return (
+          
           // Flat List Item
-          <Text
-            style={styles.itemStyle}
-            >
-            
-            {item.id}
-            {'.'}
-            
-          </Text>
+          <View>
+              <Text
+                style={styles.itemStyle}
+                >
+                
+                {item.id}
+                {'.'}
+                <Image source={{uri:item.bildurl}} style={styles.productImage}  />
+                
+        
+              </Text>
+            {renderBorder(item)}
+          <TouchableOpacity onPress={()=>addToGroceryList(item)} style={styles.button}>
+            <Text>Add to grocerylist</Text>
+          </TouchableOpacity>
+          </View>
+
+
         );
+
+        
+
       };
+
+        const renderBorder= (item)=>{
+          if (item.butik ==="COOP"){
+          return(
+            <Image source={coopLogo} style ={styles.grocerImage} />
+            )
+          
+          }
+          else if(item.butik ==="ICA"){
+            return(
+              
+              <Image source={icaLogo} style ={styles.grocerImage} />
+            )
+          }
+          else {
+            return( 
+              <Image source={willysLogo} style ={styles.grocerImage} />
+            )
+          }
+                
+                
+        }
+
+
+
+
       const ItemSeparatorView = () => {
         return (
           // Flat List Item Separator
@@ -140,6 +190,16 @@ const styles = StyleSheet.create({
     },
     itemStyle: {
       padding: 10,
+      height:100,
+      fontSize:20,
+    },
+    button: {
+      backgroundColor: '#CB131C',
+      height: 58,
+      borderRadius: 10,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: 40,
     },
     textInputStyle: {
       height: 40,
@@ -149,4 +209,21 @@ const styles = StyleSheet.create({
       borderColor: '#009688',
       backgroundColor: '#FFFFFF',
     },
+    productImage:{
+      position: "absolute",
+    top: 5,
+    left:0,
+    resizeMode: 'cover',
+    width:70,
+    height:70,
+  },
+  grocerImage:{
+    position: "absolute",
+  top: 50,
+  right:2,
+  resizeMode: 'contain',
+  width:70,
+  height:70,
+
+},
   });
