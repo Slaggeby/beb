@@ -23,25 +23,32 @@ export default function Signup({navigation}){
   const [user, setUser] = useState("");
   const [name, setName] =useState("")
 
-  const onHandleSignup = async() => {
-    if (email1 === email2 && email1 !== '' && password1 === password2 && password1 !== '' && name!=='') {
+  const onHandleSignup = async () => {
+    if (email1 === email2 && email1 !== '' && password1 === password2 && password1 !== '' && name !== '') {
       try {
         await createUserWithEmailAndPassword(auth, email1, password1);
         const userCreds = await signInWithEmailAndPassword(auth, email1, password1);
         const user = userCreds.user;
         await setUser(user);
-        console.log("user", user.uid);
-        await setDoc(doc(database, "users", user.uid), 
-        { name: name,
-          email: user.email  
-      });
+  
+        const userRef = doc(database, "users", user.uid);
+        await setDoc(userRef, {
+          name: name,
+          email: user.email
+        });
+  
+        const grocerylistRef = collection(userRef, "grocerylist");
+        await setDoc(doc(grocerylistRef), {
+          test: 1
+        });
+  
         navigation.navigate("Home");
       } catch (err) {
         Alert.alert("Login error", err.message);
       }
     } else {
-      Alert.alert("Login Error", "Invalid Email or Password"); 
-      console.log("singup failed");
+      Alert.alert("Login Error", "Invalid Email or Password");
+      console.log("signup failed");
     }
   };
 

@@ -4,7 +4,7 @@ import { FlatList, StyleSheet, View, TextInput, Button, Text, Image, SafeAreaVie
 import { collection, addDoc, getDocs } from '@firebase/firestore';
 import {database, auth, signOut} from '../config/firebase';
 
-
+const listIcon=require('../assets/list-icon.png')
 const backImage = require("../assets/bebLogo.png");
 const willysLogo =require("../assets/Willys-logotyp.png")
 const icaLogo =require("../assets/ICA-logotyp.png")
@@ -131,7 +131,7 @@ export default function Home({navigation}){
           <Text style={styles.footerbutton}>Account</Text>
           </TouchableOpacity>
           <TouchableOpacity  onPress={() => navigation.navigate("Grocery")}>
-          <Text style={styles.footerbutton}>grocery list</Text>
+          <Image source={listIcon} style ={styles.iconImage} />
           </TouchableOpacity>
           <TouchableOpacity  onPress={() => navigation.navigate("Search")}>
           <Text style={styles.footerbutton}>🔍</Text>
@@ -192,6 +192,15 @@ const styles = StyleSheet.create({
     grocerImage:{
         position: "absolute",
       top: 50,
+      right:2,
+      resizeMode: 'contain',
+      width:70,
+      height:70,
+
+    },
+
+     iconImage:{
+        position: "absolute",
       right:2,
       resizeMode: 'contain',
       width:70,
