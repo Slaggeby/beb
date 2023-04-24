@@ -82,15 +82,12 @@ export default function Account({navigation}){
           <TouchableOpacity  onPress={() => navigation.navigate("Account")}>
           <Text style={styles.footerbutton}>Account</Text>
           </TouchableOpacity>
-          <TouchableOpacity  onPress={() => navigation.navigate("Account")}>
-          <Text style={styles.footerbutton}>%</Text>
+          <TouchableOpacity  onPress={() => navigation.navigate("Grocery")}>
+          <Text style={styles.footerbutton}>grocery list</Text>
           </TouchableOpacity>
           <TouchableOpacity  onPress={() => navigation.navigate("Search")}>
           <Text style={styles.footerbutton}>🔍</Text>
           </TouchableOpacity>
-          
-         
-       
 
         </View>
        

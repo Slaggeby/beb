@@ -9,6 +9,7 @@ import Login from './screens/Login';
 import Account from './screens/Account';
 import Home from './screens/Home';
 import Search from './screens/Search';
+import Grocery from './screens/Grocery';
 const Stack = createStackNavigator();
 
 function BebStack(){
@@ -18,7 +19,8 @@ function BebStack(){
         <Stack.Screen name = "Signup" component = {Signup} options ={{headerShown:false}}/>
         <Stack.Screen name = "Account" component = {Account} options ={{headerShown:false}}/>
         <Stack.Screen name = "Home" component = {Home} options={{headerShown:false}} />
-        <Stack.Screen name = "Search" component = {Search} />
+        <Stack.Screen name = "Search" component = {Search} options={{headerShown:false}} />
+        <Stack.Screen name = "Grocery" component = {Grocery} options={{headerShown:false}} />
       </Stack.Navigator>
 
 
