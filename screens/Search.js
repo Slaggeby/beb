@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import {SafeAreaView,Text, StyleSheet,View,FlatList,TextInput, Image,TouchableOpacity, TouchableOpacityComponent} from 'react-native';
 
-import { collection, addDoc, getDocs } from '@firebase/firestore';
-import {database} from '../config/firebase';
+import { collection, addDoc, getDocs,setDoc, doc } from '@firebase/firestore';
+import {database, auth} from '../config/firebase';
+
 
 const backImage = require("../assets/bebLogo.png");
 const willysLogo =require("../assets/Willys-logotyp.png")
@@ -17,11 +18,28 @@ export default function Search({navigation}) {
     const [masterDataSource, setMasterDataSource] = useState([]);
     const [JSONLIST, setJSONLIST] = useState('');
     const [importedDb, setImportedDb] = useState([]);
+    const user = auth.currentUser;
+    //console.log(user)
 
+    
+    
+    
 
-  const addToGroceryList = (item) =>{
+  const addToGroceryList = async (item) =>{
     console.log("FRÅN ADDDTOGROCERYLIST",item.id)
+    const userRef = doc(database, "users", user.uid);
+   
+    const grocerylistRef = collection(userRef, "grocerylist");
+    await setDoc(doc(grocerylistRef,item.id), {
+      item: item
+    });
+
   }
+
+
+
+  
+
 
 
     const fetchProducts = async () => {
