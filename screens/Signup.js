@@ -21,17 +21,20 @@ export default function Signup({navigation}){
   const [password1, setPassword1] = useState('');
   const [password2, setPassword2] = useState('');
   const [user, setUser] = useState("");
-   
+  const [name, setName] =useState("")
 
   const onHandleSignup = async() => {
-    if (email1 === email2 && email1 !== '' && password1 === password2 && password1 !== '') {
+    if (email1 === email2 && email1 !== '' && password1 === password2 && password1 !== '' && name!=='') {
       try {
         await createUserWithEmailAndPassword(auth, email1, password1);
         const userCreds = await signInWithEmailAndPassword(auth, email1, password1);
         const user = userCreds.user;
         await setUser(user);
         console.log("user", user.uid);
-        await setDoc(doc(database, "users", user.uid), { name: "billy" });
+        await setDoc(doc(database, "users", user.uid), 
+        { name: name,
+          email: user.email  
+      });
         navigation.navigate("Home");
       } catch (err) {
         Alert.alert("Login error", err.message);
@@ -43,11 +46,30 @@ export default function Signup({navigation}){
   };
 
     return(
+      
+
+
     <View style={styles.container}>
+      
+
+
       <Image source={backImage} style={styles.backImage} />
       <View style={styles.whiteSheet} />
       <SafeAreaView style={styles.form}>
       <Text style={styles.title}>Create Account</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Enter name"
+        autoCapitalize="none"
+        keyboardType="email-address"
+        textContentType="name"
+        autoFocus={true}
+        value={name}
+        onChangeText={(text) => setName(text)}
+      />
+
+
+
       <TextInput
         style={styles.input}
         placeholder="Enter email"
