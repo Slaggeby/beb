@@ -3,7 +3,7 @@ import { FlatList, StyleSheet, View, TextInput, Button, Text, Image, SafeAreaVie
 
 
 import {database, auth, s} from '../config/firebase';
-import { collection, addDoc,setDoc, getDocs, doc, query, where } from '@firebase/firestore';
+import { collection, addDoc,setDoc, getDocs, doc, query, where, deleteDoc } from '@firebase/firestore';
 
 const backImage = require("../assets/bebLogo.png");
 const listIcon=require('../assets/list-icon.png')
@@ -19,6 +19,22 @@ export default function Home({navigation}){
  
 
   const [importedDb, setImportedDb] = useState([]);
+
+  const RemoveItem = (item)=> {
+    //console.log("removed", item)
+    addToGroceryList(item)
+  }
+
+  const addToGroceryList = async (item) =>{
+    console.log("FRÅN ADDDTOGROCERYLIST",item.id)
+    const userRef = doc(database, "users", user.uid);
+   
+    const grocerylistRef = collection(userRef, "grocerylist");
+    await deleteDoc(doc(grocerylistRef,item.id));
+
+  }
+
+
 
 
   
@@ -39,38 +55,41 @@ export default function Home({navigation}){
   }, []);
 
   const renderBorder= (item)=>{
-    item=item.item
-    if (item.butik ==="COOP"){
+    innerItem=item.item
+    if (innerItem.butik ==="COOP"){
       
       return <View style = {{ flex: 1,borderRadius: 5,borderTopRightRadius: 50, margin:10, backgroundColor:'#fafeff', borderColor:"#00AA46", borderWidth:12,}}>
-        <Image source={{ uri: item.bildurl }} style ={styles.productImage} />
+        <Image source={{ uri: innerItem.bildurl }} style ={styles.productImage} />
         <Image source={coopLogo} style ={styles.grocerImage} />
-              <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.id}</Text>
+              <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {innerItem.id}</Text>
                
-              <Text style={styles.productSubtext}> {item.leverantör}</Text>
-              <Text style={styles.productSubtext}>{item.pristext}</Text>
-              <Text style={styles.productSubtext}>{item.jmfpris} :-/kg</Text>
+              <Text style={styles.productSubtext}> {innerItem.leverantör}</Text>
+              <Text style={styles.productSubtext}>{innerItem.pristext}</Text>
+              <Text style={styles.productSubtext}>{innerItem.jmfpris} :-/kg</Text>
       </View>
       }
-      else if (item.butik ==="ICA"){
+      else if (innerItem.butik ==="ICA"){
         return <View style = {{ flex: 1, borderRadius: 5,borderTopRightRadius: 50, backgroundColor: '#fafeff', margin:10, borderColor:"rgba(232,23,0,255)", borderWidth:12,}}>
-        <Image source={{ uri: item.bildurl }} style ={styles.productImage} />
+        <Image source={{ uri: innerItem.bildurl }} style ={styles.productImage} />
         <Image source={icaLogo} style ={styles.grocerImage} />
-              <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.id}</Text>
+        <TouchableOpacity style={{backgroundColor:"red", width:100, right:0,position:"absolute"}}onPress={() =>RemoveItem(item)}>
+          <Text>Remove</Text>
+        </TouchableOpacity>
+              <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {innerItem.id}</Text>
                
-              <Text style={styles.productSubtext}> {item.leverantör}</Text>
-              <Text style={styles.productSubtext}>{item.pristext}</Text>
-              <Text style={styles.productSubtext}>{item.jmfpris} :-/kg</Text>
+              <Text style={styles.productSubtext}> {innerItem.leverantör}</Text>
+              <Text style={styles.productSubtext}>{innerItem.pristext}</Text>
+              <Text style={styles.productSubtext}>{innerItem.jmfpris} :-/kg</Text>
       </View>
       }
       else {return <View style = {{ flex: 1,borderRadius: 5,borderTopRightRadius: 50, backgroundColor: '#fafeff', margin:10, borderColor:"black", borderWidth:12, }}>
-      <Image source={{ uri: item.bildurl }} style ={styles.productImage} />
+      <Image source={{ uri: innerItem.bildurl }} style ={styles.productImage} />
       <Image source={willysLogo} style ={styles.grocerImage} />
-            <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.id}</Text>
+            <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {innerItem.id}</Text>
              
-            <Text style={styles.productSubtext}> {item.leverantör}</Text>
-            <Text style={styles.productSubtext}>{item.pristext}</Text>
-            <Text style={styles.productSubtext}>{item.jmfpris} :-/kg</Text>
+            <Text style={styles.productSubtext}> {innerItem.leverantör}</Text>
+            <Text style={styles.productSubtext}>{innerItem.pristext}</Text>
+            <Text style={styles.productSubtext}>{innerItem.jmfpris} :-/kg</Text>
     </View>}
       
     
@@ -79,10 +98,6 @@ export default function Home({navigation}){
 return(
 
     
-
-
-
-
     <View style={styles.container}>
 
       <View style={{}}>
@@ -109,7 +124,7 @@ return(
               
             </View>
       ))}
-    </View>
+      </View>
 
 
         
@@ -117,18 +132,7 @@ return(
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-          <View style ={styles.footerbuttonContainer}>
+                  <View style ={styles.footerbuttonContainer}>
                     <TouchableOpacity  onPress={() => navigation.navigate("Home")}>
                     <Text style={styles.footerbutton}>⌂</Text>
                     </TouchableOpacity>

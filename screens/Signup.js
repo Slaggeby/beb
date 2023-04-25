@@ -126,7 +126,7 @@ export default function Signup({navigation}){
         onChangeText={(text) => setPassword2(text)}
       />
       
-      <TouchableOpacity style={styles.button} onPress={onHandleSignup}>
+      <TouchableOpacity style={styles.button} onPress={() =>onHandleSignup()}>
         <Text style={{fontWeight: 'bold', color: '#FFFFFF', fontSize: 18}}> Create Account</Text>
       </TouchableOpacity>
       <View style={{marginTop: 20, flexDirection: 'row', alignItems: 'center', alignSelf: 'center'}}>

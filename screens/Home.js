@@ -99,24 +99,24 @@ export default function Home({navigation}){
         </View>
 
         <ScrollView style= {{flex: 1}} contentContainerStyle={styles.scrollViewContent}>
-          
-          <View style= {{flex:1 }}>
-
-              <Text style = {styles.title}>Weekly Offers</Text>
-          </View>    
-
-          {/* final view */}
-          <View >
-            {importedDb.map((item) => (
-            <View  key={item.id}>
-               { renderBorder(item) }
             
+            <View style= {{flex:1 }}>
+
+                <Text style = {styles.title}>Weekly Offers</Text>
+            </View>    
+
+            {/* final view */}
+            <View >
+                {importedDb.map((item) => (
+                  <View  key={item.id}>
+                  { renderBorder(item) }
+                
+                
               
-             
-              
-            </View>
+                
+                </View>
       ))}
-    </View>
+            </View>
           
       
         

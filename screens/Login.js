@@ -62,7 +62,7 @@ export default function Login({ navigation }) {
         value={password}
         onChangeText={(text) => setPassword(text)}
       />
-      <TouchableOpacity style={styles.button} onPress={onHandleLogin}>
+      <TouchableOpacity style={styles.button} onPress={() =>onHandleLogin()}>
         <Text style={{fontWeight: 'bold', color: '#FFFFFF', fontSize: 18}}> Log In</Text>
       </TouchableOpacity>
 
