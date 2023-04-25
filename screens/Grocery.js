@@ -38,7 +38,7 @@ export default function Home({navigation}){
       const unsub = onSnapshot(collection(doc(database, "users", user.uid), "grocerylist"), (querySnapshot) => {
         const docs = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
         setImportedDb(docs);
-        console.log(importedDb)
+        
       });
       return unsub;
     } catch (error) {
@@ -82,6 +82,16 @@ export default function Home({navigation}){
               <Text style={styles.productSubtext}> {innerItem.leverantör}</Text>
               <Text style={styles.productSubtext}>{innerItem.pristext}</Text>
               <Text style={styles.productSubtext}>{innerItem.jmfpris} :-/kg</Text>
+              <TextInput
+        style={styles.input}
+        placeholder=""
+        autoCapitalize="none"
+        keyboardType="numeric"
+        autoCorrect={false}
+        secureTextEntry={false}
+        value={item.amount.toString()}
+        
+      />
       </View>
       }
       else if (innerItem.butik ==="ICA"){
@@ -96,6 +106,16 @@ export default function Home({navigation}){
               <Text style={styles.productSubtext}> {innerItem.leverantör}</Text>
               <Text style={styles.productSubtext}>{innerItem.pristext}</Text>
               <Text style={styles.productSubtext}>{innerItem.jmfpris} :-/kg</Text>
+              <TextInput
+        style={styles.input}
+        placeholder=""
+        autoCapitalize="none"
+        keyboardType="numeric"
+        autoCorrect={false}
+        secureTextEntry={false}
+        value={item.amount.toString()}
+        
+      />
       </View>
       }
       else {return <View style = {{ flex: 1,borderRadius: 5,borderTopRightRadius: 50, backgroundColor: '#fafeff', margin:10, borderColor:"black", borderWidth:12, }}>
@@ -110,6 +130,16 @@ export default function Home({navigation}){
             <Text style={styles.productSubtext}> {innerItem.leverantör}</Text>
             <Text style={styles.productSubtext}>{innerItem.pristext}</Text>
             <Text style={styles.productSubtext}>{innerItem.jmfpris} :-/kg</Text>
+            <TextInput
+        style={styles.input}
+        placeholder=""
+        autoCapitalize="none"
+        keyboardType="numeric"
+        autoCorrect={false}
+        secureTextEntry={false}
+        value={item.amount.toString()}
+        
+      />
     </View>}
       
     

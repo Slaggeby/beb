@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {SafeAreaView,Text, StyleSheet,View,FlatList,TextInput, Image,TouchableOpacity, TouchableOpacityComponent} from 'react-native';
 
-import { collection, addDoc, getDocs,setDoc, doc } from '@firebase/firestore';
+import { collection, addDoc, getDocs,setDoc, doc, getDoc } from '@firebase/firestore';
 import {database, auth} from '../config/firebase';
 
 
@@ -26,14 +26,22 @@ export default function Search({navigation}) {
   const addToGroceryList = async (item) =>{
   
     const userRef = doc(database, "users", user.uid);
-   
     const grocerylistRef = collection(userRef, "grocerylist");
-    console.log(grocerylistRef)
+    const itemDocRef=doc(grocerylistRef,item.id);
+    const itemDoc = await getDoc(itemDocRef);
+
+    if (itemDoc.exists()){ 
+        console.log('it works')
+        const existingAmount = itemDoc.data().amount;
+        await setDoc(itemDocRef, { item: item, amount: existingAmount + 1 })
+    }
+    else{
 
     await setDoc(doc(grocerylistRef,item.id), {
       item: item,
       amount: 1
     });
+}
 
   }
 
