@@ -3,7 +3,7 @@ import { FlatList, StyleSheet, View, TextInput, Button, Text, Image, SafeAreaVie
 
 
 import {database, auth, s} from '../config/firebase';
-import { collection, addDoc,setDoc, getDocs, doc, query, where, deleteDoc, onSnapshot } from '@firebase/firestore';
+import { collection, addDoc,setDoc, getDocs, doc, query, where, deleteDoc, onSnapshot, getDoc } from '@firebase/firestore';
 
 const backImage = require("../assets/bebLogo.png");
 const listIcon=require('../assets/list-icon.png')
@@ -55,15 +55,25 @@ export default function Home({navigation}){
     let totalPrice=0;
 
     importedDb.forEach(item => {
-      totalPrice+=item.item.pris;
+      totalPrice+=(item.amount*item.item.pris);
     });
 
     return( <View>
-    <Text style = {styles.title}>Your total price: {totalPrice} kr</Text>
+    <Text style = {styles.title}>Your total price: {Math.round(totalPrice)} kr</Text>
     </View>
     )
 
   };
+
+  const changeAmount= async(item, amountString)=>{
+    await console.log(item)
+    let newAmount=parseInt(amountString)
+    const userRef = doc(database, "users", user.uid);
+    const grocerylistRef = collection(userRef, "grocerylist");
+    const itemDocRef=doc(grocerylistRef,item.id);
+    const itemDoc = await getDoc(itemDocRef);
+    await setDoc(itemDocRef, { item: item, amount: newAmount })
+  }
 
   const renderBorder= (item)=>{
     innerItem=item.item
@@ -90,7 +100,7 @@ export default function Home({navigation}){
         autoCorrect={false}
         secureTextEntry={false}
         value={item.amount.toString()}
-        
+        onChangeText={(text) => changeAmount(item,text)}
       />
       </View>
       }
