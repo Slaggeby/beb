@@ -104,11 +104,12 @@ export default function Search({navigation}) {
         }
       };
       
-      const ItemView = ({item}) => {
-        return (
-          
-          // Flat List Item
-          <View style={styles.itemCointainer}>
+    
+        const renderItems= ({item})=>{
+          if (item.butik ==="COOP"){
+          return(
+            <View>
+              <View style={styles.itemCointainerCOOP}>
               <Text style={styles.itemTitle}>
                 {item.id}
               </Text>
@@ -127,36 +128,85 @@ export default function Search({navigation}) {
 
               <Image source={{uri:item.bildurl}} style={styles.productImage}  />
 
-            {renderBorder(item)}
+           
 
           <TouchableOpacity onPress={()=>addToGroceryList(item)} style={styles.button}>
             <Text style={styles.buttonText}>Add to grocerylist</Text>
           </TouchableOpacity>
           </View>
-
-
-        );
-
-        
-
-      };
-
-        const renderBorder= (item)=>{
-          if (item.butik ==="COOP"){
-          return(
-            <Image source={coopLogo} style ={styles.grocerImage} />
+               <Image source={coopLogo} style ={styles.grocerImage} />
+            </View>
+           
             )
           
           }
           else if(item.butik ==="ICA"){
             return(
+              <View>
+                    
+                    <View>
+                  <View style={styles.itemCointainerICA}>
+                  <Text style={styles.itemTitle}>
+                    {item.id}
+                  </Text>
+
+                  <Text style={styles.productSubtext}>
+                    {item.leverantör}
+                  </Text>
+
+                  <Text style={styles.productSubtext}>
+                    {item.pristext}
+                  </Text>
+
+                  <Text style={styles.productSubtext}>
+                    {item.jmfpris} kr/kg
+                  </Text>
+
+                  <Image source={{uri:item.bildurl}} style={styles.productImage}  />
+
               
-              <Image source={icaLogo} style ={styles.grocerImage} />
+
+                  <TouchableOpacity onPress={()=>addToGroceryList(item)} style={styles.button}>
+                    <Text style={styles.buttonText}>Add to grocerylist</Text>
+                  </TouchableOpacity>
+                    </View>
+                      <Image source={icaLogo} style ={styles.grocerImage} />
+                  </View>
+              </View>
+              
             )
           }
           else {
             return( 
-              <Image source={willysLogo} style ={styles.grocerImage} />
+              <View>
+                <View style={styles.itemCointainerWILLYS}>
+              <Text style={styles.itemTitle}>
+                {item.id}
+              </Text>
+
+              <Text style={styles.productSubtext}>
+                {item.leverantör}
+              </Text>
+
+              <Text style={styles.productSubtext}>
+                {item.pristext}
+              </Text>
+
+              <Text style={styles.productSubtext}>
+                {item.jmfpris} kr/kg
+              </Text>
+
+              <Image source={{uri:item.bildurl}} style={styles.productImage}  />
+
+            
+
+          <TouchableOpacity onPress={()=>addToGroceryList(item)} style={styles.button}>
+            <Text style={styles.buttonText}>Add to grocerylist</Text>
+          </TouchableOpacity>
+          </View>
+                <Image source={willysLogo} style ={styles.grocerImage} />
+              </View>
+              
             )
           }
                 
@@ -197,11 +247,11 @@ return(
           underlineColorAndroid="transparent"
           placeholder="Search Here"
         />
-        <FlatList
+        <FlatList style={{marginBottom:150}}
           data={filteredDataSource}
           keyExtractor={(item, index) => index.toString()}
           ItemSeparatorComponent={ItemSeparatorView}
-          renderItem={ItemView}
+          renderItem={renderItems}
         />
        
       </View>
@@ -248,7 +298,31 @@ const styles = StyleSheet.create({
       
     },
 
-    itemCointainer:{
+    itemCointainerCOOP:{
+      borderRadius: 5,
+      borderColor:"#00AA46", 
+      borderWidth:7,
+
+      flex:1,
+      backgroundColor:"#F9EFEB",
+      padding: 10, 
+      borderRadius: 35,
+      margin:10,
+    },
+    itemCointainerICA:{
+      borderRadius: 5,
+      borderColor:"rgba(232,23,0,255)", 
+      borderWidth:7,
+      flex:1,
+      backgroundColor:"#F9EFEB",
+      padding: 10, 
+      borderRadius: 35,
+      margin:10,
+    },
+    itemCointainerWILLYS:{
+      borderRadius: 5,
+      borderColor:"black", 
+      borderWidth:7,
       flex:1,
       backgroundColor:"#F9EFEB",
       padding: 10, 
@@ -319,7 +393,7 @@ const styles = StyleSheet.create({
   grocerImage:{
     position: "absolute",
   top: 10,
-  right:4,
+  right:20,
   resizeMode: 'contain',
   width:70,
   height:70,
