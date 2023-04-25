@@ -3,7 +3,7 @@ import { FlatList, StyleSheet, View, TextInput, Button, Text, Image, SafeAreaVie
 
 
 import {database, auth, s} from '../config/firebase';
-import { collection, addDoc,setDoc, getDocs, doc, query, where, deleteDoc } from '@firebase/firestore';
+import { collection, addDoc,setDoc, getDocs, doc, query, where, deleteDoc, onSnapshot } from '@firebase/firestore';
 
 const backImage = require("../assets/bebLogo.png");
 const listIcon=require('../assets/list-icon.png')
@@ -20,19 +20,15 @@ export default function Home({navigation}){
 
   const [importedDb, setImportedDb] = useState([]);
 
-  const RemoveItem = (item)=> {
-    //console.log("removed", item)
-    addToGroceryList(item)
-  }
-
-  const addToGroceryList = async (item) =>{
+  const RemoveItem = async(item)=> {
     console.log("FRÅN ADDDTOGROCERYLIST",item.id)
     const userRef = doc(database, "users", user.uid);
    
     const grocerylistRef = collection(userRef, "grocerylist");
     await deleteDoc(doc(grocerylistRef,item.id));
-
   }
+
+
 
 
 
@@ -40,10 +36,11 @@ export default function Home({navigation}){
   
   const fetchProducts = async () => {
     try {
-      const querySnapshot = await getDocs(collection(doc(database, "users", user.uid), "grocerylist"));
-      const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-  
-      setImportedDb(newData);
+      const unsub = onSnapshot(collection(doc(database, "users", user.uid), "grocerylist"), (querySnapshot) => {
+        const docs = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+        setImportedDb(docs);
+      });
+      return unsub;
     } catch (error) {
       console.error("Error fetching products:", error);
       throw error;

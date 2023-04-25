@@ -20,11 +20,11 @@ export default function Search({navigation}) {
     const [JSONLIST, setJSONLIST] = useState('');
     const [importedDb, setImportedDb] = useState([]);
     const user = auth.currentUser;
-    //console.log(user)
+   
 
     
   const addToGroceryList = async (item) =>{
-    console.log("FRÅN ADDDTOGROCERYLIST",item.id)
+  
     const userRef = doc(database, "users", user.uid);
    
     const grocerylistRef = collection(userRef, "grocerylist");
@@ -46,9 +46,9 @@ export default function Search({navigation}) {
             
              DataList.push(item)
           })
-        //console.log(DataList)
+     
         setJSONLIST(JSON.stringify(DataList));
-        //console.log("JSONLIST",JSONLIST)
+    
           
         
 
@@ -83,7 +83,7 @@ export default function Search({navigation}) {
           const newData = masterDataSource.filter(
             
             function (item) {
-               //console.log("item",item)
+             
               const itemData = item.id
                 ? item.id.toUpperCase()
                 : ''.toUpperCase();
