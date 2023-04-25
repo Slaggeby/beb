@@ -21,6 +21,19 @@ export default function Search({navigation}) {
     const [importedDb, setImportedDb] = useState([]);
     const user = auth.currentUser;
    
+    const [showCOOP, setShowCOOP] = useState(false)
+
+
+    const sortCOOP = () =>{
+      
+      setShowCOOP(!showCOOP);
+      
+    };
+
+
+
+
+
 
     
   const addToGroceryList = async (item) =>{
@@ -92,7 +105,8 @@ export default function Search({navigation}) {
                 : ''.toUpperCase();
               const textData = text.toUpperCase();
               
-              return itemData.indexOf(textData) > -1;
+              return itemData.indexOf(textData) > -1 &&
+              (!showCOOP || item.butik ==="COOP" );
           });
           setFilteredDataSource(newData);
           setSearch(text);
@@ -240,6 +254,11 @@ return(
           <Image source={backImage} style={styles.bebLogo} />
         </View>
       <View style={styles.container}>
+        
+        
+        
+       
+  
         <TextInput
           style={styles.textInputStyle}
           onChangeText={(text) => searchFilterFunction(text)}
@@ -247,6 +266,15 @@ return(
           underlineColorAndroid="transparent"
           placeholder="Search Here"
         />
+
+        <View style={{height:50, width:50,backgroundColor:"grey", justifyContent:"space-evenly"}}>
+          <Text> COOP</Text>
+          <TouchableOpacity onPress={()=>sortCOOP()} style={{backgroundColor:"white",width:15,left:20,borderColor:"black",borderWidth:1,}}>
+            
+          <Text style={{color:"black"}}>{showCOOP ? '✓' : ' '}</Text>
+          </TouchableOpacity>
+        </View>
+
         <FlatList style={{marginBottom:150}}
           data={filteredDataSource}
           keyExtractor={(item, index) => index.toString()}
