@@ -14,10 +14,6 @@ const coopLogo =require("../assets/coop-logotyp.png")
 export default function Home({navigation}){
 
   const user = auth.currentUser;
-  
-  
- 
-
   const [importedDb, setImportedDb] = useState([]);
 
 
@@ -37,7 +33,7 @@ export default function Home({navigation}){
  
   //#00AA46 coops gröna färg
   // rgba(232,23,0,255) ICAS
-  const renderBorder= (item)=>{
+  const renderProduct= (item)=>{
     if (item.butik ==="COOP"){
       
       return <View style = {{ flex: 1,borderRadius: 5,borderTopRightRadius: 50, margin:10, backgroundColor:'#fafeff', borderColor:"#00AA46", borderWidth:12,}}>
@@ -107,15 +103,44 @@ export default function Home({navigation}){
 
             {/* final view */}
             <View >
-                {importedDb.map((item) => (
-                  <View  key={item.id}>
-                  { renderBorder(item) }
-                
-                
-              
-                
-                </View>
-      ))}
+              <Text style={{fontSize:32,}}>ICA</Text>
+                {importedDb.map((item) => {
+                  if (item.butik === "ICA"){
+                    return (   
+                          <View  key={item.id}>
+                              { renderProduct(item) }
+                          </View>
+                      
+                    )
+                  }
+                })}
+            </View>
+            
+            
+            <View>
+            <Text style={{fontSize:32,}}>COOP</Text>
+            {importedDb.map((item) => {
+                  if (item.butik === "COOP"){
+                    return (
+                      <View  key={item.id}>
+                    { renderProduct(item) }
+                  </View>
+                    )
+                  }
+                })}
+            </View>
+
+            <View>
+            <Text style={{fontSize:32,}}>Willys</Text>
+            {importedDb.map((item) => {
+                  if (item.butik === "willys"){
+                    return (
+                      <View  key={item.id}>
+                    { renderProduct(item) }
+                  </View>
+                    )
+                  }                 
+                })}
             </View>
           
       
