@@ -1,7 +1,7 @@
 import React, {useEffect,useState} from "react";
-import { FlatList, StyleSheet, View, TextInput, Button, Text, Image, SafeAreaView, TouchableOpacity, StatusBar, ScrollView, Pressable} from "react-native"
+import { FlatList, StyleSheet, View, TextInput, Button, Text, Image, SafeAreaView, TouchableOpacity, StatusBar, ScrollView, Pressable, Alert} from "react-native"
 
-import { collection, addDoc, getDocs } from '@firebase/firestore';
+import { collection, addDoc, getDocs, doc, getDoc, setDoc } from '@firebase/firestore';
 import {database, auth, signOut} from '../config/firebase';
 
 const listIcon=require('../assets/list-icon.png')
@@ -33,17 +33,71 @@ export default function Home({navigation}){
  
   //#00AA46 coops gröna färg
   // rgba(232,23,0,255) ICAS
+
+
+  
+
+  const removeItem = (item) =>{
+    console.log(item)
+  }
+
+
+
+  const addToGroceryList = async (item) =>{
+  
+    const userRef = doc(database, "users", user.uid);
+    const grocerylistRef = collection(userRef, "grocerylist");
+    const itemDocRef=doc(grocerylistRef,item.id);
+    const itemDoc = await getDoc(itemDocRef);
+
+    if (itemDoc.exists()){ 
+        console.log('it works')
+        const existingAmount = itemDoc.data().amount;
+        await setDoc(itemDocRef, { item: item, amount: existingAmount + 1 })
+    }
+    else{
+
+    await setDoc(doc(grocerylistRef,item.id), {
+      item: item,
+      amount: 1
+    });
+}
+
+
+  }
+
+
+
+
+
+
+
+
   const renderProduct= (item)=>{
     if (item.butik ==="COOP"){
       
       return <View style = {styles.itemCointainerCOOP}>
               <Image source={{ uri: item.bildurl }} style ={styles.productImage} />
-              
               <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.id}</Text>
-               
               <Text style={styles.productSubtext}> {item.leverantör}</Text>
               <Text style={styles.productSubtext}>{item.pristext}</Text>
               <Text style={styles.productSubtext}>{item.jmfpris} :-/kg</Text>
+             
+              <View style={{left:200,}}>
+              
+                <Text>Add to Grocerylist</Text>
+               
+                <TouchableOpacity onPress={()=>addToGroceryList(item)}>
+                  <Text>+</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={()=>removeItem(item)}>
+                  <Text> -</Text>
+                </TouchableOpacity>
+              
+              </View>
+              
+              
       </View>
       }
       else if (item.butik ==="ICA"){
@@ -97,16 +151,20 @@ export default function Home({navigation}){
         <ScrollView style= {{flex: 1, }} contentContainerStyle={styles.scrollViewContent}>
             
             <View style= {{flex:1 }}>
-                <Text style = {styles.title}>Weekly Offers</Text>
+                <Text style = {styles.title}>Current Offers</Text>
             </View>    
 
             {/* final view */}
-            <View style={{flex:1,}}>
+            <View style={{flex:1,borderRadius: 35,
+              borderColor:"rgba(232,23,0,255)", 
+              borderWidth:0,marginTop:10,backgroundColor:"#F9EFEB"}}>
             <Image source={icaLogo} style ={styles.grocerImage} />
+            
                 {importedDb.map((item) => {
                   if (item.butik === "ICA"){
                     return (   
                           <View  key={item.id}>
+                            
                               { renderProduct(item) }
                           </View>
                       
@@ -116,7 +174,13 @@ export default function Home({navigation}){
             </View>
             
             
-            <View style={{flex:1,}}>
+            <View style={{
+              flex:1,borderRadius: 35,
+              borderColor:"#00AA46", 
+              borderWidth:0,marginTop:10,
+              backgroundColor:"#CCFFCC",
+               margin:10,}}>
+
             <Image source={coopLogo} style ={styles.grocerImage} />
             {importedDb.map((item) => {
                   if (item.butik === "COOP"){
@@ -129,7 +193,9 @@ export default function Home({navigation}){
                 })}
             </View>
 
-            <View style={{flex:1,}}>
+            <View style={{flex:1, borderRadius: 35,
+              borderColor:"black", 
+              borderWidth:0,margin:10,marginBottom:50,backgroundColor:"#A0A0A0" }}>
             <Image source={willysLogo} style ={styles.grocerImage} />
             {importedDb.map((item) => {
                   if (item.butik === "willys"){
@@ -169,16 +235,15 @@ export default function Home({navigation}){
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor:"#F9EFEB"
+      backgroundColor:"white"
     },
 
     itemCointainerCOOP:{
       borderRadius: 5,
       borderColor:"#00AA46", 
-      borderWidth:7,
-
+      borderWidth:4,
       flex:1,
-      backgroundColor:"#F9EFEB",
+      backgroundColor:"white",
       padding: 10, 
       borderRadius: 35,
       margin:10,
@@ -187,9 +252,9 @@ const styles = StyleSheet.create({
     itemCointainerICA:{
       borderRadius: 5,
       borderColor:"rgba(232,23,0,255)", 
-      borderWidth:7,
+      borderWidth:4,
       flex:1,
-      backgroundColor:"#F9EFEB",
+      backgroundColor:"white",
       padding: 10, 
       borderRadius: 35,
       margin:10,
@@ -198,14 +263,13 @@ const styles = StyleSheet.create({
     itemCointainerWILLYS:{
       borderRadius: 5,
       borderColor:"black", 
-      borderWidth:7,
+      borderWidth:4,
       flex:1,
       backgroundColor:"#F9EFEB",
       padding: 10, 
       borderRadius: 35,
       margin:10,
     },
-
     productSubtext: { 
       fontWeight:"bold",
        left:150,
@@ -310,7 +374,8 @@ const styles = StyleSheet.create({
       backgroundColor:"#D82401",
       flexDirection:"row",
       justifyContent:"space-evenly",
-      width:"100%"
+      width:"100%",
+      
 
       
 
