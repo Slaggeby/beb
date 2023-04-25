@@ -14,14 +14,13 @@ const coopLogo =require("../assets/coop-logotyp.png")
 export default function Home({navigation}){
 
   const user = auth.currentUser;
-
+  const [totalPrice,setTotalPrice]=useState('');
    
  
 
   const [importedDb, setImportedDb] = useState([]);
 
   const RemoveItem = async(item)=> {
-    console.log("FRÅN ADDDTOGROCERYLIST",item.id)
     const userRef = doc(database, "users", user.uid);
    
     const grocerylistRef = collection(userRef, "grocerylist");
@@ -51,8 +50,25 @@ export default function Home({navigation}){
     fetchProducts();
   }, []);
 
+  const calculateTotalPrice=()=>{
+    console.log("Total price:",)
+    let totalPrice=0;
+
+    importedDb.forEach(item => {
+      totalPrice+=item.item.pris;
+    });
+
+    return( <View>
+    <Text style = {styles.title}>Your total price: {totalPrice} kr</Text>
+    </View>
+    )
+
+  };
+
   const renderBorder= (item)=>{
     innerItem=item.item
+    
+    
     if (innerItem.butik ==="COOP"){
       
       return <View style = {{ flex: 1,borderRadius: 5,borderTopRightRadius: 50, margin:10, backgroundColor:'#fafeff', borderColor:"#00AA46", borderWidth:12,}}>
@@ -109,6 +125,8 @@ return(
         <View style= {{flex:1 }}>
 
           <Text style = {styles.title}>Your Grocery List</Text>
+          {calculateTotalPrice()}
+
         </View> 
         
         <View >
