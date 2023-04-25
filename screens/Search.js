@@ -21,15 +21,19 @@ export default function Search({navigation}) {
     const [importedDb, setImportedDb] = useState([]);
     const user = auth.currentUser;
    
-    const [showCOOP, setShowCOOP] = useState(false)
+    const [showCOOP, setShowCOOP] = useState(true)
+    const [showICA, setShowICA] = useState(true)
+    const [showWILLYS, setShowWILLYS] = useState(true)
 
-
-    const sortCOOP = () =>{
-      
+    const sortCOOP = () =>{ 
       setShowCOOP(!showCOOP);
-      
     };
-
+    const sortICA = () =>{ 
+      setShowICA(!showICA);
+    };
+    const sortWILLYS = () =>{ 
+      setShowWILLYS(!showWILLYS);
+    };
 
 
 
@@ -128,7 +132,8 @@ export default function Search({navigation}) {
       
     
         const renderItems= ({item})=>{
-          if (item.butik ==="COOP"){
+
+          if (item.butik ==="COOP" && showCOOP  ){
           return(
             <View>
               <View style={styles.itemCointainerCOOP}>
@@ -162,7 +167,7 @@ export default function Search({navigation}) {
             )
           
           }
-          else if(item.butik ==="ICA"){
+          else if(item.butik ==="ICA"  && showICA){
             return(
               <View>
                     
@@ -198,7 +203,7 @@ export default function Search({navigation}) {
               
             )
           }
-          else {
+          else if(item.butik ==="willys"  && showWILLYS) {
             return( 
               <View>
                 <View style={styles.itemCointainerWILLYS}>
@@ -274,16 +279,35 @@ return(
           underlineColorAndroid="transparent"
           placeholder="Search Here"
         />
+        <View style={{justifyContent:"center", flexDirection:"row"}}>
+              <View style={{height:50, width:50, justifyContent:"space-evenly"}}>
+                <Text> COOP</Text>
+                <TouchableOpacity onPress={()=>sortCOOP()} style={{backgroundColor:"white",width:15,left:20,borderColor:"black",borderWidth:1,}}>
+                  
+                <Text style={{color:"black"}}>{showCOOP ? '✓' : ' '}</Text>
+                </TouchableOpacity>
+              </View>
 
-        <View style={{height:50, width:50,backgroundColor:"grey", justifyContent:"space-evenly"}}>
-          <Text> COOP</Text>
-          <TouchableOpacity onPress={()=>sortCOOP()} style={{backgroundColor:"white",width:15,left:20,borderColor:"black",borderWidth:1,}}>
-            
-          <Text style={{color:"black"}}>{showCOOP ? '✓' : ' '}</Text>
-          </TouchableOpacity>
-        </View>
+              <View style={{height:50, width:50, justifyContent:"space-evenly"}}>
+                <Text> ICA</Text>
+                <TouchableOpacity onPress={()=>sortICA()} style={{backgroundColor:"white",width:15,left:20,borderColor:"black",borderWidth:1,}}>
+                  
+                <Text style={{color:"black"}}>{showICA ? '✓' : ' '}</Text>
+                </TouchableOpacity>
+              </View>
 
-        <FlatList style={{marginBottom:150}}
+
+              <View style={{height:50, width:50, justifyContent:"space-evenly"}}>
+                <Text> Willys</Text>
+                <TouchableOpacity onPress={()=>sortWILLYS()} style={{backgroundColor:"white",width:15,left:20,borderColor:"black",borderWidth:1,}}>
+                  
+                <Text style={{color:"black"}}>{showWILLYS ? '✓' : ' '}</Text>
+                </TouchableOpacity>
+              </View>
+          </View>
+
+
+        <FlatList style={{marginBottom:200}}
           data={filteredDataSource}
           keyExtractor={(item, index) => index.toString()}
           ItemSeparatorComponent={ItemSeparatorView}
