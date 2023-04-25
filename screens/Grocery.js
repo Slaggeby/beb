@@ -3,7 +3,7 @@ import { FlatList, StyleSheet, View, TextInput, Button, Text, Image, SafeAreaVie
 
 
 import {database, auth, s} from '../config/firebase';
-import { collection, addDoc,setDoc, getDocs, doc, query, where, deleteDoc, onSnapshot, getDoc } from '@firebase/firestore';
+import { collection, addDoc,setDoc, getDocs, doc, query, where, deleteDoc, updateDoc, onSnapshot, getDoc } from '@firebase/firestore';
 
 const backImage = require("../assets/bebLogo.png");
 const listIcon=require('../assets/list-icon.png')
@@ -71,8 +71,7 @@ export default function Home({navigation}){
     const userRef = doc(database, "users", user.uid);
     const grocerylistRef = collection(userRef, "grocerylist");
     const itemDocRef=doc(grocerylistRef,item.id);
-    const itemDoc = await getDoc(itemDocRef);
-    await setDoc(itemDocRef, { item: item, amount: newAmount })
+    await updateDoc(itemDocRef, { amount: newAmount });
   }
 
   const renderBorder= (item)=>{
@@ -124,7 +123,7 @@ export default function Home({navigation}){
         autoCorrect={false}
         secureTextEntry={false}
         value={item.amount.toString()}
-        
+        onChangeText={(text) => changeAmount(item,text)}
       />
       </View>
       }
@@ -148,7 +147,7 @@ export default function Home({navigation}){
         autoCorrect={false}
         secureTextEntry={false}
         value={item.amount.toString()}
-        
+        onChangeText={(text) => changeAmount(item,text)}
       />
     </View>}
       
