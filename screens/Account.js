@@ -1,8 +1,8 @@
 import React, {useState} from "react";
 import {StyleSheet, View, TextInput, Button, Text, Image, SafeAreaView, TouchableOpacity, StatusBar} from "react-native"
 
-import firebase from 'firebase/app';
-import {database, auth, signOut} from '../config/firebase';
+import { getAuth, signOut } from 'firebase/auth';
+import {database, auth} from '../config/firebase';
 
 
 
@@ -15,13 +15,16 @@ const listIcon=require('../assets/list-icon.png')
 
 export default function Account({navigation}){
   const user = auth.currentUser;
-  //console.log(user)
   
-  Logout=() =>{
-    //console.log(user)
-    
-     auth().signOut().then(() => navigation.navigate("Signup"));
-    
+  const LogOut=() =>{
+    const auth = getAuth();
+    console.log('Signing out user:', auth.currentUser)
+    signOut(auth).then(() => {
+      console.log('Signed Out')
+      navigation.navigate("Login")
+    }).catch((error) => {
+      console.log('logout error')
+    });
   }
 
     const [isActive, setIsActive] = useState(false)
@@ -67,7 +70,7 @@ export default function Account({navigation}){
         
         <View style={{marginBottom:50,width:100,left:300,}}>
           
-         <TouchableOpacity style={styles.button} onPress={()=>Logout()} >
+         <TouchableOpacity style={styles.button} onPress={()=>LogOut()} >
 
             <Text style={{fontWeight: 'bold', color: '#FFFFFF', fontSize: 18}}> Log Out</Text>
           </TouchableOpacity>

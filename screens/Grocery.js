@@ -51,7 +51,6 @@ export default function Home({navigation}){
   }, []);
 
   const calculateTotalPrice=()=>{
-    console.log("Total price:",)
     let totalPrice=0;
 
     importedDb.forEach(item => {
