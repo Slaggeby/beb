@@ -28,8 +28,11 @@ export default function Search({navigation}) {
     const userRef = doc(database, "users", user.uid);
    
     const grocerylistRef = collection(userRef, "grocerylist");
+    console.log(grocerylistRef)
+
     await setDoc(doc(grocerylistRef,item.id), {
-      item: item
+      item: item,
+      amount: 1
     });
 
   }

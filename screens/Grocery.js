@@ -38,6 +38,7 @@ export default function Home({navigation}){
       const unsub = onSnapshot(collection(doc(database, "users", user.uid), "grocerylist"), (querySnapshot) => {
         const docs = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
         setImportedDb(docs);
+        console.log(importedDb)
       });
       return unsub;
     } catch (error) {
@@ -73,6 +74,9 @@ export default function Home({navigation}){
       return <View style = {{ flex: 1,borderRadius: 5,borderTopRightRadius: 50, margin:10, backgroundColor:'#fafeff', borderColor:"#00AA46", borderWidth:12,}}>
         <Image source={{ uri: innerItem.bildurl }} style ={styles.productImage} />
         <Image source={coopLogo} style ={styles.grocerImage} />
+        <TouchableOpacity style={{backgroundColor:"red", width:100, right:0,position:"absolute"}}onPress={() =>RemoveItem(item)}>
+          <Text>Remove</Text>
+        </TouchableOpacity>
               <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {innerItem.id}</Text>
                
               <Text style={styles.productSubtext}> {innerItem.leverantör}</Text>
@@ -97,6 +101,10 @@ export default function Home({navigation}){
       else {return <View style = {{ flex: 1,borderRadius: 5,borderTopRightRadius: 50, backgroundColor: '#fafeff', margin:10, borderColor:"black", borderWidth:12, }}>
       <Image source={{ uri: innerItem.bildurl }} style ={styles.productImage} />
       <Image source={willysLogo} style ={styles.grocerImage} />
+
+      <TouchableOpacity style={{backgroundColor:"red", width:100, right:0,position:"absolute"}}onPress={() =>RemoveItem(item)}>
+          <Text>Remove</Text>
+        </TouchableOpacity>
             <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {innerItem.id}</Text>
              
             <Text style={styles.productSubtext}> {innerItem.leverantör}</Text>
@@ -114,6 +122,7 @@ return(
 
       <View style={{}}>
         <Image source={backImage} style={styles.bebLogo} />
+        {calculateTotalPrice()}
       </View>
 
       <ScrollView style= {{flex: 1}} contentContainerStyle={styles.scrollViewContent}>
@@ -124,7 +133,7 @@ return(
         <View style= {{flex:1 }}>
 
           <Text style = {styles.title}>Your Grocery List</Text>
-          {calculateTotalPrice()}
+          
 
         </View> 
         

@@ -18,7 +18,7 @@ export default function Account({navigation}){
   
   const LogOut=() =>{
     const auth = getAuth();
-    console.log('Signing out user:', auth.currentUser)
+    console.log('Signing out user:', auth.currentUser.email)
     signOut(auth).then(() => {
       console.log('Signed Out')
       navigation.navigate("Login")
