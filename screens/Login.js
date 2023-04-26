@@ -9,11 +9,11 @@ export default function Login({ navigation }) {
 
 
   //this is the real login fields, the other ones are just for ease
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
+   const [email, setEmail] = useState("");
+   const [password, setPassword] = useState("");
   
-  const email="test@test.se"
-  const password="123456"
+  // const email="test@test.se"
+  // const password="123456"
   
 
   const onHandleLogin = async() => {

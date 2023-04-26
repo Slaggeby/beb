@@ -103,6 +103,8 @@ export default function Home({navigation}){
                 keyboardType="numeric"
                 autoCorrect={false}
                 secureTextEntry={false}
+                color='black'
+                editable={false}
                 value={item.amount.toString()}
                 onChangeText={(text) => changeAmount(item,text)}
               />
