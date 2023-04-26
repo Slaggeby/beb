@@ -38,10 +38,10 @@ export default function Signup({navigation}){
           email: user.email
         });
   
-        const grocerylistRef = collection(userRef, "grocerylist");
-        await setDoc(doc(grocerylistRef), {
+        // const grocerylistRef = collection(userRef, "grocerylist");
+        // await setDoc(doc(grocerylistRef), {
           
-        });
+        // });
   
         navigation.navigate("Home");
       } catch (err) {
