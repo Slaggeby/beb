@@ -189,7 +189,7 @@ export default function Home({navigation}){
 
             <View style={{flex:1, borderRadius: 35,
               borderColor:"black", 
-              borderWidth:0,margin:10,marginBottom:50,backgroundColor:"#A0A0A0" }}>
+              borderWidth:0,margin:10,marginBottom:50,backgroundColor:"#cfd7e3" }}>
             <Image source={willysLogo} style ={styles.grocerImage} />
             {importedDb.map((item) => {
                   if (item.butik === "willys"){

@@ -59,19 +59,66 @@ export default function Home({navigation}){
     });
 
     return( <View>
-    <Text style = {styles.title}>Your total price: {Math.round(totalPrice)} kr</Text>
+    <Text style = {styles.title}>Your total cost: {Math.round(totalPrice)} kr</Text>
     </View>
     )
 
   };
 
-  const changeAmount= async(item, amountString)=>{
-    await console.log(item)
-    let newAmount=parseInt(amountString)
+  const changeAmount = async (item, amountString) => {
     const userRef = doc(database, "users", user.uid);
     const grocerylistRef = collection(userRef, "grocerylist");
-    const itemDocRef=doc(grocerylistRef,item.id);
-    await updateDoc(itemDocRef, { amount: newAmount });
+    const itemDocRef = doc(grocerylistRef, item.id);
+  
+    let newAmount;
+    if (amountString === "+") {
+      newAmount = item.amount + 1;
+    } else if (amountString === "-") {
+      newAmount = item.amount - 1;
+    } else {
+      newAmount = parseInt(amountString);
+    }
+  
+    if (newAmount <= 0 || isNaN(newAmount)) {
+      await RemoveItem(item);
+    } else {
+      await updateDoc(itemDocRef, { amount: newAmount });
+    }
+  
+    setImportedDb((prev) =>
+      prev.map((dbItem) => (dbItem.id === item.id ? { ...dbItem, amount: newAmount } : dbItem))
+    );
+  };
+
+
+
+  const generateAmountView=(item)=>{
+
+    return(
+      <View>
+              <TextInput
+                style={styles.amountField}
+                placeholder=""
+                autoCapitalize="none"
+                keyboardType="numeric"
+                autoCorrect={false}
+                secureTextEntry={false}
+                color='black'
+                editable={false}
+                value={item.amount.toString()}
+                onChangeText={(text) => changeAmount(item,text)}
+              />
+              <TouchableOpacity style={styles.changeAmountButtonplus} onPress={() =>changeAmount(item, "+")}>
+          <Text style={{flexDirection: 'row', alignItems: 'center', alignSelf: 'center', fontSize:24}}>+</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.changeAmountButtonminus} onPress={() =>changeAmount(item,"-")}>
+          <Text style={{flexDirection: 'row', alignItems: 'center', alignSelf: 'center', fontSize:24}}>-</Text>
+        </TouchableOpacity>
+            </View>
+
+
+    )
+
   }
 
   const renderBorder= (item)=>{
@@ -83,72 +130,41 @@ export default function Home({navigation}){
       return <View style = {{ flex: 1,borderRadius: 5,borderTopRightRadius: 50, margin:10, backgroundColor:'#fafeff', borderColor:"#00AA46", borderWidth:12,}}>
         <Image source={{ uri: innerItem.bildurl }} style ={styles.productImage} />
         <Image source={coopLogo} style ={styles.grocerImage} />
-        <TouchableOpacity style={{backgroundColor:"red", width:100, right:0,position:"absolute"}}onPress={() =>RemoveItem(item)}>
-          <Text>Remove</Text>
-        </TouchableOpacity>
+        
               <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {innerItem.id}</Text>
                
               <Text style={styles.productSubtext}> {innerItem.leverantör}</Text>
               <Text style={styles.productSubtext}>{innerItem.pristext}</Text>
               <Text style={styles.productSubtext}>{innerItem.jmfpris} :-/kg</Text>
-              <TextInput
-        style={styles.input}
-        placeholder=""
-        autoCapitalize="none"
-        keyboardType="numeric"
-        autoCorrect={false}
-        secureTextEntry={false}
-        value={item.amount.toString()}
-        onChangeText={(text) => changeAmount(item,text)}
-      />
+              {generateAmountView(item)}
       </View>
       }
       else if (innerItem.butik ==="ICA"){
         return <View style = {{ flex: 1, borderRadius: 5,borderTopRightRadius: 50, backgroundColor: '#fafeff', margin:10, borderColor:"rgba(232,23,0,255)", borderWidth:12,}}>
         <Image source={{ uri: innerItem.bildurl }} style ={styles.productImage} />
         <Image source={icaLogo} style ={styles.grocerImage} />
-        <TouchableOpacity style={{backgroundColor:"red", width:100, right:0,position:"absolute"}}onPress={() =>RemoveItem(item)}>
-          <Text>Remove</Text>
-        </TouchableOpacity>
+
               <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {innerItem.id}</Text>
                
               <Text style={styles.productSubtext}> {innerItem.leverantör}</Text>
               <Text style={styles.productSubtext}>{innerItem.pristext}</Text>
               <Text style={styles.productSubtext}>{innerItem.jmfpris} :-/kg</Text>
-              <TextInput
-        style={styles.input}
-        placeholder=""
-        autoCapitalize="none"
-        keyboardType="numeric"
-        autoCorrect={false}
-        secureTextEntry={false}
-        value={item.amount.toString()}
-        onChangeText={(text) => changeAmount(item,text)}
-      />
+              {generateAmountView(item)}
       </View>
       }
       else {return <View style = {{ flex: 1,borderRadius: 5,borderTopRightRadius: 50, backgroundColor: '#fafeff', margin:10, borderColor:"black", borderWidth:12, }}>
       <Image source={{ uri: innerItem.bildurl }} style ={styles.productImage} />
       <Image source={willysLogo} style ={styles.grocerImage} />
 
-      <TouchableOpacity style={{backgroundColor:"red", width:100, right:0,position:"absolute"}}onPress={() =>RemoveItem(item)}>
-          <Text>Remove</Text>
-        </TouchableOpacity>
+      
             <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {innerItem.id}</Text>
              
             <Text style={styles.productSubtext}> {innerItem.leverantör}</Text>
             <Text style={styles.productSubtext}>{innerItem.pristext}</Text>
             <Text style={styles.productSubtext}>{innerItem.jmfpris} :-/kg</Text>
-            <TextInput
-        style={styles.input}
-        placeholder=""
-        autoCapitalize="none"
-        keyboardType="numeric"
-        autoCorrect={false}
-        secureTextEntry={false}
-        value={item.amount.toString()}
-        onChangeText={(text) => changeAmount(item,text)}
-      />
+
+            {generateAmountView(item)}
+            
     </View>}
       
     
@@ -255,6 +271,30 @@ const styles = StyleSheet.create({
         marginTop:25,
         
       },
+      amountField: {
+        marginLeft:295,
+        width: 100,
+        height:40,
+        fontSize:24
+      },
+
+      changeAmountButtonplus:{
+        width:40,
+        height:40,
+        backgroundColor:"#d6e6ff",
+        borderRadius:10,
+        position: "absolute",
+        marginLeft:320
+      },
+      changeAmountButtonminus:{
+        width:40,
+        height:40,
+        backgroundColor:"#d6e6ff",
+        borderRadius:10,
+        position: "absolute",
+        marginLeft:240
+      },
+
       bebLogo: {
         
         width: "100%",
