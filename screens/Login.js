@@ -4,19 +4,34 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config/firebase";
 const backImage = require("../assets/bebLogo.png");
 
+
 export default function Login({ navigation }) {
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
-  const onHandleLogin = () => {
-    if (email !== "" && password !== "") {
-      signInWithEmailAndPassword(auth, email, password)
-        .then(() => console.log("Login success"),
-        //Navigate homescreen
-        navigation.navigate("Home")
-        )
-        .catch((err) => Alert.alert("Login error", err.message));
+  //this is the real login fields, the other ones are just for ease
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
+  
+  const email="test@test.se"
+  const password="123456"
+  
+
+  const onHandleLogin = async() => {
+    try {
+      if (email !== "" && password !== "") {
+        await signInWithEmailAndPassword(auth, email, password);
+        const user = auth.currentUser;
+        if (user){ 
+
+          console.log("Login success"),
+          //Navigate homescreen
+          navigation.navigate("Home")
+
+        } 
+        
+      }
+    } catch (err) {
+      Alert.alert("Login error", err.message);
     }
   };
   
@@ -47,19 +62,21 @@ export default function Login({ navigation }) {
         value={password}
         onChangeText={(text) => setPassword(text)}
       />
-      <TouchableOpacity style={styles.button} onPress={onHandleLogin}>
+      <TouchableOpacity style={styles.button} onPress={() =>onHandleLogin()}>
         <Text style={{fontWeight: 'bold', color: '#FFFFFF', fontSize: 18}}> Log In</Text>
       </TouchableOpacity>
+
       <View style={{marginTop: 20, flexDirection: 'row', alignItems: 'center', alignSelf: 'center'}}>
         <Text style={{color: 'gray', fontWeight: '600', fontSize: 14}}>Don't have an account? </Text>
         <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
           <Text style={{color: '#E7141F', fontWeight: '600', fontSize: 14}}> Sign Up</Text>
         </TouchableOpacity>
       </View>
+      
       </SafeAreaView>
       <StatusBar barStyle="light-content" />
     
-     <Button
+     {/* <Button
       style={{fontSize: 20, color: 'green'}}
         onPress={() => navigation.navigate("Account")}
         title="Navigate to Account">
@@ -69,7 +86,7 @@ export default function Login({ navigation }) {
             style={{fontSize: 20, color: 'green'}}
               onPress={() => navigation.navigate("Home")}
               title="Navigate to Home">
-      </Button>
+      </Button> */}
 
     </View>
   );
@@ -114,8 +131,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 30,
   },
   button: {
-    backgroundColor: 'CB131C',
-    height: 58,
+    backgroundColor: '#CB131C',
+    height:58,
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',

@@ -1,93 +1,230 @@
-import React, {useState} from "react";
-import {StyleSheet, View, TextInput, Button, Text, Image, SafeAreaView, TouchableOpacity, StatusBar, ScrollView, Pressable} from "react-native"
-const backImage = require("../assets/backImage.png");
+import React, {useEffect,useState} from "react";
+import { FlatList, StyleSheet, View, TextInput, Button, Text, Image, SafeAreaView, TouchableOpacity, StatusBar, ScrollView, Pressable, Alert} from "react-native"
+
+import { collection, addDoc, getDocs, doc, getDoc, setDoc } from '@firebase/firestore';
+import {database, auth, signOut} from '../config/firebase';
+
+const listIcon=require('../assets/list-icon.png')
+const backImage = require("../assets/bebLogo.png");
+const willysLogo =require("../assets/Willys-logotyp.png")
+const icaLogo =require("../assets/ICA-logotyp.png")
+const coopLogo =require("../assets/coop-logotyp.png")
 
 
 export default function Home({navigation}){
+
+  const user = auth.currentUser;
+  const [importedDb, setImportedDb] = useState([]);
+
+
+  
+  const fetchProducts = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(database, "products"));
+      const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+     
+      setImportedDb(newData);
+      
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      throw error;
+    }
+  };
+ 
+  //#00AA46 coops gröna färg
+  // rgba(232,23,0,255) ICAS
+
+
+  
+
+  const removeItem = (item) =>{
+    console.log(item)
+  }
+
+
+
+  const addToGroceryList = async (item) =>{
+  
+    const userRef = doc(database, "users", user.uid);
+    const grocerylistRef = collection(userRef, "grocerylist");
+    const itemDocRef=doc(grocerylistRef,item.id);
+    const itemDoc = await getDoc(itemDocRef);
+
+    if (itemDoc.exists()){ 
+        console.log('it works')
+        const existingAmount = itemDoc.data().amount;
+        await setDoc(itemDocRef, { item: item, amount: existingAmount + 1 })
+    }
+    else{
+
+    await setDoc(doc(grocerylistRef,item.id), {
+      item: item,
+      amount: 1
+    });
+}
+
+
+  }
+
+
+
+
+
+
+
+
+  const renderProduct= (item)=>{
+    if (item.butik ==="COOP"){
+      
+      return <View style = {styles.itemCointainerCOOP}>
+              <Image source={{ uri: item.bildurl }} style ={styles.productImage} />
+              <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.id}</Text>
+              <Text style={styles.productSubtext}> {item.leverantör}</Text>
+              <Text style={styles.productSubtext}>{item.pristext}</Text>
+              <Text style={styles.productSubtext}>{item.jmfpris} :-/kg</Text>
+             
+              <View style={{left:200,}}>
+              
+                <Text>Add to Grocerylist</Text>
+               
+                <TouchableOpacity onPress={()=>addToGroceryList(item)}>
+                  <Text>+</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={()=>removeItem(item)}>
+                  <Text> -</Text>
+                </TouchableOpacity>
+              
+              </View>
+              
+              
+      </View>
+      }
+      else if (item.butik ==="ICA"){
+        return <View style = {styles.itemCointainerICA}>
+        <Image source={{ uri: item.bildurl }} style ={styles.productImage} />
+        
+              <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.id}</Text>
+               
+              <Text style={styles.productSubtext}> {item.leverantör}</Text>
+              <Text style={styles.productSubtext}>{item.pristext}</Text>
+              <Text style={styles.productSubtext}>{item.jmfpris} :-/kg</Text>
+      </View>
+      }
+      else {return <View style = {styles.itemCointainerWILLYS}>
+      <Image source={{ uri: item.bildurl }} style ={styles.productImage} />
+      
+            <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.id}</Text>
+             
+            <Text style={styles.productSubtext}> {item.leverantör}</Text>
+            <Text style={styles.productSubtext}>{item.pristext}</Text>
+            <Text style={styles.productSubtext}>{item.jmfpris} :-/kg</Text>
+    </View>}
+      
+    
+    }
+
+
+  
+      
+      useEffect(() => {
+        fetchProducts();
+      }, []);
+    
+   
     const [isActive, setIsActive] = useState(false)
-    const [people, setPeople]=useState([
-      {name:"Anton1", key:"1"},
-      {name:"Anton2", key:"2"},
-      {name:"Anton3", key:"3"},
-      {name:"Anton4", key:"4"},
-      {name:"Anton5", key:"5"},
-      {name:"Anton6", key:"6"},
-      {name:"Anton7", key:"7"},
-      {name:"Anton8", key:"8"},
-      {name:"Anton9", key:"9"},
-      {name:"Anton10", key:"10"},
-      {name:"Anton11", key:"11"},
-      {name:"Anton12", key:"12"},
-      {name:"Anton13", key:"13"},
-      {name:"Anton14", key:"14"},
-    ])
+
+      
+    const LogOut = () => {
+      console.log("you logged out");
+      
+      
+      }
    return(
     <View style={styles.container}>
-        <ScrollView>
-          <View style= {{flex:1 }}>
-              <Text style = {styles.title}>Weekly Offers</Text>
-          </View>
-          {/* ICA VIEWN */}
-          <View style={{ flex: 1,backgroundColor: 'white', margin:10, borderColor:"red", borderTopWidth:12, borderLeftWidth:8, borderRightWidth:8,}}>
-          <Image source={backImage} style={styles.backImage} />
-          
-          <Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}>Apelsinjuice</Text>
-          <Text style={{ left:150, fontSize:15}}>God Morgon</Text>
-          <Text style={{ fontWeight:"bold", left:150,fontSize:15}}>2 för 35kr</Text>
-          <Text style={{ left:150}}>17:50kr/liter</Text>
-          {/* Ska bli ICA bilden */}
-          <Image source={backImage} style ={styles.grocerImage} />
-        
       
-          </View >
-          {/* COOP VIEWN */}
-          <View style ={{ flex: 1,backgroundColor: 'white', margin:10, borderColor:"green", borderTopWidth:12, borderLeftWidth:8, borderRightWidth:8,}}>
-          <Image source={backImage} style={styles.backImage} />
-          <Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}>Bregott</Text>
-          <Text style={{ left:150, fontSize:15}}>Arla</Text>
-          <Text style={{ fontWeight:"bold", left:150,fontSize:15}}>500kr</Text>
-          <Text style={{ left:150}}>1000kr/kg</Text>
-          {/* Ska bli COOP bilden */}
-          <Image source={backImage} style ={styles.grocerImage} />
-
-
-          </View>
-          {/* Willys VIEWN */}
-          <View style = {{ flex: 1,backgroundColor: 'white', margin:10, borderColor:"black", borderTopWidth:12, borderLeftWidth:8, borderRightWidth:8,}}>
-          <Image source={backImage} style={styles.backImage} />
-          
-          <Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}>Paprika</Text>
-          <Text style={{ left:150, fontSize:15}}>Eldorado</Text>
-          <Text style={{ fontWeight:"bold", left:150,fontSize:15}}>2 för mycket</Text>
-          <Text style={{ left:150}}>dyr kr/liter</Text>
-          {/* Ska bli Willys bilden */}
-          <Image source={backImage} style ={styles.grocerImage} />
-          </View>
-  
-        <View>
-          {people.map((item)=> {
-            return(
-              <View key={item.key}>
-                <Text style={{fontSize:36}}>{item.name}</Text>
-              </View>
-            )
-          })}
+      
+        <View style={{}}>
+        <Image source={backImage} style={styles.bebLogo} />
         </View>
 
+        <ScrollView style= {{flex: 1, }} contentContainerStyle={styles.scrollViewContent}>
+            
+            <View style= {{flex:1 }}>
+                <Text style = {styles.title}>Current Offers</Text>
+            </View>    
+
+            {/* final view */}
+            <View style={{flex:1,borderRadius: 35,
+              borderColor:"rgba(232,23,0,255)", 
+              borderWidth:0,marginTop:10,backgroundColor:"#F9EFEB"}}>
+            <Image source={icaLogo} style ={styles.grocerImage} />
+            
+                {importedDb.map((item) => {
+                  if (item.butik === "ICA"){
+                    return (   
+                          <View  key={item.id}>
+                            
+                              { renderProduct(item) }
+                          </View>
+                      
+                    )
+                  }
+                })}
+            </View>
+            
+            
+            <View style={{
+              flex:1,borderRadius: 35,
+              borderColor:"#00AA46", 
+              borderWidth:0,marginTop:10,
+              backgroundColor:"#CCFFCC",
+               margin:10,}}>
+
+            <Image source={coopLogo} style ={styles.grocerImage} />
+            {importedDb.map((item) => {
+                  if (item.butik === "COOP"){
+                    return (
+                      <View  key={item.id}>
+                    { renderProduct(item) }
+                  </View>
+                    )
+                  }
+                })}
+            </View>
+
+            <View style={{flex:1, borderRadius: 35,
+              borderColor:"black", 
+              borderWidth:0,margin:10,marginBottom:50,backgroundColor:"#cfd7e3" }}>
+            <Image source={willysLogo} style ={styles.grocerImage} />
+            {importedDb.map((item) => {
+                  if (item.butik === "willys"){
+                    return (
+                      <View  key={item.id}>
+                    { renderProduct(item) }
+                  </View>
+                    )
+                  }                 
+                })}
+            </View>
+          
+      
+        
+       
 
         </ScrollView>
         <View style ={styles.footerbuttonContainer}>
           <TouchableOpacity  onPress={() => navigation.navigate("Home")}>
-          <Text style={styles.footerbutton}>Home</Text>
+          <Text style={styles.footerbutton}>⌂</Text>
           </TouchableOpacity>
           <TouchableOpacity  onPress={() => navigation.navigate("Account")}>
           <Text style={styles.footerbutton}>Account</Text>
           </TouchableOpacity>
-          <TouchableOpacity  onPress={() => navigation.navigate("Account")}>
-          <Text style={styles.footerbutton}>Best Deals</Text>
+          <TouchableOpacity  onPress={() => navigation.navigate("Grocery")}>
+          <Image source={listIcon} style ={styles.iconImage} />
           </TouchableOpacity>
-          <TouchableOpacity  onPress={() => navigation.navigate("Account")}>
-          <Text style={styles.footerbutton}>Search</Text>
+          <TouchableOpacity  onPress={() => navigation.navigate("Search")}>
+          <Text style={styles.footerbutton}>🔍</Text>
           </TouchableOpacity>
          
         </View>
@@ -98,19 +235,77 @@ export default function Home({navigation}){
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor:"#FFFFFF"
-      
-
-      
+      backgroundColor:"white"
     },
+
+    itemCointainerCOOP:{
+      borderRadius: 5,
+      borderColor:"#00AA46", 
+      borderWidth:4,
+      flex:1,
+      backgroundColor:"white",
+      padding: 10, 
+      borderRadius: 35,
+      margin:10,
+    },
+
+    itemCointainerICA:{
+      borderRadius: 5,
+      borderColor:"rgba(232,23,0,255)", 
+      borderWidth:4,
+      flex:1,
+      backgroundColor:"white",
+      padding: 10, 
+      borderRadius: 35,
+      margin:10,
+    },
+
+    itemCointainerWILLYS:{
+      borderRadius: 5,
+      borderColor:"black", 
+      borderWidth:4,
+      flex:1,
+      backgroundColor:"#F9EFEB",
+      padding: 10, 
+      borderRadius: 35,
+      margin:10,
+    },
+    productSubtext: { 
+      fontWeight:"bold",
+       left:150,
+       fontSize:15
+       
+      },
+
+    productImage:{
+      position: "absolute",
+    bottom:25,
+    left:25,
+    resizeMode: 'cover',
+    width:80,
+    height:80,
+  },
+
+  scrollViewContent: {
+      flexGrow: 1,
+    },
+
     title: {
-      fontSize: 36,
+      fontSize: 26,
       fontWeight: 'bold',
-      color: "#B4131B",
+      color: "#D82401",
       marginLeft:10,
       marginTop:10,
+      marginBottom:10,
       
     },
+    productSubtext: 
+    { fontWeight:"bold",
+     left:150,
+     fontSize:15
+    },
+
+
     input: {
       backgroundColor: "#F6F7FB",
       height: 58,
@@ -121,25 +316,33 @@ const styles = StyleSheet.create({
       marginTop:25,
       
     },
-    backImage: {
-      position: "absolute",
-      top: 15,
-      left:15,
-      resizeMode: 'cover',
-      width:100,
-      height:100,
+    bebLogo: {
       
+      width: "100%",
+      height: 50,
+      top: 10,
+      resizeMode: 'contain',
       
     },
     grocerImage:{
-        position: "absolute",
-      top: 5,
-      right:0,
-      resizeMode: 'cover',
-      width:70,
-      height:70,
+      
+    top: 10,
+    right:-10,
+    resizeMode: 'contain',
+    width:70,
+    height:70,
+  
+  },
+
+     iconImage:{
+        
+      top:2,
+      width:40,
+      height:40,
 
     },
+
+   
     whiteSheet: {
       width: '100%',
       height: '75%',
@@ -163,12 +366,17 @@ const styles = StyleSheet.create({
       
     },
     footerbuttonContainer:{
+      borderTopLeftRadius: 10,
+      borderTopRightRadius: 10,
       position:"absolute",
       bottom:0,
       flex:0.3,
-      backgroundColor:"#B4131B",
+      backgroundColor:"#D82401",
       flexDirection:"row",
       justifyContent:"space-evenly",
+      width:"100%",
+      
+
       
 
     },
