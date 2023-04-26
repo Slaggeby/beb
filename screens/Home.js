@@ -1,5 +1,5 @@
 import React, {useEffect,useState} from "react";
-import { FlatList, StyleSheet, View, TextInput, Button, Text, Image, SafeAreaView, TouchableOpacity, StatusBar, ScrollView, Pressable, Alert} from "react-native"
+import { FlatList, StyleSheet, View, TextInput, Text, Image, SafeAreaView, TouchableOpacity,  ScrollView} from "react-native"
 
 import { collection, addDoc, getDocs, doc, getDoc, setDoc } from '@firebase/firestore';
 import {database, auth, signOut} from '../config/firebase';
@@ -65,12 +65,6 @@ export default function Home({navigation}){
 
 
   }
-
-
-
-
-
-
 
 
   const renderProduct= (item)=>{

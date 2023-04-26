@@ -116,9 +116,19 @@ export default function Search({navigation}) {
                 ? item.id.toUpperCase()
                 : ''.toUpperCase();
               const textData = text.toUpperCase();
-              
-              return itemData.indexOf(textData) > -1 &&
-              (!showCOOP || item.butik ==="COOP" );
+
+              const isCOOP = showCOOP && item.butik === "COOP";
+              const isICA = showICA && item.butik === "ICA";
+              const isWILLYS = showWILLYS && item.butik === "willys";
+
+
+              return (
+                itemData.indexOf(textData) > -1 && (isCOOP || isICA || isWILLYS)
+              );
+
+
+
+
           });
           setFilteredDataSource(newData);
           setSearch(text);
