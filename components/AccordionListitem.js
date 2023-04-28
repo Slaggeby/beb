@@ -1,11 +1,13 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Animated, Image } from 'react-native';
 const dropDownArrow = require('../assets/drop-down-arrow.png')
 
-const AccordionListItem = ({ title, content, titleStyle }) => {
+const AccordionListItem = ({ title, content, titleStyle, inputContentHeight }) => {
   const [expanded, setExpanded] = useState(false);
   const animation = useRef(new Animated.Value(0)).current;
   const rotateValue = useRef(new Animated.Value(0)).current;
+  const contentRef = useRef(null);
+ 
 
   const toggleAccordion = () => {
     setExpanded(!expanded);
@@ -23,9 +25,11 @@ const AccordionListItem = ({ title, content, titleStyle }) => {
     ]).start();
   };
 
+ 
+
   const contentHeight = animation.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, 100],
+    outputRange: [0, inputContentHeight],
   });
 
   const contentOpacity = animation.interpolate({
@@ -37,6 +41,8 @@ const AccordionListItem = ({ title, content, titleStyle }) => {
     inputRange: [0, 1],
     outputRange: ['0deg', '-90deg'],
   });
+
+
 
   return (
     <View>
@@ -54,7 +60,7 @@ const AccordionListItem = ({ title, content, titleStyle }) => {
         />
         <Text style={titleStyle}>{title}</Text>
       </TouchableOpacity>
-      <Animated.View style={{ height: contentHeight, opacity: contentOpacity }}>
+      <Animated.View style={{ height: contentHeight, opacity: contentOpacity }}  >
         {content}
       </Animated.View>
     </View>
