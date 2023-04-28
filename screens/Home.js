@@ -9,6 +9,8 @@ const backImage = require("../assets/bebLogo.png");
 const willysLogo =require("../assets/Willys-logotyp.png")
 const icaLogo =require("../assets/ICA-logotyp.png")
 const coopLogo =require("../assets/coop-logotyp.png")
+  //#00AA46 coops gröna färg
+  // rgba(232,23,0,255) ICAS
 
 
 export default function Home({navigation}){
@@ -31,17 +33,6 @@ export default function Home({navigation}){
     }
   };
  
-  //#00AA46 coops gröna färg
-  // rgba(232,23,0,255) ICAS
-
-
-  
-
-  const removeItem = (item) =>{
-    console.log(item)
-  }
-
-
 
   const addToGroceryList = async (item) =>{
   
@@ -70,7 +61,8 @@ export default function Home({navigation}){
   const renderProduct= (item)=>{
     if (item.butik ==="COOP"){
       
-      return <View style = {styles.itemCointainerCOOP}>
+      return (
+          <View style = {styles.itemCointainerCOOP}>
               <Image source={{ uri: item.bildurl }} style ={styles.productImage} />
               <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.id}</Text>
               <Text style={styles.productSubtext}> {item.leverantör}</Text>
@@ -87,27 +79,24 @@ export default function Home({navigation}){
               </View>
               
               
-      </View>
+            </View>
+      )
       }
       else if (item.butik ==="ICA"){
         return <View style = {styles.itemCointainerICA}>
-        <Image source={{ uri: item.bildurl }} style ={styles.productImage} />
-        
-              <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.id}</Text>
-               
-              <Text style={styles.productSubtext}> {item.leverantör}</Text>
-              <Text style={styles.productSubtext}>{item.pristext}</Text>
-              <Text style={styles.productSubtext}>{item.jmfpris} :-/kg</Text>
+                      <Image source={{ uri: item.bildurl }} style ={styles.productImage} />
+                      <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.id}</Text>
+                      <Text style={styles.productSubtext}> {item.leverantör}</Text>
+                      <Text style={styles.productSubtext}>{item.pristext}</Text>
+                      <Text style={styles.productSubtext}>{item.jmfpris} :-/kg</Text>
+                      <View style={{left:200,}}>
+                      
+                        <TouchableOpacity onPress={()=>addToGroceryList(item)} style={styles.AddToGroceryListButton}>
+                          <Text style={{fontSize:10, color:"white",}}>Add to Grocerylist</Text>
+                        </TouchableOpacity>
 
-              <View style={{left:200,}}>
-              
-               
-                <TouchableOpacity onPress={()=>addToGroceryList(item)} style={styles.AddToGroceryListButton}>
-                  <Text style={{fontSize:10, color:"white",}}>Add to Grocerylist</Text>
-                </TouchableOpacity>
-
-              </View>
-      </View>
+                      </View>
+                  </View>
       }
       else {return <View style = {styles.itemCointainerWILLYS}>
       <Image source={{ uri: item.bildurl }} style ={styles.productImage} />
@@ -145,17 +134,18 @@ export default function Home({navigation}){
     <View style={styles.container}>
       
       
-        <View style={{}}>
+        <View >
         <Image source={backImage} style={styles.bebLogo} />
         </View>
+        <View style= {{ }}>
+                <Text style = {styles.title}>Current Offers</Text>
+            </View> 
 
         <ScrollView style= {{flexGrow: 1, }} contentContainerStyle={styles.scrollViewContent}>
             
-            <View style= {{flex:1 }}>
-                <Text style = {styles.title}>Current Offers</Text>
-            </View>    
+              
 
-            {/* final view */}
+    
             <View style={{flex:1,borderRadius: 35,
               borderColor:"rgba(232,23,0,255)", 
               borderWidth:0,marginTop:10,backgroundColor:"#F9EFEB"}}>
