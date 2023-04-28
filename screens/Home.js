@@ -248,6 +248,14 @@ const styles = StyleSheet.create({
       padding: 10, 
       borderRadius: 35,
       margin:10,
+      shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.5,
+        shadowRadius: 4,
+        elevation: 5,
     },
 
     itemCointainerICA:{
@@ -259,6 +267,14 @@ const styles = StyleSheet.create({
       padding: 10, 
       borderRadius: 35,
       margin:10,
+      shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
     },
 
     itemCointainerWILLYS:{
@@ -270,6 +286,14 @@ const styles = StyleSheet.create({
       padding: 10, 
       borderRadius: 35,
       margin:10,
+      shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
     },
     productSubtext: { 
       fontWeight:"bold",

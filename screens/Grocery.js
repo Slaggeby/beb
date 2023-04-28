@@ -5,15 +5,20 @@ import { Modal, FlatList, StyleSheet, View, TextInput, Button, Text, Image, Safe
 import {database, auth, s} from '../config/firebase';
 import { collection, addDoc,setDoc, getDocs, doc, query, where, deleteDoc, updateDoc, onSnapshot, getDoc } from '@firebase/firestore';
 
+import  AccordionListItem  from '../components/AccordionListitem';
+
+
 const backImage = require("../assets/bebLogo.png");
 const listIcon=require('../assets/list-icon.png')
 const willysLogo =require("../assets/Willys-logotyp.png")
 const icaLogo =require("../assets/ICA-logotyp.png")
 const coopLogo =require("../assets/coop-logotyp.png")
-const dropDownArrow =require('../assets/drop-down-arrow.png')
 
-export default function Home({navigation}){
 
+export default function Grocery({navigation}){
+
+
+  
   const user = auth.currentUser;
   const [totalPrice,setTotalPrice]=useState('');
   const [modalVisible, setModalVisible] = useState(false);
@@ -168,6 +173,16 @@ export default function Home({navigation}){
     
     }
 
+    const generateAccordionContent=()=>{
+
+    return(
+      <View style={styles.accordionContainer}>
+        <Text style={styles.accordionTitle}>Andra listor</Text>
+      </View>
+)
+
+    }
+
 return(
 
     
@@ -185,10 +200,10 @@ return(
 
         <View style= {{flex:1 }}>
 
-          <Text style = {styles.title}>Your Grocery List</Text>
-          <TouchableOpacity style={styles.changeAmountButtonminus} >
-          <Image source={dropDownArrow} style ={styles.iconImage} />
-          </TouchableOpacity>
+        <AccordionListItem title="Your Grocery List" content={generateAccordionContent()} titleStyle={styles.title}/>
+          
+
+         
 
           <View style={styles.centeredView}>
       <Modal
@@ -201,7 +216,7 @@ return(
         }}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>Hello World!</Text>
+            <Text style={styles.modalText}>Choose Grocery list</Text>
             <Pressable
               style={[styles.button, styles.buttonClose]}
               onPress={() => setModalVisible(!modalVisible)}>
@@ -262,7 +277,7 @@ return(
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor:"#F9EFEB"
+        backgroundColor:"#faebeb"
         
   
         
@@ -276,6 +291,16 @@ const styles = StyleSheet.create({
         fontSize: 26,
         fontWeight: 'bold',
         color: "#D82401",
+        marginLeft:10,
+        marginTop:10,
+        marginBottom:10,
+        
+      },
+
+      accordionTitle: {
+        fontSize: 26,
+        fontWeight: 'bold',
+        color: "white",
         marginLeft:10,
         marginTop:10,
         marginBottom:10,
@@ -392,6 +417,15 @@ const styles = StyleSheet.create({
         
   
       },
+
+      accordionContainer:{
+        backgroundColor:'#b82407', 
+        marginHorizontal:20,
+        padding:20,
+
+        
+        
+      },
       footerbutton:{
         color: 'black', 
         fontWeight: '600', 
@@ -405,11 +439,13 @@ const styles = StyleSheet.create({
         marginTop: 22,
       },
       modalView: {
-        margin: 20,
-        backgroundColor: 'white',
-        borderRadius: 20,
-        padding: 35,
-        alignItems: 'center',
+        marginTop: 600,
+        backgroundColor: '#D82401',
+        borderTopLeftRadius: 70,
+        borderTopRightRadius:70,
+        padding: 100,
+        width:'100%',
+        
         shadowColor: '#000',
         shadowOffset: {
           width: 0,
@@ -438,6 +474,10 @@ const styles = StyleSheet.create({
       modalText: {
         marginBottom: 15,
         textAlign: 'center',
+        fontSize:24,
+        fontWeight: 'bold',
+        color:'white'
+
       },
     
       
