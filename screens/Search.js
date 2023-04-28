@@ -116,7 +116,6 @@ export default function Search({navigation}) {
                 ? item.id.toUpperCase()
                 : ''.toUpperCase();
               const textData = text.toUpperCase();
-
               const isCOOP = showCOOP && item.butik === "COOP";
               const isICA = showICA && item.butik === "ICA";
               const isWILLYS = showWILLYS && item.butik === "willys";

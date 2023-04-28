@@ -79,16 +79,11 @@ export default function Home({navigation}){
              
               <View style={{left:200,}}>
               
-                <Text>Add to Grocerylist</Text>
                
-                <TouchableOpacity onPress={()=>addToGroceryList(item)}>
-                  <Text>+</Text>
+                <TouchableOpacity onPress={()=>addToGroceryList(item)} style={styles.AddToGroceryListButton}>
+                  <Text style={{fontSize:10, color:"white",}}>Add to Grocerylist</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={()=>removeItem(item)}>
-                  <Text> -</Text>
-                </TouchableOpacity>
-              
               </View>
               
               
@@ -103,16 +98,32 @@ export default function Home({navigation}){
               <Text style={styles.productSubtext}> {item.leverantör}</Text>
               <Text style={styles.productSubtext}>{item.pristext}</Text>
               <Text style={styles.productSubtext}>{item.jmfpris} :-/kg</Text>
+
+              <View style={{left:200,}}>
+              
+               
+                <TouchableOpacity onPress={()=>addToGroceryList(item)} style={styles.AddToGroceryListButton}>
+                  <Text style={{fontSize:10, color:"white",}}>Add to Grocerylist</Text>
+                </TouchableOpacity>
+
+              </View>
       </View>
       }
       else {return <View style = {styles.itemCointainerWILLYS}>
       <Image source={{ uri: item.bildurl }} style ={styles.productImage} />
       
             <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.id}</Text>
-             
             <Text style={styles.productSubtext}> {item.leverantör}</Text>
             <Text style={styles.productSubtext}>{item.pristext}</Text>
             <Text style={styles.productSubtext}>{item.jmfpris} :-/kg</Text>
+            <View style={{left:200,}}>
+              
+               
+                <TouchableOpacity onPress={()=>addToGroceryList(item)} style={styles.AddToGroceryListButton}>
+                  <Text style={{fontSize:10, color:"white",}}>Add to Grocerylist</Text>
+                </TouchableOpacity>
+
+              </View>
     </View>}
       
     
@@ -129,11 +140,7 @@ export default function Home({navigation}){
     const [isActive, setIsActive] = useState(false)
 
       
-    const LogOut = () => {
-      console.log("you logged out");
-      
-      
-      }
+    
    return(
     <View style={styles.container}>
       
@@ -142,7 +149,7 @@ export default function Home({navigation}){
         <Image source={backImage} style={styles.bebLogo} />
         </View>
 
-        <ScrollView style= {{flex: 1, }} contentContainerStyle={styles.scrollViewContent}>
+        <ScrollView style= {{flexGrow: 1, }} contentContainerStyle={styles.scrollViewContent}>
             
             <View style= {{flex:1 }}>
                 <Text style = {styles.title}>Current Offers</Text>
@@ -359,6 +366,19 @@ const styles = StyleSheet.create({
       marginTop: 40,
       
     },
+
+    AddToGroceryListButton: {
+      backgroundColor: '#CB131C',
+      height:38,
+      width:100,
+      borderRadius: 10,
+      justifyContent: 'center',
+      alignItems: 'center',
+      left:25,
+      
+      
+    },
+
     footerbuttonContainer:{
       borderTopLeftRadius: 10,
       borderTopRightRadius: 10,
