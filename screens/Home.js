@@ -21,18 +21,42 @@ export default function Home({navigation}){
   const user = auth.currentUser;
   const [importedDb, setImportedDb] = useState([]);
 
-  const [showAllProducts, setShowAllProducts] = useState(true);
-  
+  const [showAllProducts, setShowAllProducts] = useState(false);
+  const [firstProductRenderedICA, setfirstProductRenderedICA] = useState(false)
  
-
-
-
-
-  const showAllProductsFunction = () =>{
-    
+ 
+  
+  const toggleShowAllProductsFunction = () =>{
+  
     setShowAllProducts (!showAllProducts)
-    //console.log(showAllProducts)
+    setfirstProductRenderedICA((current) => !current);
+ 
   } 
+
+  
+  const ToggleShowProductButtonFunction = () =>{
+
+
+    if (!showAllProducts){
+      return (
+        <TouchableOpacity onPress ={()=>toggleShowAllProductsFunction()} style={{alignItems:"center", borderRadius: 10,borderWidth:4,}}>
+          <Text style={{justifyContent:"center", height:75,width:100,textAlign: "center", padding:10,}}>Show all products on sale</Text> 
+                    
+        </TouchableOpacity>
+  )
+    }
+    else {
+      return(
+            <TouchableOpacity onPress ={()=>toggleShowAllProductsFunction()} style={{alignItems:"center", borderRadius: 10,borderWidth:4,}}>
+                <Text style={{justifyContent:"center", height:75,width:100,textAlign: "center", padding:10,}}>close</Text> 
+                        
+            </TouchableOpacity>
+      )
+      
+    }
+  }
+
+
   
   const fetchProducts = async () => {
     try {
@@ -58,7 +82,7 @@ export default function Home({navigation}){
       return (
           <View style = {styles.itemCointainerCOOP}>
               <Image source={{ uri: item.bildurl }} style ={styles.productImage} />
-              <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.id}</Text>
+              <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.titel}</Text>
               <Text style={styles.productSubtext}> {item.leverantör}</Text>
               <Text style={styles.productSubtext}>{item.pristext}</Text>
               <Text style={styles.productSubtext}>{item.jmfpris} :-/kg</Text>
@@ -79,7 +103,7 @@ export default function Home({navigation}){
       else if (item.butik ==="ICA"){
         return <View style = {styles.itemCointainerICA}>
                       <Image source={{ uri: item.bildurl }} style ={styles.productImage} />
-                      <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.id}</Text>
+                      <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.titel}</Text>
                       <Text style={styles.productSubtext}> {item.leverantör}</Text>
                       <Text style={styles.productSubtext}>{item.pristext}</Text>
                       <Text style={styles.productSubtext}>{item.jmfpris} :-/kg</Text>
@@ -95,7 +119,7 @@ export default function Home({navigation}){
       else {return <View style = {styles.itemCointainerWILLYS}>
       <Image source={{ uri: item.bildurl }} style ={styles.productImage} />
       
-            <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.id}</Text>
+            <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.titel}</Text>
             <Text style={styles.productSubtext}> {item.leverantör}</Text>
             <Text style={styles.productSubtext}>{item.pristext}</Text>
             <Text style={styles.productSubtext}>{item.jmfpris} :-/kg</Text>
@@ -118,8 +142,13 @@ export default function Home({navigation}){
         fetchProducts();
       }, []);
     
+      useEffect(() => {
+        console.log('useEffect ran. firstProductRendered is: ', firstProductRenderedICA);
+      }, [firstProductRenderedICA])
       
-  
+      useEffect(() => {
+        console.log('useEffect ran. showAllProducts is: ', showAllProducts);
+      }, [showAllProducts])
     
     
    return(
@@ -142,41 +171,47 @@ export default function Home({navigation}){
               borderColor:"rgba(232,23,0,255)", 
               borderWidth:0,marginTop:10,backgroundColor:"#F9EFEB"}}>
             <Image source={icaLogo} style ={styles.grocerImage} />
-            <TouchableOpacity onPress ={()=>showAllProductsFunction()}>
-             <Text>SHOW ALL PRODUCTS</Text> 
-            </TouchableOpacity>
             
-                {importedDb.map((item) => {
+            
+                {importedDb.map((item, index) => {
                   
                   //console.log("item", item)
-                  if (item.butik === "ICA" && showAllProducts === true ){
-                   console.log(showAllProducts)
-                   console.log(item)
-                    return (   
-                          <View  key={item.id}>
-                              { renderProduct(item) }
-                          </View>
-                      
-                    )
+                  if (item.butik === "ICA"  ){
+                    
+                    if (showAllProducts || (index === 0 && !firstProductRenderedICA)){
+                      return (
+                        <View key={item.id}>
+                          {renderProduct(item)}
+                        </View>
+                      );
+                    }
+
 
                   }
-                  else if (item.butik === "ICA" && showAllProducts === false ){
+                  else if (index === 0 && !showAllProducts && !firstProductRenderedICA){
                    
-
-                    var filteredList = importedDb.filter(item => item.butik ==="ICA").slice(0, 2);
-                    console.log("else if", item)
-                    //console.log(filteredList)
                     
-                  
+                    const firstItem = importedDb.find((item) => item.butik === "ICA" );
+
+                    
+              
                     return (   
                       <View  key={item.id}>
-                          { renderProduct(item) }
+                          { renderProduct(firstItem) }
                       </View>   )}
                 
                 }
                
                 
                 )}
+
+
+                
+
+
+                <View style={{ flexWrap: 'wrap', alignItems: 'flex-start', alignContent:"center" }}>
+                      <ToggleShowProductButtonFunction/>
+                </View>
             </View>
             
             

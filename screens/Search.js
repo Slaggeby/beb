@@ -28,6 +28,7 @@ export default function Search({navigation}) {
 
     const sortCOOP = () =>{ 
       setShowCOOP(!showCOOP);
+      console.log("showCOOP", showCOOP)
     };
     const sortICA = () =>{ 
       setShowICA(!showICA);
@@ -50,14 +51,17 @@ export default function Search({navigation}) {
          
           setImportedDb(newData);
 
+
+
+
           let DataList = [];
           mappedData= newData.map((item) => {
             
              DataList.push(item)
           })
-     
+          //console.log(DataList)
         setJSONLIST(JSON.stringify(DataList));
-    
+          
           
         
 
@@ -79,10 +83,11 @@ export default function Search({navigation}) {
           const responseJson = JSON.parse(JSONLIST);
           setFilteredDataSource(responseJson);
           setMasterDataSource(responseJson);
+          //console.log(responseJson)
         }
         
       }, [JSONLIST])
-
+      // you are not allowed to add red paprika to the database, it will not work. We do not know why. 
       const searchFilterFunction = (text) => {
         // Check if searched text is not blank
         if (text) {
@@ -93,8 +98,8 @@ export default function Search({navigation}) {
             
             function (item) {
              
-              const itemData = item.id
-                ? item.id.toUpperCase()
+              const itemData = item.titel
+                ? item.titel.toUpperCase()
                 : ''.toUpperCase();
               const textData = text.toUpperCase();
               const isCOOP = showCOOP && item.butik === "COOP";
@@ -111,11 +116,13 @@ export default function Search({navigation}) {
 
           });
           setFilteredDataSource(newData);
+          //console.log(newData)
           setSearch(text);
         } else {
           // Inserted text is blank
           // Update FilteredDataSource with masterDataSource
           setFilteredDataSource(masterDataSource);
+          
           setSearch(text);
         }
       };
@@ -128,7 +135,7 @@ export default function Search({navigation}) {
             <View>
               <View style={styles.itemCointainerCOOP}>
               <Text style={styles.itemTitle}>
-                {item.id}
+                {item.titel}
               </Text>
 
               <Text style={styles.productSubtext}>
@@ -164,7 +171,7 @@ export default function Search({navigation}) {
                     <View>
                   <View style={styles.itemCointainerICA}>
                   <Text style={styles.itemTitle}>
-                    {item.id}
+                    {item.titel}
                   </Text>
 
                   <Text style={styles.productSubtext}>
@@ -198,7 +205,7 @@ export default function Search({navigation}) {
               <View>
                 <View style={styles.itemCointainerWILLYS}>
               <Text style={styles.itemTitle}>
-                {item.id}
+                {item.titel}
               </Text>
 
               <Text style={styles.productSubtext}>

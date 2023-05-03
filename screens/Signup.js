@@ -31,6 +31,7 @@ export default function Signup({navigation}){
         await createUserWithEmailAndPassword(auth, email1, password1);
         const userCreds = await signInWithEmailAndPassword(auth, email1, password1);
         const user = userCreds.user;
+        
         await setUser(user);
   
         const userRef = doc(database, "users", user.uid);
