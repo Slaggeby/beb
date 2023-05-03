@@ -3,6 +3,7 @@ import {SafeAreaView,Text, StyleSheet,View,FlatList,TextInput, Image,TouchableOp
 import styles from '../styles/searchStyles.js';
 import { collection, addDoc, getDocs,setDoc, doc, getDoc } from '@firebase/firestore';
 import {database, auth} from '../config/firebase';
+import addToGroceryList from "../components/addToGroceryList.js";
 
 
 const backImage = require("../assets/bebLogo.png");
@@ -19,7 +20,7 @@ export default function Search({navigation}) {
     const [masterDataSource, setMasterDataSource] = useState([]);
     const [JSONLIST, setJSONLIST] = useState('');
     const [importedDb, setImportedDb] = useState([]);
-    const user = auth.currentUser;
+    
    
     const [showCOOP, setShowCOOP] = useState(true)
     const [showICA, setShowICA] = useState(true)
@@ -40,27 +41,7 @@ export default function Search({navigation}) {
 
 
     
-  const addToGroceryList = async (item) =>{
-  
-    const userRef = doc(database, "users", user.uid);
-    const grocerylistRef = collection(userRef, "grocerylist");
-    const itemDocRef=doc(grocerylistRef,item.id);
-    const itemDoc = await getDoc(itemDocRef);
 
-    if (itemDoc.exists()){ 
-        console.log('it works')
-        const existingAmount = itemDoc.data().amount;
-        await setDoc(itemDocRef, { item: item, amount: existingAmount + 1 })
-    }
-    else{
-
-    await setDoc(doc(grocerylistRef,item.id), {
-      item: item,
-      amount: 1
-    });
-}
-
-  }
 
     const fetchProducts = async () => {
         try {

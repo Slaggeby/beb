@@ -5,6 +5,7 @@ import styles from '../styles/HomeStyles.js';
 
 import { collection, addDoc, getDocs, doc, getDoc, setDoc } from '@firebase/firestore';
 import {database, auth, signOut} from '../config/firebase';
+import addToGroceryList from "../components/addToGroceryList.js";
 
 const listIcon=require('../assets/list-icon.png')
 const backImage = require("../assets/bebLogo.png");
@@ -47,28 +48,7 @@ export default function Home({navigation}){
   };
  
 
-  const addToGroceryList = async (item) =>{
   
-    const userRef = doc(database, "users", user.uid);
-    const grocerylistRef = collection(userRef, "grocerylist");
-    const itemDocRef=doc(grocerylistRef,item.id);
-    const itemDoc = await getDoc(itemDocRef);
-
-    if (itemDoc.exists()){ 
-        console.log('it works')
-        const existingAmount = itemDoc.data().amount;
-        await setDoc(itemDocRef, { item: item, amount: existingAmount + 1 })
-    }
-    else{
-
-    await setDoc(doc(grocerylistRef,item.id), {
-      item: item,
-      amount: 1
-    });
-}
-
-
-  }
   
 
 

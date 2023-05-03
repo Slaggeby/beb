@@ -1,7 +1,7 @@
 import React, {useEffect,useState} from "react";
 import { Keyboard,Modal, FlatList, StyleSheet, View, TextInput, Button, Text, Image, SafeAreaView, TouchableOpacity, StatusBar, ScrollView, KeyboardAvoidingView} from "react-native"
 import styles from '../styles/groceryStyles.js';
-import {database, auth, s} from '../config/firebase';
+import {database, auth} from '../config/firebase';
 import { collection, addDoc,setDoc, getDocs, doc, query, where, deleteDoc, updateDoc, onSnapshot, getDoc } from '@firebase/firestore';
 import  AccordionListItem  from '../components/AccordionListitem';
 
@@ -18,29 +18,61 @@ export default function Grocery({navigation}){
   const [accordionContentHeight, setAccordionContentHeight] = useState(0);
 
   const [importedDb, setImportedDb] = useState([]);
+  const [userData, setUserData] = useState([]);
+  
 
   const RemoveItem = async(item)=> {
     const userRef = doc(database, "users", user.uid);
    
-    const grocerylistRef = collection(userRef, "grocerylist");
+    const grocerylistRef = collection(userRef, 'grocerylists', 'yourgrocerylist', 'items');
     await deleteDoc(doc(grocerylistRef,item.id));
   }
 
-  const fetchProducts = async () => {
+
+  const fetchUserData = async () => {
+
+    
     try {
-      const unsub = onSnapshot(collection(doc(database, "users", user.uid), "grocerylist"), (querySnapshot) => {
+    const userRef = doc(database, "users", user.uid);
+
+    const querySnapshot = await getDocs(userRef);
+        const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+        setUserData(newData)
+        console.log(userData)
+    }catch (error) {
+      console.error('Error fetching products:', error);
+      throw error;
+    }
+  }
+
+
+
+  const fetchProducts = async () => {
+    
+    
+
+    try {
+      const unsub = onSnapshot(collection(doc(database, 'users', user.uid), 'grocerylists', 'yourgrocerylist', 'items'), (querySnapshot) => {
         const docs = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
         setImportedDb(docs);
+
+
+         
         
+
+
       });
       return unsub;
     } catch (error) {
-      console.error("Error fetching products:", error);
+      console.error('Error fetching products:', error);
       throw error;
     }
   };
+  
+ 
 
   useEffect(() => {
+    fetchUserData();
     fetchProducts();
   }, []);
 
@@ -59,7 +91,7 @@ export default function Grocery({navigation}){
 
   const changeAmount = async (item, amountString) => {
     const userRef = doc(database, "users", user.uid);
-    const grocerylistRef = collection(userRef, "grocerylist");
+    const grocerylistRef = collection(userRef, "grocerylists", 'yourgrocerylist', 'items' );
     const itemDocRef = doc(grocerylistRef, item.id);
   
     let newAmount;
@@ -151,6 +183,27 @@ export default function Grocery({navigation}){
     </View>}  
     }
 
+    const createNewGroceryList=async ()=>{
+      console.log(newListName)
+      const user = auth.currentUser;
+  const userRef = doc(database, 'users', user.uid);
+
+  const yourGroceryListsRef = collection(userRef, 'grocerylists');
+  const yourGroceryListDocRef = doc(yourGroceryListsRef, newListName);
+
+ 
+
+      
+    await setDoc(yourGroceryListDocRef, { shown: true });
+  
+
+  await updateDoc(userRef, { currentlist: {newListName} });
+
+      setnewListName('')
+      
+
+    }
+
     const generateAccordionContent=()=>{
       
     return(
@@ -185,8 +238,9 @@ export default function Grocery({navigation}){
         
       />
             <TouchableOpacity
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}>
+              style={[styles.button, styles.buttonClose,{backgroundColor: newListName === '' ? 'grey' : '#2196F3'}]}
+              disabled={newListName===''}
+              onPress={() =>{ setModalVisible(!modalVisible), createNewGroceryList()}}>
               <Text style={styles.textStyle}>Create!</Text>
             </TouchableOpacity>
           </View>
@@ -214,7 +268,14 @@ return(
       <View style={{}}>
         <Image source={backImage} style={styles.bebLogo} />
         {calculateTotalPrice()}
+
+        <TouchableOpacity  onPress={() => console.log(importedDb)}>
+                    <Text style={styles.footerbutton}>HÄR</Text>
+                    </TouchableOpacity>
+        
       </View>
+
+      
 
       <ScrollView style= {{flex: 1}} contentContainerStyle={styles.scrollViewContent}>
         <View style= {{flex:1 }}>
