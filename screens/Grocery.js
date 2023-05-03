@@ -1,5 +1,5 @@
 import React, {useEffect,useState} from "react";
-import { Modal, FlatList, StyleSheet, View, TextInput, Button, Text, Image, SafeAreaView, TouchableOpacity, StatusBar, ScrollView, Pressable} from "react-native"
+import { Keyboard,Modal, FlatList, StyleSheet, View, TextInput, Button, Text, Image, SafeAreaView, TouchableOpacity, StatusBar, ScrollView, KeyboardAvoidingView} from "react-native"
 import styles from '../styles/groceryStyles.js';
 import {database, auth, s} from '../config/firebase';
 import { collection, addDoc,setDoc, getDocs, doc, query, where, deleteDoc, updateDoc, onSnapshot, getDoc } from '@firebase/firestore';
@@ -13,7 +13,7 @@ const coopLogo =require("../assets/coop-logotyp.png")
 
 export default function Grocery({navigation}){
   const user = auth.currentUser;
-  const [totalPrice,setTotalPrice]=useState('');
+  const [newListName,setnewListName]=useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [accordionContentHeight, setAccordionContentHeight] = useState(0);
 
@@ -152,16 +152,16 @@ export default function Grocery({navigation}){
     }
 
     const generateAccordionContent=()=>{
-      const handleAccordionContentLayout = (event) => {
-        const { height } = event.nativeEvent.layout;
-        setAccordionContentHeight(height);
-        console.log(accordionContentHeight)
-      };
+      
     return(
       <View style={styles.accordionContainer} >
         <Text style={styles.accordionTitle}>Andra listor
        </Text>
+
+       
        <View style={styles.centeredView}>
+       <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : null}
+                style={{ flex: 1 }}>
       <Modal
         animationType="slide"
         transparent={true}
@@ -176,9 +176,11 @@ export default function Grocery({navigation}){
         style={styles.input}
         placeholder="Choose Grocerylist Name!"
         autoCapitalize="none"
-        keyboardType="email-address"
-        textContentType="emailAddress"
+        keyboardType="default"
+        textContentType="none"
         autoFocus={true}
+        value={newListName}
+        onChangeText={(text) => setnewListName(text)}
         
         
       />
@@ -190,12 +192,14 @@ export default function Grocery({navigation}){
           </View>
         </View>
       </Modal>
+      </KeyboardAvoidingView >
       <TouchableOpacity
         style={[styles.button, styles.buttonOpen]}
         onPress={() => setModalVisible(true)}>
         <Text style={styles.textStyle}>New Grocerylist</Text>
       </TouchableOpacity>
     </View>
+    
        <Text>
        {"\n"}
        </Text>

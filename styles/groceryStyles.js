@@ -144,6 +144,10 @@ const styles = StyleSheet.create({
 
   },
 
+  keyboardAvoidingView: {
+    flex: 1,
+  },
+
   accordionContainer:{
     backgroundColor:'#b82407', 
     marginHorizontal:20,
@@ -173,19 +177,12 @@ const styles = StyleSheet.create({
     padding: 100,
     width:'100%',
     
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
+    
   },
   button: {
     borderRadius: 20,
     padding: 10,
-    elevation: 2,
+    
     height:50
   },
   buttonOpen: {
