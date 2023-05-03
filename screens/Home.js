@@ -18,7 +18,18 @@ export default function Home({navigation}){
   const user = auth.currentUser;
   const [importedDb, setImportedDb] = useState([]);
 
+  const [showAllProducts, setShowAllProducts] = useState(true);
+  
+ 
 
+
+
+
+  const showAllProductsFunction = () =>{
+    
+    setShowAllProducts (!showAllProducts)
+    //console.log(showAllProducts)
+  } 
   
   const fetchProducts = async () => {
     try {
@@ -56,10 +67,11 @@ export default function Home({navigation}){
 
 
   }
+  
 
 
   const renderProduct= (item)=>{
-    if (item.butik ==="COOP"){
+    if (item.butik ==="COOP" ){
       
       return (
           <View style = {styles.itemCointainerCOOP}>
@@ -119,16 +131,14 @@ export default function Home({navigation}){
     }
 
 
-  
-      
+
       useEffect(() => {
         fetchProducts();
       }, []);
     
-   
-    const [isActive, setIsActive] = useState(false)
-
       
+  
+    
     
    return(
     <View style={styles.container}>
@@ -150,18 +160,41 @@ export default function Home({navigation}){
               borderColor:"rgba(232,23,0,255)", 
               borderWidth:0,marginTop:10,backgroundColor:"#F9EFEB"}}>
             <Image source={icaLogo} style ={styles.grocerImage} />
+            <TouchableOpacity onPress ={()=>showAllProductsFunction()}>
+             <Text>SHOW ALL PRODUCTS</Text> 
+            </TouchableOpacity>
             
                 {importedDb.map((item) => {
-                  if (item.butik === "ICA"){
+                  
+                  //console.log("item", item)
+                  if (item.butik === "ICA" && showAllProducts === true ){
+                   console.log(showAllProducts)
+                   console.log(item)
                     return (   
                           <View  key={item.id}>
-                            
                               { renderProduct(item) }
                           </View>
                       
                     )
+
                   }
-                })}
+                  else if (item.butik === "ICA" && showAllProducts === false ){
+                   
+
+                    var filteredList = importedDb.filter(item => item.butik ==="ICA").slice(0, 2);
+                    console.log("else if", item)
+                    //console.log(filteredList)
+                    
+                  
+                    return (   
+                      <View  key={item.id}>
+                          { renderProduct(item) }
+                      </View>   )}
+                
+                }
+               
+                
+                )}
             </View>
             
             
@@ -174,7 +207,7 @@ export default function Home({navigation}){
 
             <Image source={coopLogo} style ={styles.grocerImage} />
             {importedDb.map((item) => {
-                  if (item.butik === "COOP"){
+                  if (item.butik === "COOP" ){
                     return (
                       <View  key={item.id}>
                     { renderProduct(item) }

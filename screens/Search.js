@@ -397,7 +397,20 @@ const styles = StyleSheet.create({
       padding: 10, 
       borderRadius: 35,
       margin:10,
+      shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 12,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
     },
+
+    
+
+
+
     itemTitle: {
       padding: 10,
       height:50,
@@ -417,6 +430,11 @@ const styles = StyleSheet.create({
       marginTop: 15,
       
     },
+
+
+
+
+
     iconImage:{
         
         top:2,
