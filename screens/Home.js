@@ -78,7 +78,7 @@ export default function Home({navigation}){
       return (
           <View style = {styles.itemCointainerCOOP}>
               <Image source={{ uri: item.bildurl }} style ={styles.productImage} />
-              <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.id}</Text>
+              <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.titel}</Text>
               <Text style={styles.productSubtext}> {item.leverantör}</Text>
               <Text style={styles.productSubtext}>{item.pristext}</Text>
               <Text style={styles.productSubtext}>{item.jmfpris} :-/kg</Text>
@@ -99,7 +99,7 @@ export default function Home({navigation}){
       else if (item.butik ==="ICA"){
         return <View style = {styles.itemCointainerICA}>
                       <Image source={{ uri: item.bildurl }} style ={styles.productImage} />
-                      <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.id}</Text>
+                      <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.titel}</Text>
                       <Text style={styles.productSubtext}> {item.leverantör}</Text>
                       <Text style={styles.productSubtext}>{item.pristext}</Text>
                       <Text style={styles.productSubtext}>{item.jmfpris} :-/kg</Text>
@@ -115,7 +115,7 @@ export default function Home({navigation}){
       else {return <View style = {styles.itemCointainerWILLYS}>
       <Image source={{ uri: item.bildurl }} style ={styles.productImage} />
       
-            <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.id}</Text>
+            <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.titel}</Text>
             <Text style={styles.productSubtext}> {item.leverantör}</Text>
             <Text style={styles.productSubtext}>{item.pristext}</Text>
             <Text style={styles.productSubtext}>{item.jmfpris} :-/kg</Text>
@@ -183,9 +183,6 @@ export default function Home({navigation}){
                   else if (item.butik === "ICA" && showAllProducts === false ){
                    
 
-                    var filteredList = importedDb.filter(item => item.butik ==="ICA").slice(0, 2);
-                    console.log("else if", item)
-                    //console.log(filteredList)
                     
                   
                     return (   

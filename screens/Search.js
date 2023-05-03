@@ -112,8 +112,8 @@ export default function Search({navigation}) {
             
             function (item) {
              
-              const itemData = item.id
-                ? item.id.toUpperCase()
+              const itemData = item.titel
+                ? item.titel.toUpperCase()
                 : ''.toUpperCase();
               const textData = text.toUpperCase();
               const isCOOP = showCOOP && item.butik === "COOP";
@@ -147,7 +147,7 @@ export default function Search({navigation}) {
             <View>
               <View style={styles.itemCointainerCOOP}>
               <Text style={styles.itemTitle}>
-                {item.id}
+                {item.titel}
               </Text>
 
               <Text style={styles.productSubtext}>
@@ -183,7 +183,7 @@ export default function Search({navigation}) {
                     <View>
                   <View style={styles.itemCointainerICA}>
                   <Text style={styles.itemTitle}>
-                    {item.id}
+                    {item.titel}
                   </Text>
 
                   <Text style={styles.productSubtext}>
@@ -217,7 +217,7 @@ export default function Search({navigation}) {
               <View>
                 <View style={styles.itemCointainerWILLYS}>
               <Text style={styles.itemTitle}>
-                {item.id}
+                {item.titel}
               </Text>
 
               <Text style={styles.productSubtext}>
