@@ -28,10 +28,7 @@ export default function Home({navigation}){
   const toggleShowAllProductsFunction = () =>{
   
     setShowAllProducts (!showAllProducts)
-    
-    
-      console.log("jag krödesdeadas")
-      setfirstProductRenderedICA((current) => !current);
+    setfirstProductRenderedICA((current) => !current);
  
   } 
 
