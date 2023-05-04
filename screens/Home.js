@@ -26,17 +26,6 @@ export default function Home({navigation}){
   
   const [viewHeight, setViewHeight] = useState(0);
  
-  const animatedHeight = new Animated.Value(0);
-
-
-
-  const expandView = () => {
-    Animated.timing(animatedHeight, {
-      toValue: viewHeight + 1000, // Change this value to the maximum height you want
-      duration: 500, // Change this value to adjust the duration of the animation
-      useNativeDriver: false, // Change this to true if you want to use the native driver (iOS only)
-    }).start();
-  };
   
 
 
@@ -196,7 +185,7 @@ export default function Home({navigation}){
                   //console.log("item", item)
                   if (item.butik === "ICA"  ){
                     
-                    if (showAllProducts || (index === 0 && !firstProductRenderedICA)){
+                    if (showAllProducts ){
                       return (
                         <View key={item.id}>
                           {renderProduct(item)}
