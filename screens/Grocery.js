@@ -31,18 +31,17 @@ export default function Grocery({navigation}){
 
   const fetchUserData = async () => {
 
-    
-    try {
-    const userRef = doc(database, "users", user.uid);
+   
+const docRef = doc(database, "users", user.uid);
+const docSnap = await getDoc(docRef);
 
-    const querySnapshot = await getDocs(userRef);
-        const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-        setUserData(newData)
-        console.log(userData)
-    }catch (error) {
-      console.error('Error fetching products:', error);
-      throw error;
-    }
+if (docSnap.exists()) {
+  console.log("Document data:", docSnap.data());
+  setUserData(docSnap.data());
+} else {
+  // docSnap.data() will be undefined in this case
+  console.log("No such document!");
+}
   }
 
 
@@ -52,15 +51,9 @@ export default function Grocery({navigation}){
     
 
     try {
-      const unsub = onSnapshot(collection(doc(database, 'users', user.uid), 'grocerylists', 'yourgrocerylist', 'items'), (querySnapshot) => {
+      const unsub = onSnapshot(collection(doc(database, 'users', user.uid), 'grocerylists', userData.currentlist, 'items'), (querySnapshot) => {
         const docs = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
         setImportedDb(docs);
-
-
-         
-        
-
-
       });
       return unsub;
     } catch (error) {
@@ -197,7 +190,7 @@ export default function Grocery({navigation}){
     await setDoc(yourGroceryListDocRef, { shown: true });
   
 
-  await updateDoc(userRef, { currentlist: {newListName} });
+  await updateDoc(userRef, { currentlist: newListName });
 
       setnewListName('')
       
@@ -269,7 +262,7 @@ return(
         <Image source={backImage} style={styles.bebLogo} />
         {calculateTotalPrice()}
 
-        <TouchableOpacity  onPress={() => console.log(importedDb)}>
+        <TouchableOpacity  onPress={() => console.log(userData)}>
                     <Text style={styles.footerbutton}>HÄR</Text>
                     </TouchableOpacity>
         
