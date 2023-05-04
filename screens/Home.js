@@ -1,5 +1,5 @@
 import React, {useEffect,useState} from "react";
-import { FlatList, StyleSheet, View, TextInput, Text, Image, SafeAreaView, TouchableOpacity,  ScrollView} from "react-native"
+import { FlatList, StyleSheet, View, TextInput, Text, Image, SafeAreaView, TouchableOpacity,  ScrollView, Animated} from "react-native"
 import styles from '../styles/HomeStyles.js';
 
 
@@ -23,8 +23,15 @@ export default function Home({navigation}){
 
   const [showAllProducts, setShowAllProducts] = useState(false);
   const [firstProductRenderedICA, setfirstProductRenderedICA] = useState(false)
+  
+  const [viewHeight, setViewHeight] = useState(0);
  
- 
+  
+
+
+
+
+
   
   const toggleShowAllProductsFunction = () =>{
   
@@ -48,7 +55,7 @@ export default function Home({navigation}){
     else {
       return(
             <TouchableOpacity onPress ={()=>toggleShowAllProductsFunction()} style={{alignItems:"center", borderRadius: 10,borderWidth:4,}}>
-                <Text style={{justifyContent:"center", height:75,width:100,textAlign: "center", padding:10,}}>close</Text> 
+                <Text style={{justifyContent:"center", height:75,width:100,textAlign: "center", alignItems:"center", padding:25,}}>Close</Text> 
                         
             </TouchableOpacity>
       )
@@ -77,7 +84,7 @@ export default function Home({navigation}){
 
 
   const renderProduct= (item)=>{
-    if (item.butik ==="COOP" ){
+    if (item.butik ==="COOP" && item.onsale ){
       
       return (
           <View style = {styles.itemCointainerCOOP}>
@@ -100,8 +107,8 @@ export default function Home({navigation}){
             </View>
       )
       }
-      else if (item.butik ==="ICA"){
-        return <View style = {styles.itemCointainerICA}>
+      else if (item.butik ==="ICA" && item.onsale){
+        return <Animated.View  style = {styles.itemCointainerICA} >
                       <Image source={{ uri: item.bildurl }} style ={styles.productImage} />
                       <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.titel}</Text>
                       <Text style={styles.productSubtext}> {item.leverantör}</Text>
@@ -114,9 +121,9 @@ export default function Home({navigation}){
                         </TouchableOpacity>
 
                       </View>
-                  </View>
+                  </Animated.View>
       }
-      else {return <View style = {styles.itemCointainerWILLYS}>
+      else if(item.butik === "willys" && item.onsale) {return <View style = {styles.itemCointainerWILLYS}>
       <Image source={{ uri: item.bildurl }} style ={styles.productImage} />
       
             <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.titel}</Text>
@@ -178,7 +185,7 @@ export default function Home({navigation}){
                   //console.log("item", item)
                   if (item.butik === "ICA"  ){
                     
-                    if (showAllProducts || (index === 0 && !firstProductRenderedICA)){
+                    if (showAllProducts ){
                       return (
                         <View key={item.id}>
                           {renderProduct(item)}
