@@ -32,8 +32,8 @@ export default function Grocery({navigation}){
   const fetchUserData = async () => {
 
    
-const docRef = doc(database, "users", user.uid);
-const docSnap = await getDoc(docRef);
+      const docRef = await doc(database, "users", user.uid);
+      const docSnap = await getDoc(docRef);
 
 if (docSnap.exists()) {
   console.log("Document data:", docSnap.data());
@@ -48,10 +48,11 @@ if (docSnap.exists()) {
 
   const fetchProducts = async () => {
     
-    
+    const currentList=await userData.currentlist;
 
     try {
-      const unsub = onSnapshot(collection(doc(database, 'users', user.uid), 'grocerylists', userData.currentlist, 'items'), (querySnapshot) => {
+      console.log('FetchLog:', userData)
+      const unsub = onSnapshot(collection(doc(database, 'users', user.uid), 'grocerylists', currentList, 'items'), (querySnapshot) => {
         const docs = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
         setImportedDb(docs);
       });
@@ -61,12 +62,20 @@ if (docSnap.exists()) {
       throw error;
     }
   };
+
+
+  
   
  
 
   useEffect(() => {
-    fetchUserData();
-    fetchProducts();
+    const fetchData = async () => {
+      await fetchUserData().then(() => {
+        fetchProducts();
+      });
+    }
+    fetchData();
+
   }, []);
 
   const calculateTotalPrice=()=>{
@@ -262,8 +271,11 @@ return(
         <Image source={backImage} style={styles.bebLogo} />
         {calculateTotalPrice()}
 
-        <TouchableOpacity  onPress={() => console.log(userData)}>
-                    <Text style={styles.footerbutton}>HÄR</Text>
+        <TouchableOpacity  onPress={() => console.log(importedDb)}>
+                    <Text style={styles.footerbutton}>HÄR för IDB</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity  onPress={() => console.log(userData)}>
+                    <Text style={styles.footerbutton}>HÄR för userdata</Text>
                     </TouchableOpacity>
         
       </View>
