@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
         borderColor:"black", 
         borderWidth:4,
         flex:1,
-        backgroundColor:"#F9EFEB",
+        backgroundColor:"white",
         padding: 10, 
         borderRadius: 35,
         margin:10,
@@ -125,16 +125,7 @@ const styles = StyleSheet.create({
       height:70,
     
     },
-  
-       iconImage:{
-          
-        top:2,
-        width:40,
-        height:40,
-  
-      },
-  
-     
+
       whiteSheet: {
         width: '100%',
         height: '75%',
@@ -169,29 +160,24 @@ const styles = StyleSheet.create({
         
         
       },
+
+      iconImage:{
+        top:2,
+        width:50,
+        height:50
+      },
   
       footerbuttonContainer:{
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
         position:"absolute",
         bottom:0,
-        flex:0.3,
-        backgroundColor:"#D82401",
+        backgroundColor:"#B4131B",
         flexDirection:"row",
         justifyContent:"space-evenly",
         width:"100%",
-        
-  
-        
-  
-      },
-      footerbutton:{
-        color: 'black', 
-        fontWeight: '600', 
-        fontSize: 20,
-        margin:10
-        
-      },
+      }
+
 });
 
 export default styles;

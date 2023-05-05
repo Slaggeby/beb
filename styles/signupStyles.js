@@ -6,11 +6,15 @@ const styles = StyleSheet.create({
         backgroundColor: "#FFFFFF",
       },
       title: {
+        
         fontSize: 36,
+        
         fontWeight: 'bold',
         color: "#B4131B",
         alignSelf: "center",
-        paddingBottom: 24
+        paddingBottom: 24,
+        
+        
       },
       input: {
         backgroundColor: "#FEF5F5",
@@ -19,6 +23,16 @@ const styles = StyleSheet.create({
         fontSize: 16,
         borderRadius: 10,
         padding: 12,
+      },
+
+      inputNot:{
+        backgroundColor: "#FEF5F5",
+        height: 58,
+        marginBottom: 20,
+        fontSize: 16,
+        borderRadius: 10,
+        padding: 12,
+        marginTop:30,
       },
       backImage: {
         width: "100%",
