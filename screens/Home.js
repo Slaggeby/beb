@@ -146,6 +146,7 @@ export default function Home({navigation}){
 
 
       useEffect(() => {
+        
         fetchProducts();
       }, []);
     

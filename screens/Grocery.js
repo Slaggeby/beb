@@ -13,6 +13,7 @@ const coopLogo =require("../assets/coop-logotyp.png")
 
 export default function Grocery({navigation}){
   const user = auth.currentUser;
+  
   const [newListName,setnewListName]=useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [accordionContentHeight, setAccordionContentHeight] = useState(0);
@@ -30,7 +31,7 @@ export default function Grocery({navigation}){
 
 
   const fetchUserData = async () => {
-
+      console.log("fetchuserData ran")
    
       const docRef = await doc(database, "users", user.uid);
       const docSnap = await getDoc(docRef);
@@ -47,12 +48,13 @@ if (docSnap.exists()) {
 
 
   const fetchProducts = async () => {
-    
+    console.log("fetchproducts ran: ")
     const currentList=await userData.currentlist;
-
+    console.log('FetchLog:', currentList)
     try {
-      console.log('FetchLog:', userData)
-      const unsub = onSnapshot(collection(doc(database, 'users', user.uid), 'grocerylists', currentList, 'items'), (querySnapshot) => {
+      
+      const unsub = onSnapshot(collection(doc(database, 'users', user.uid), 'grocerylists', "yourgrocerylist", 'items'), (querySnapshot) => {
+        console.log('FetchLog:', userData)
         const docs = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
         setImportedDb(docs);
       });
@@ -64,12 +66,16 @@ if (docSnap.exists()) {
   };
 
 
+
+
   
   
  
 
   useEffect(() => {
+    console.log("useffect, fetchdata")
     const fetchData = async () => {
+      console.log("inner fetchdata")
       await fetchUserData().then(() => {
         fetchProducts();
       });

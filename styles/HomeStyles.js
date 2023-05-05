@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
         borderColor:"black", 
         borderWidth:4,
         flex:1,
-        backgroundColor:"#F9EFEB",
+        backgroundColor:"white",
         padding: 10, 
         borderRadius: 35,
         margin:10,
@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
   
       },
       footerbutton:{
-        color: 'black', 
+        color: 'white', 
         fontWeight: '600', 
         fontSize: 20,
         margin:10

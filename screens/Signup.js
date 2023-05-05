@@ -1,7 +1,7 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 
 
-import {StyleSheet, View, TextInput, Button, Text, Image, SafeAreaView, TouchableOpacity, StatusBar, Alert} from "react-native"
+import {StyleSheet, View, TextInput, Button, Text, Image, SafeAreaView, TouchableOpacity, StatusBar, Alert, Keyboard} from "react-native"
 const backImage = require("../assets/bebLogo.png");
 import styles from '../styles/signupStyles.js';
 
@@ -17,7 +17,25 @@ import { collection, addDoc,setDoc, getDocs, doc } from '@firebase/firestore';
 
 export default function Signup({navigation}){
    
- 
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
+
+
+  useEffect(() => {
+    Keyboard.addListener('keyboardDidShow', () => setKeyboardVisible(true));
+    Keyboard.addListener('keyboardDidHide', () => setKeyboardVisible(false));
+  
+    // cleanup function
+    return () => {
+      Keyboard.removeListener('keyboardDidShow');
+      Keyboard.removeListener('keyboardDidHide');
+    };
+  }, []);
+  
+
+
+
+
+
   const [email1, setEmail1] = useState('');
   const [email2, setEmail2] = useState('');
   const [password1, setPassword1] = useState('');
@@ -63,7 +81,12 @@ export default function Signup({navigation}){
       
 
 
-      <Image source={backImage} style={styles.backImage} />
+     
+      
+      {!keyboardVisible && <Image style={styles.backImage} source={require("../assets/bebLogo.png")} />}
+
+      
+
       <View style={styles.whiteSheet} />
       <SafeAreaView style={styles.form}>
       <Text style={styles.title}>Create Account</Text>
