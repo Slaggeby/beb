@@ -1,7 +1,7 @@
 import React, {useEffect,useState} from "react";
 import { Keyboard,Modal, FlatList, StyleSheet, View, TextInput, Button, Text, Image, SafeAreaView, TouchableOpacity, StatusBar, ScrollView, KeyboardAvoidingView} from "react-native"
 import styles from '../styles/groceryStyles.js';
-import {database, auth, s} from '../config/firebase';
+import {database, auth} from '../config/firebase';
 import { collection, addDoc,setDoc, getDocs, doc, query, where, deleteDoc, updateDoc, onSnapshot, getDoc } from '@firebase/firestore';
 import  AccordionListItem  from '../components/AccordionListitem';
 
@@ -22,29 +22,65 @@ export default function Grocery({navigation}){
 
   const [importedDb, setImportedDb] = useState([]);
 
+  let userData={};
+
   const RemoveItem = async(item)=> {
     const userRef = doc(database, "users", user.uid);
    
-    const grocerylistRef = collection(userRef, "grocerylist");
+    const grocerylistRef = collection(userRef, 'grocerylists', 'yourgrocerylist', 'items');
     await deleteDoc(doc(grocerylistRef,item.id));
   }
 
+
+  const fetchUserData = async () => {
+
+   
+      const docRef = await doc(database, "users", user.uid);
+      const docSnap = await getDoc(docRef);
+
+if (docSnap.exists()) {
+  console.log("Document data:", docSnap.data());
+
+  userData=docSnap.data();
+} else {
+  // docSnap.data() will be undefined in this case
+  console.log("No such document!");
+}
+  }
+
+
+
   const fetchProducts = async () => {
+    
+    await fetchUserData();
+    const currentList=await userData.currentlist;
+
     try {
-      const unsub = onSnapshot(collection(doc(database, "users", user.uid), "grocerylist"), (querySnapshot) => {
+
+
+      const unsub = onSnapshot(collection(doc(database, 'users', user.uid), 'grocerylists', currentList, 'items'), (querySnapshot) => {
         const docs = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
         setImportedDb(docs);
-        
       });
       return unsub;
     } catch (error) {
-      console.error("Error fetching products:", error);
+      console.error('Error fetching products:', error);
       throw error;
     }
   };
 
+
+  
+  
+ 
+
   useEffect(() => {
-    fetchProducts();
+    
+      fetchUserData()
+        fetchProducts();
+      
+
+
   }, []);
 
   const calculateTotalPrice=()=>{
@@ -62,7 +98,7 @@ export default function Grocery({navigation}){
 
   const changeAmount = async (item, amountString) => {
     const userRef = doc(database, "users", user.uid);
-    const grocerylistRef = collection(userRef, "grocerylist");
+    const grocerylistRef = collection(userRef, "grocerylists", 'yourgrocerylist', 'items' );
     const itemDocRef = doc(grocerylistRef, item.id);
   
     let newAmount;
@@ -154,6 +190,27 @@ export default function Grocery({navigation}){
     </View>}  
     }
 
+    const createNewGroceryList=async ()=>{
+      console.log(newListName)
+      const user = auth.currentUser;
+  const userRef = doc(database, 'users', user.uid);
+
+  const yourGroceryListsRef = collection(userRef, 'grocerylists');
+  const yourGroceryListDocRef = doc(yourGroceryListsRef, newListName);
+
+ 
+
+      
+    await setDoc(yourGroceryListDocRef, { shown: true });
+  
+
+  await updateDoc(userRef, { currentlist: newListName });
+
+      setnewListName('')
+      
+
+    }
+
     const generateAccordionContent=()=>{
       
     return(
@@ -188,8 +245,9 @@ export default function Grocery({navigation}){
         
       />
             <TouchableOpacity
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}>
+              style={[styles.button, styles.buttonClose,{backgroundColor: newListName === '' ? 'grey' : '#2196F3'}]}
+              disabled={newListName===''}
+              onPress={() =>{ setModalVisible(!modalVisible), createNewGroceryList()}}>
               <Text style={styles.textStyle}>Create!</Text>
             </TouchableOpacity>
           </View>
@@ -217,7 +275,12 @@ return(
       <View style={{}}>
         <Image source={backImage} style={styles.bebLogo} />
         {calculateTotalPrice()}
+
+      
+        
       </View>
+
+      
 
       <ScrollView style= {{flex: 1}} contentContainerStyle={styles.scrollViewContent}>
         <View style= {{flex:1 }}>

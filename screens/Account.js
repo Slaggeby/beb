@@ -1,9 +1,9 @@
 import React, {useEffect,useState} from "react";
 import {StyleSheet, View, TextInput, Button, Text, Image, SafeAreaView, TouchableOpacity, StatusBar} from "react-native"
 import styles from '../styles/accountStyles.js';
-import { getAuth, signOut } from 'firebase/auth';
+import { getAuth, signOut, updateProfile } from 'firebase/auth';
 import {database, auth} from '../config/firebase';
-import { collection, addDoc,setDoc, getDocs, doc, query, where, deleteDoc, updateDoc, onSnapshot, getDoc } from '@firebase/firestore';
+import { collection, query, where, onSnapshot, } from '@firebase/firestore';
 
 
 const backImage = require("../assets/backImage.png");
@@ -18,7 +18,11 @@ const accountIcon=require('../assets/account.png')
 
 export default function Account({navigation}){
   const user = auth.currentUser;
-  const [ImportedUserData, setImportedUserData]=useState('')
+  //console.log("user",user)
+  const [ImportedUserData, setImportedUserData]=useState([])
+  
+  //const displayName = user.displayName;
+  //console.log("displayName", displayName)
 
   const LogOut=() =>{
     const auth = getAuth();
@@ -31,10 +35,43 @@ export default function Account({navigation}){
     });
   }
 
+
+  const changeName = () =>{
+    console.log("u tried")
+
+  }
+
+  const [text, onChangeText] = React.useState('Useless Text');
+
+
+  useEffect(() => {
+    console.log("USE");
+  }, [text]);
+
+
+
+  updateProfile(auth.currentUser, {
+    
+    displayName: text, photoURL: "https://example.com/jane-q-user/profile.jpg"
+  }).then(() => {
+    // Profile updated!
+    // ...
+  }).catch((error) => {
+    // An error occurred
+    // ...
+  });
+ 
+
+
+
+
+
+
+
     const [isActive, setIsActive] = useState(false)
     const changeTheme = () =>{
         setIsActive(current => !current)
-        console.log("jek")
+        
     }
 
     useEffect(() => {
@@ -47,10 +84,10 @@ export default function Account({navigation}){
         const unsub = onSnapshot(q, (querySnapshot) => {
           const docs = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
           setImportedUserData(docs);
-          
+         
           
         });
-        console.log('iud:',ImportedUserData)
+        
         return unsub;
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -77,8 +114,17 @@ export default function Account({navigation}){
 
             <View styles = {styles.input}>
                 <View>
+                <TextInput
+                  style={styles.input}
+                  onChangeText={onChangeText}
+                  value={text}
+                />
+                  
+
+                  
+
                 <Text style={styles.input}>
-                  Name {ImportedUserData.name}
+                {user ? user.displayName : "Loading..."}
                 </Text>
 
                   
