@@ -6,7 +6,10 @@ import { collection, addDoc,setDoc, getDocs, doc, query, where, deleteDoc, updat
 import  AccordionListItem  from '../components/AccordionListitem';
 
 const backImage = require("../assets/bebLogo.png");
-const listIcon=require('../assets/list-icon.png')
+const listIcon=require('../assets/list.png')
+const homeIcon=require('../assets/home.png')
+const searchIcon=require('../assets/search.png')
+const accountIcon=require('../assets/account.png')
 const willysLogo =require("../assets/Willys-logotyp.png")
 const icaLogo =require("../assets/ICA-logotyp.png")
 const coopLogo =require("../assets/coop-logotyp.png")
@@ -233,18 +236,18 @@ return(
       </View>
       </ScrollView>
                   <View style ={styles.footerbuttonContainer}>
-                    <TouchableOpacity  onPress={() => navigation.navigate("Home")}>
-                    <Text style={styles.footerbutton}>⌂</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity  onPress={() => navigation.navigate("Account")}>
-                    <Text style={styles.footerbutton}>Account</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity  onPress={() => navigation.navigate("Grocery")}>
-                    <Image source={listIcon} style ={styles.iconImage} />
-                    </TouchableOpacity>
-                    <TouchableOpacity  onPress={() => navigation.navigate("Search")}>
-                    <Text style={styles.footerbutton}>🔍</Text>
-                    </TouchableOpacity>
+                  <TouchableOpacity  onPress={() => navigation.navigate("Home")}>
+                  <Image source={homeIcon} style ={styles.iconImage} />
+                  </TouchableOpacity>
+                  <TouchableOpacity  onPress={() => navigation.navigate("Search")}>
+                  <Image source={searchIcon} style ={styles.iconImage} />
+                  </TouchableOpacity>
+                  <TouchableOpacity  onPress={() => navigation.navigate("Grocery")}>
+                  <Image source={listIcon} style ={styles.iconImage} />
+                  </TouchableOpacity>
+                  <TouchableOpacity  onPress={() => navigation.navigate("Account")}>
+                  <Image source={accountIcon} style ={styles.iconImage} />
+                  </TouchableOpacity>
                   </View>
         </View>
 )}

@@ -4,9 +4,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor:"#faebeb"
-    
-
-    
   },
 
   scrollViewContent: {
@@ -74,7 +71,6 @@ const styles = StyleSheet.create({
   },
 
   bebLogo: {
-    
     width: "100%",
     height: 50,
     top: 10,
@@ -88,13 +84,6 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     width:70,
     height:70,
-
-  },
-  iconImage:{
-    
-    top:2,
-    width:40,
-    height:40,
 
   },
 
@@ -129,19 +118,22 @@ const styles = StyleSheet.create({
     marginTop: 40,
     
   },
+
+  iconImage:{
+    top:2,
+    width:50,
+    height:50
+  },
+
   footerbuttonContainer:{
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     position:"absolute",
     bottom:0,
-    flex:0.3,
-    backgroundColor:"#D82401",
+    backgroundColor:"#B4131B",
     flexDirection:"row",
     justifyContent:"space-evenly",
-    width:"100%"
-
-    
-
+    width:"100%",
   },
 
   keyboardAvoidingView: {
@@ -157,13 +149,7 @@ const styles = StyleSheet.create({
     
     
   },
-  footerbutton:{
-    color: 'black', 
-    fontWeight: '600', 
-    fontSize: 20,
-    margin:10
-    
-  },centeredView: {
+  centeredView: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',

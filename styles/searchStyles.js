@@ -5,26 +5,23 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
       },
   
+      iconImage:{
+        top:2,
+        width:50,
+        height:50
+      },
+  
       footerbuttonContainer:{
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
         position:"absolute",
         bottom:0,
-        height:50,
-        backgroundColor:"#D82401",
+        backgroundColor:"#B4131B",
         flexDirection:"row",
         justifyContent:"space-evenly",
-        width:"100%"
-  
+        width:"100%",
       },
-      footerbutton:{
-        color: 'black', 
-        fontWeight: '600', 
-        fontSize: 20,
-        margin:10
-        
-      },
-  
+
       itemCointainerCOOP:{
         borderRadius: 5,
         borderColor:"#00AA46", 
@@ -75,15 +72,8 @@ const styles = StyleSheet.create({
         marginTop: 15,
         
       },
-      iconImage:{
-          
-          top:2,
-          width:40,
-          height:40,
-    
-        },
+
       bebLogo: {
-        
         width: "100%",
         height: 50,
         top: 10,

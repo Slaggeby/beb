@@ -4,14 +4,14 @@ import styles from '../styles/searchStyles.js';
 import { collection, addDoc, getDocs,setDoc, doc, getDoc } from '@firebase/firestore';
 import {database, auth} from '../config/firebase';
 
-
 const backImage = require("../assets/bebLogo.png");
 const willysLogo =require("../assets/Willys-logotyp.png")
 const icaLogo =require("../assets/ICA-logotyp.png")
 const coopLogo =require("../assets/coop-logotyp.png")
-const listIcon=require('../assets/list-icon.png')
-
-
+const listIcon=require('../assets/list.png')
+const homeIcon=require('../assets/home.png')
+const searchIcon=require('../assets/search.png')
+const accountIcon=require('../assets/account.png')
 
 export default function Search({navigation}) {
     const [search, setSearch] = useState('');
@@ -35,13 +35,7 @@ export default function Search({navigation}) {
       setShowWILLYS(!showWILLYS);
     };
 
-
-
-
-
-    
   const addToGroceryList = async (item) =>{
-  
     const userRef = doc(database, "users", user.uid);
     const grocerylistRef = collection(userRef, "grocerylist");
     const itemDocRef=doc(grocerylistRef,item.id);
@@ -53,17 +47,15 @@ export default function Search({navigation}) {
         await setDoc(itemDocRef, { item: item, amount: existingAmount + 1 })
     }
     else{
-
-    await setDoc(doc(grocerylistRef,item.id), {
-      item: item,
-      amount: 1
-    });
-}
-
+      await setDoc(doc(grocerylistRef,item.id), {
+        item: item,
+        amount: 1
+      });
+    } 
   }
 
-    const fetchProducts = async () => {
-        try {
+  const fetchProducts = async () => {
+    try {
           const querySnapshot = await getDocs(collection(database, "products"));
           const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
          
@@ -75,22 +67,17 @@ export default function Search({navigation}) {
              DataList.push(item)
           })
      
-        setJSONLIST(JSON.stringify(DataList));
-    
-          
-        
-
-            
-        } catch (error) {
-          console.error("Error fetching products:", error);
-          throw error;
+        setJSONLIST(JSON.stringify(DataList));  
+      } 
+      catch (error) {
+        console.error("Error fetching products:", error);
+        throw error;
         }
-      };
+  };
 
       useEffect(() => {
         fetchProducts();
       }, []);
-
 
 
       useEffect(() => {
@@ -249,9 +236,6 @@ export default function Search({navigation}) {
                 
         }
 
-
-
-
       const ItemSeparatorView = () => {
         return (
           // Flat List Item Separator
@@ -265,22 +249,12 @@ export default function Search({navigation}) {
         );
       };
 
-      
-
-
-
-
 return(
 <SafeAreaView style={{flex: 1}}>
         <View style={{}}>
           <Image source={backImage} style={styles.bebLogo} />
         </View>
       <View style={styles.container}>
-        
-        
-        
-       
-  
         <TextInput
           style={styles.textInputStyle}
           onChangeText={(text) => searchFilterFunction(text)}
@@ -288,8 +262,8 @@ return(
           underlineColorAndroid="transparent"
           placeholder="Search Here"
         />
-        <View style={{justifyContent:"center", flexDirection:"row"}}>
-              <View style={{height:50, width:50, justifyContent:"space-evenly"}}>
+      <View style={{justifyContent:"center", flexDirection:"row"}}>
+        <View style={{height:50, width:50, justifyContent:"space-evenly"}}>
                 <Text> COOP</Text>
                 <TouchableOpacity onPress={()=>sortCOOP()} style={{backgroundColor:"white",width:15,left:20,borderColor:"black",borderWidth:1,}}>
                   
@@ -325,20 +299,20 @@ return(
        
       </View>
       <View style ={styles.footerbuttonContainer}>
-                    <TouchableOpacity  onPress={() => navigation.navigate("Home")}>
-                    <Text style={styles.footerbutton}>⌂</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity  onPress={() => navigation.navigate("Account")}>
-                    <Text style={styles.footerbutton}>Account</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity  onPress={() => navigation.navigate("Grocery")}>
-                    <Image source={listIcon} style ={styles.iconImage} />
-                    </TouchableOpacity>
-                    <TouchableOpacity  onPress={() => navigation.navigate("Search")}>
-                    <Text style={styles.footerbutton}>🔍</Text>
-                    </TouchableOpacity>
+          <TouchableOpacity  onPress={() => navigation.navigate("Home")}>
+          <Image source={homeIcon} style ={styles.iconImage} />
+          </TouchableOpacity>
+          <TouchableOpacity  onPress={() => navigation.navigate("Search")}>
+          <Image source={searchIcon} style ={styles.iconImage} />
+          </TouchableOpacity>
+          <TouchableOpacity  onPress={() => navigation.navigate("Grocery")}>
+          <Image source={listIcon} style ={styles.iconImage} />
+          </TouchableOpacity>
+          <TouchableOpacity  onPress={() => navigation.navigate("Account")}>
+          <Image source={accountIcon} style ={styles.iconImage} />
+          </TouchableOpacity>
 
-                  </View>
+        </View>
     </SafeAreaView>
 )
 }
