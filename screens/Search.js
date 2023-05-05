@@ -25,6 +25,8 @@ export default function Search({navigation}) {
     const [showCOOP, setShowCOOP] = useState(true)
     const [showICA, setShowICA] = useState(true)
     const [showWILLYS, setShowWILLYS] = useState(true)
+    const [showOnSale, setShowOnSale] = useState(true)
+
 
     const sortCOOP = () =>{ 
       setShowCOOP(!showCOOP);
@@ -36,6 +38,18 @@ export default function Search({navigation}) {
     const sortWILLYS = () =>{ 
       setShowWILLYS(!showWILLYS);
     };
+
+    const sortOnSale = () => {
+      setShowOnSale(!showOnSale)
+      console.log("showOnSale: ",showOnSale)
+    }
+
+    
+
+
+
+    
+
 
   const fetchProducts = async () => {
     try {
@@ -93,10 +107,12 @@ export default function Search({navigation}) {
               const isCOOP = showCOOP && item.butik === "COOP";
               const isICA = showICA && item.butik === "ICA";
               const isWILLYS = showWILLYS && item.butik === "willys";
-
+              console.log("showOnSale in filter",showOnSale)
+              console.log("onsale", item.onsale)
+              const isSale = showOnSale && item.onsale
 
               return (
-                itemData.indexOf(textData) > -1 && (isCOOP || isICA || isWILLYS)
+                itemData.indexOf(textData) > -1 && (isCOOP || isICA || isWILLYS ||isSale )
               );
 
 
@@ -252,30 +268,40 @@ return(
           placeholder="Search Here"
         />
       <View style={{justifyContent:"center", flexDirection:"row"}}>
-        <View style={{height:50, width:50, justifyContent:"space-evenly"}}>
-                <Text> COOP</Text>
-                <TouchableOpacity onPress={()=>sortCOOP()} style={{backgroundColor:"white",width:15,left:20,borderColor:"black",borderWidth:1,}}>
-                  
-                <Text style={{color:"black"}}>{showCOOP ? '✓' : ' '}</Text>
-                </TouchableOpacity>
+              <View style={{height:50, width:50, justifyContent:"space-evenly"}}>
+                  <Text> COOP</Text>
+                  <TouchableOpacity onPress={()=>sortCOOP()} style={{backgroundColor:"white",width:15,left:20,borderColor:"black",borderWidth:1,}}>
+                    
+                  <Text style={{color:"black"}}>{showCOOP ? '✓' : ' '}</Text>
+                  </TouchableOpacity>
               </View>
 
               <View style={{height:50, width:50, justifyContent:"space-evenly"}}>
-                <Text> ICA</Text>
-                <TouchableOpacity onPress={()=>sortICA()} style={{backgroundColor:"white",width:15,left:20,borderColor:"black",borderWidth:1,}}>
-                  
-                <Text style={{color:"black"}}>{showICA ? '✓' : ' '}</Text>
-                </TouchableOpacity>
+                  <Text> ICA</Text>
+                  <TouchableOpacity onPress={()=>sortICA()} style={{backgroundColor:"white",width:15,left:20,borderColor:"black",borderWidth:1,}}>
+                    
+                  <Text style={{color:"black"}}>{showICA ? '✓' : ' '}</Text>
+                  </TouchableOpacity>
               </View>
 
 
               <View style={{height:50, width:50, justifyContent:"space-evenly"}}>
-                <Text> Willys</Text>
-                <TouchableOpacity onPress={()=>sortWILLYS()} style={{backgroundColor:"white",width:15,left:20,borderColor:"black",borderWidth:1,}}>
-                  
-                <Text style={{color:"black"}}>{showWILLYS ? '✓' : ' '}</Text>
-                </TouchableOpacity>
+                  <Text> Willys</Text>
+                  <TouchableOpacity onPress={()=>sortWILLYS()} style={{backgroundColor:"white",width:15,left:20,borderColor:"black",borderWidth:1,}}>
+                    
+                  <Text style={{color:"black"}}>{showWILLYS ? '✓' : ' '}</Text>
+                  </TouchableOpacity>
               </View>
+
+              <View style={{height:50, width:50, justifyContent:"space-evenly"}}>
+                  <Text> OnSale </Text>
+                  <TouchableOpacity onPress={()=>sortOnSale()} style={{backgroundColor:"white",width:15,left:20,borderColor:"black",borderWidth:1,}}>
+                    
+                  <Text style={{color:"black"}}>{showOnSale ? '✓' : ' '}</Text>
+                  </TouchableOpacity>
+              </View>
+
+
           </View>
 
 

@@ -23,6 +23,16 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 12,
       },
+
+      inputNot:{
+        backgroundColor: "#FEF5F5",
+        height: 58,
+        marginBottom: 20,
+        fontSize: 16,
+        borderRadius: 10,
+        padding: 12,
+        marginTop:30,
+      },
       backImage: {
         width: "100%",
         height: 150,
