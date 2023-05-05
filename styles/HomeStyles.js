@@ -176,23 +176,8 @@ const styles = StyleSheet.create({
         flexDirection:"row",
         justifyContent:"space-evenly",
         width:"100%",
-<<<<<<< HEAD
-        
-  
-        
-  
-      },
-      footerbutton:{
-        color: 'white', 
-        fontWeight: '600', 
-        fontSize: 20,
-        margin:10
-        
-      },
-=======
       }
 
->>>>>>> aa4d707daf3f1eef4da2968acf3c4c779326e618
 });
 
 export default styles;
