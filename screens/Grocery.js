@@ -4,6 +4,7 @@ import styles from '../styles/groceryStyles.js';
 import {database, auth} from '../config/firebase';
 import { collection, addDoc,setDoc, getDocs, doc, query, where, deleteDoc, updateDoc, onSnapshot, getDoc } from '@firebase/firestore';
 import  AccordionListItem  from '../components/AccordionListitem';
+import createNewGroceryList from "../components/createNewGroceryList.js";
 
 const backImage = require("../assets/bebLogo.png");
 const listIcon=require('../assets/list.png')
@@ -22,7 +23,8 @@ export default function Grocery({navigation}){
   const [accordionContentHeight, setAccordionContentHeight] = useState(0);
 
   const [importedDb, setImportedDb] = useState([]);
-
+ 
+  let userLists={};
   let userData={};
 
   const RemoveItem = async(item)=> {
@@ -40,7 +42,7 @@ export default function Grocery({navigation}){
       const docSnap = await getDoc(docRef);
 
 if (docSnap.exists()) {
-  console.log("Document data:", docSnap.data());
+  //console.log("Document data:", docSnap.data());
 
   userData=docSnap.data();
 } else {
@@ -71,17 +73,28 @@ if (docSnap.exists()) {
   };
 
 
-
-
+  const fetchUserLists = async () => {
+    const colRef = collection(database, "users", user.uid, "grocerylists");
+    const querySnapshot = await getDocs(colRef);
   
+    if (querySnapshot.empty) {
+      console.log("No grocery lists found");
+      return;
+    }
+  
+    const lists = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+    console.log("User's grocery lists:", lists);
+  
+    userLists = lists;
+  };
   
  
 
   useEffect(() => {
     
-      fetchUserData()
-        fetchProducts();
       
+        fetchProducts();
+        fetchUserLists();
 
 
   }, []);
@@ -193,26 +206,7 @@ if (docSnap.exists()) {
     </View>}  
     }
 
-    const createNewGroceryList=async ()=>{
-      console.log(newListName)
-      const user = auth.currentUser;
-  const userRef = doc(database, 'users', user.uid);
-
-  const yourGroceryListsRef = collection(userRef, 'grocerylists');
-  const yourGroceryListDocRef = doc(yourGroceryListsRef, newListName);
-
- 
-
-      
-    await setDoc(yourGroceryListDocRef, { shown: true });
-  
-
-  await updateDoc(userRef, { currentlist: newListName });
-
-      setnewListName('')
-      
-
-    }
+   
 
     const generateAccordionContent=()=>{
       
@@ -250,7 +244,7 @@ if (docSnap.exists()) {
             <TouchableOpacity
               style={[styles.button, styles.buttonClose,{backgroundColor: newListName === '' ? 'grey' : '#2196F3'}]}
               disabled={newListName===''}
-              onPress={() =>{ setModalVisible(!modalVisible), createNewGroceryList()}}>
+              onPress={() =>{ setModalVisible(!modalVisible), createNewGroceryList(newListName); if(newListName.length>0){setnewListName('')}}}>
               <Text style={styles.textStyle}>Create!</Text>
             </TouchableOpacity>
           </View>
