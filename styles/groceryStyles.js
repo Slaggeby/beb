@@ -144,10 +144,7 @@ const styles = StyleSheet.create({
     backgroundColor:'#b82407', 
     marginHorizontal:20,
     padding:20,
-    
 
-    
-    
   },
   centeredView: {
     flex: 1,

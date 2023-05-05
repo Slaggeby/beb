@@ -8,7 +8,6 @@ const styles = StyleSheet.create({
       title: {
         
         fontSize: 36,
-        
         fontWeight: 'bold',
         color: "#B4131B",
         alignSelf: "center",

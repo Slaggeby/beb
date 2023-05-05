@@ -109,21 +109,17 @@ const styles = StyleSheet.create({
         
       },
       bebLogo: {
-        
         width: "100%",
         height: 50,
         top: 10,
         resizeMode: 'contain',
-        
       },
       grocerImage:{
-        
       top: 10,
       right:-10,
       resizeMode: 'contain',
       width:70,
-      height:70,
-    
+      height:70
     },
 
       whiteSheet: {
@@ -134,6 +130,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         borderTopLeftRadius: 60,
       },
+
       form: {
         flex: 1,
         justifyContent: 'center',
@@ -157,7 +154,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         left:25,
-        
         
       },
 
