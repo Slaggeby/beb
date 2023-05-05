@@ -39,7 +39,7 @@ const AccordionListItem = ({ title, content, titleStyle, inputContentHeight }) =
 
   const rotateInterpolate = rotateValue.interpolate({
     inputRange: [0, 1],
-    outputRange: ['0deg', '-90deg'],
+    outputRange: ['0deg', '-180deg'],
   });
 
 

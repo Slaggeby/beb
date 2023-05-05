@@ -37,13 +37,6 @@ export default function Search({navigation}) {
       setShowWILLYS(!showWILLYS);
     };
 
-
-
-
-
-    
-
-
   const fetchProducts = async () => {
     try {
           const querySnapshot = await getDocs(collection(database, "products"));

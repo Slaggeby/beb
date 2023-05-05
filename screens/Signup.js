@@ -79,10 +79,6 @@ export default function Signup({navigation}){
 
     <View style={styles.container}>
       
-
-
-     
-      
       {!keyboardVisible && <Image style={styles.backImage} source={require("../assets/bebLogo.png")} />}
 
       
@@ -100,7 +96,6 @@ export default function Signup({navigation}){
         value={name}
         onChangeText={(text) => setName(text)}
       />
-
 
 
       <TextInput
@@ -125,10 +120,6 @@ export default function Signup({navigation}){
         onChangeText={(text) => setEmail2(text)}
       />
 
-
-
-      
-       
       <TextInput
         style={styles.input}
         placeholder="Enter password"
