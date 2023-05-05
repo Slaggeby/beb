@@ -6,7 +6,10 @@ import { collection, addDoc,setDoc, getDocs, doc, query, where, deleteDoc, updat
 import  AccordionListItem  from '../components/AccordionListitem';
 
 const backImage = require("../assets/bebLogo.png");
-const listIcon=require('../assets/list-icon.png')
+const listIcon=require('../assets/list.png')
+const homeIcon=require('../assets/home.png')
+const searchIcon=require('../assets/search.png')
+const accountIcon=require('../assets/account.png')
 const willysLogo =require("../assets/Willys-logotyp.png")
 const icaLogo =require("../assets/ICA-logotyp.png")
 const coopLogo =require("../assets/coop-logotyp.png")
@@ -19,8 +22,8 @@ export default function Grocery({navigation}){
   const [accordionContentHeight, setAccordionContentHeight] = useState(0);
 
   const [importedDb, setImportedDb] = useState([]);
-  const [userData, setUserData] = useState([]);
-  
+
+  let userData={};
 
   const RemoveItem = async(item)=> {
     const userRef = doc(database, "users", user.uid);
@@ -38,7 +41,8 @@ export default function Grocery({navigation}){
 
 if (docSnap.exists()) {
   console.log("Document data:", docSnap.data());
-  setUserData(docSnap.data());
+
+  userData=docSnap.data();
 } else {
   // docSnap.data() will be undefined in this case
   console.log("No such document!");
@@ -48,13 +52,14 @@ if (docSnap.exists()) {
 
 
   const fetchProducts = async () => {
-    console.log("fetchproducts ran: ")
+    
+    await fetchUserData();
     const currentList=await userData.currentlist;
     console.log('FetchLog:', currentList)
     try {
-      
-      const unsub = onSnapshot(collection(doc(database, 'users', user.uid), 'grocerylists', "yourgrocerylist", 'items'), (querySnapshot) => {
-        console.log('FetchLog:', userData)
+
+
+      const unsub = onSnapshot(collection(doc(database, 'users', user.uid), 'grocerylists', currentList, 'items'), (querySnapshot) => {
         const docs = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
         setImportedDb(docs);
       });
@@ -73,14 +78,11 @@ if (docSnap.exists()) {
  
 
   useEffect(() => {
-    console.log("useffect, fetchdata")
-    const fetchData = async () => {
-      console.log("inner fetchdata")
-      await fetchUserData().then(() => {
+    
+      fetchUserData()
         fetchProducts();
-      });
-    }
-    fetchData();
+      
+
 
   }, []);
 
@@ -277,12 +279,7 @@ return(
         <Image source={backImage} style={styles.bebLogo} />
         {calculateTotalPrice()}
 
-        <TouchableOpacity  onPress={() => console.log(importedDb)}>
-                    <Text style={styles.footerbutton}>HÄR för IDB</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity  onPress={() => console.log(userData)}>
-                    <Text style={styles.footerbutton}>HÄR för userdata</Text>
-                    </TouchableOpacity>
+      
         
       </View>
 
@@ -305,18 +302,18 @@ return(
       </View>
       </ScrollView>
                   <View style ={styles.footerbuttonContainer}>
-                    <TouchableOpacity  onPress={() => navigation.navigate("Home")}>
-                    <Text style={styles.footerbutton}>⌂</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity  onPress={() => navigation.navigate("Account")}>
-                    <Text style={styles.footerbutton}>Account</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity  onPress={() => navigation.navigate("Grocery")}>
-                    <Image source={listIcon} style ={styles.iconImage} />
-                    </TouchableOpacity>
-                    <TouchableOpacity  onPress={() => navigation.navigate("Search")}>
-                    <Text style={styles.footerbutton}>🔍</Text>
-                    </TouchableOpacity>
+                  <TouchableOpacity  onPress={() => navigation.navigate("Home")}>
+                  <Image source={homeIcon} style ={styles.iconImage} />
+                  </TouchableOpacity>
+                  <TouchableOpacity  onPress={() => navigation.navigate("Search")}>
+                  <Image source={searchIcon} style ={styles.iconImage} />
+                  </TouchableOpacity>
+                  <TouchableOpacity  onPress={() => navigation.navigate("Grocery")}>
+                  <Image source={listIcon} style ={styles.iconImage} />
+                  </TouchableOpacity>
+                  <TouchableOpacity  onPress={() => navigation.navigate("Account")}>
+                  <Image source={accountIcon} style ={styles.iconImage} />
+                  </TouchableOpacity>
                   </View>
         </View>
 )}

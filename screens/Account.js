@@ -3,12 +3,15 @@ import {StyleSheet, View, TextInput, Button, Text, Image, SafeAreaView, Touchabl
 import styles from '../styles/accountStyles.js';
 import { getAuth, signOut, updateProfile } from 'firebase/auth';
 import {database, auth} from '../config/firebase';
-import { collection, addDoc,setDoc, getDocs, doc, query, where, deleteDoc, updateDoc, onSnapshot, getDoc } from '@firebase/firestore';
+import { collection, query, where, onSnapshot, } from '@firebase/firestore';
 
 
 const backImage = require("../assets/backImage.png");
 const bebLogo = require("../assets/bebLogo.png");
-const listIcon=require('../assets/list-icon.png')
+const listIcon=require('../assets/list.png')
+const homeIcon=require('../assets/home.png')
+const searchIcon=require('../assets/search.png')
+const accountIcon=require('../assets/account.png')
 
 
 
@@ -149,18 +152,18 @@ export default function Account({navigation}){
     
 
         <View style ={styles.footerbuttonContainer}>
-                    <TouchableOpacity  onPress={() => navigation.navigate("Home")}>
-                    <Text style={styles.footerbutton}>⌂</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity  onPress={() => navigation.navigate("Account")}>
-                    <Text style={styles.footerbutton}>Account</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity  onPress={() => navigation.navigate("Grocery")}>
-                    <Image source={listIcon} style ={styles.iconImage} />
-                    </TouchableOpacity>
-                    <TouchableOpacity  onPress={() => navigation.navigate("Search")}>
-                    <Text style={styles.footerbutton}>🔍</Text>
-                    </TouchableOpacity>
+          <TouchableOpacity  onPress={() => navigation.navigate("Home")}>
+          <Image source={homeIcon} style ={styles.iconImage} />
+          </TouchableOpacity>
+          <TouchableOpacity  onPress={() => navigation.navigate("Search")}>
+          <Image source={searchIcon} style ={styles.iconImage} />
+          </TouchableOpacity>
+          <TouchableOpacity  onPress={() => navigation.navigate("Grocery")}>
+          <Image source={listIcon} style ={styles.iconImage} />
+          </TouchableOpacity>
+          <TouchableOpacity  onPress={() => navigation.navigate("Account")}>
+          <Image source={accountIcon} style ={styles.iconImage} />
+          </TouchableOpacity>
 
                   </View>
        
