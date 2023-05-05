@@ -3,7 +3,7 @@ import {StyleSheet, View, TextInput, Button, Text, Image, SafeAreaView, Touchabl
 import styles from '../styles/accountStyles.js';
 import { getAuth, signOut, updateProfile } from 'firebase/auth';
 import {database, auth} from '../config/firebase';
-import { collection, addDoc,setDoc, getDocs, doc, query, where, deleteDoc, updateDoc, onSnapshot, getDoc } from '@firebase/firestore';
+import { collection, query, where, onSnapshot, } from '@firebase/firestore';
 
 
 const backImage = require("../assets/backImage.png");

@@ -2,9 +2,9 @@ import React, {useEffect,useState} from "react";
 import { FlatList, StyleSheet, View, TextInput, Text, Image, SafeAreaView, TouchableOpacity,  ScrollView, Animated} from "react-native"
 import styles from '../styles/HomeStyles.js';
 
-
-import { collection, addDoc, getDocs, doc, getDoc, setDoc } from '@firebase/firestore';
-import {database, auth, signOut} from '../config/firebase';
+import { getAuth,} from 'firebase/auth';
+import { collection,  getDocs,query, where, onSnapshot, } from '@firebase/firestore';
+import {database, auth, } from '../config/firebase';
 import addToGroceryList from "../components/addToGroceryList.js";
 
 const listIcon=require('../assets/list-icon.png')
@@ -144,7 +144,7 @@ export default function Home({navigation}){
     }
 
 
-
+    
       useEffect(() => {
         fetchProducts();
       }, []);

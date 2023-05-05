@@ -18,8 +18,8 @@ export default function Grocery({navigation}){
   const [accordionContentHeight, setAccordionContentHeight] = useState(0);
 
   const [importedDb, setImportedDb] = useState([]);
-  const [userData, setUserData] = useState([]);
-  
+
+  let userData={};
 
   const RemoveItem = async(item)=> {
     const userRef = doc(database, "users", user.uid);
@@ -37,7 +37,8 @@ export default function Grocery({navigation}){
 
 if (docSnap.exists()) {
   console.log("Document data:", docSnap.data());
-  setUserData(docSnap.data());
+
+  userData=docSnap.data();
 } else {
   // docSnap.data() will be undefined in this case
   console.log("No such document!");
@@ -48,10 +49,12 @@ if (docSnap.exists()) {
 
   const fetchProducts = async () => {
     
+    await fetchUserData();
     const currentList=await userData.currentlist;
 
     try {
-      console.log('FetchLog:', userData)
+
+
       const unsub = onSnapshot(collection(doc(database, 'users', user.uid), 'grocerylists', currentList, 'items'), (querySnapshot) => {
         const docs = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
         setImportedDb(docs);
@@ -69,12 +72,11 @@ if (docSnap.exists()) {
  
 
   useEffect(() => {
-    const fetchData = async () => {
-      await fetchUserData().then(() => {
+    
+      fetchUserData()
         fetchProducts();
-      });
-    }
-    fetchData();
+      
+
 
   }, []);
 
@@ -271,12 +273,7 @@ return(
         <Image source={backImage} style={styles.bebLogo} />
         {calculateTotalPrice()}
 
-        <TouchableOpacity  onPress={() => console.log(importedDb)}>
-                    <Text style={styles.footerbutton}>HÄR för IDB</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity  onPress={() => console.log(userData)}>
-                    <Text style={styles.footerbutton}>HÄR för userdata</Text>
-                    </TouchableOpacity>
+      
         
       </View>
 
