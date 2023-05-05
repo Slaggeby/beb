@@ -22,6 +22,7 @@ const coopLogo =require("../assets/coop-logotyp.png")
 export default function Home({navigation}){
 
   const user = auth.currentUser;
+  console.log('homeuser!!!',user.uid)
   const [importedDb, setImportedDb] = useState([]);
 
   const [showAllProducts, setShowAllProducts] = useState(false);

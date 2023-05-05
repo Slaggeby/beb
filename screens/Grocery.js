@@ -1,8 +1,8 @@
 import React, {useEffect,useState} from "react";
-import { Keyboard,Modal, FlatList, StyleSheet, View, TextInput, Button, Text, Image, SafeAreaView, TouchableOpacity, StatusBar, ScrollView, KeyboardAvoidingView} from "react-native"
+import { Modal,  View, TextInput, Text, Image,  TouchableOpacity,  ScrollView, KeyboardAvoidingView} from "react-native"
 import styles from '../styles/groceryStyles.js';
 import {database, auth} from '../config/firebase';
-import { collection, addDoc,setDoc, getDocs, doc, query, where, deleteDoc, updateDoc, onSnapshot, getDoc } from '@firebase/firestore';
+import { collection, getDocs, doc, deleteDoc, updateDoc, onSnapshot, getDoc } from '@firebase/firestore';
 import  AccordionListItem  from '../components/AccordionListitem';
 import createNewGroceryList from "../components/createNewGroceryList.js";
 
@@ -23,14 +23,16 @@ export default function Grocery({navigation}){
   const [accordionContentHeight, setAccordionContentHeight] = useState(0);
 
   const [importedDb, setImportedDb] = useState([]);
- 
+ const [userData2, setUserData2] = useState({});
+ const [refresh, setRefresh] = useState(false);
   let userLists={};
   let userData={};
+  let testData='ricknmorty'
 
   const RemoveItem = async(item)=> {
     const userRef = doc(database, "users", user.uid);
    
-    const grocerylistRef = collection(userRef, 'grocerylists', 'yourgrocerylist', 'items');
+    const grocerylistRef = collection(userRef, 'grocerylists', userData.currentlist, 'items');
     await deleteDoc(doc(grocerylistRef,item.id));
   }
 
@@ -45,6 +47,7 @@ if (docSnap.exists()) {
   //console.log("Document data:", docSnap.data());
 
   userData=docSnap.data();
+  setUserData2(docSnap.data());
 } else {
   // docSnap.data() will be undefined in this case
   console.log("No such document!");
@@ -57,11 +60,13 @@ if (docSnap.exists()) {
     
     await fetchUserData();
     const currentList=await userData.currentlist;
-    console.log('FetchLog:', currentList)
+    console.log('FetchLog currentList from UserData', currentList)
+    console.log('FetchLog currentList from UserData2', userData2.currentlist)
+
     try {
 
 
-      const unsub = onSnapshot(collection(doc(database, 'users', user.uid), 'grocerylists', currentList, 'items'), (querySnapshot) => {
+      const unsub = onSnapshot(collection(doc(database, 'users', user.uid), 'grocerylists',userData.currentlist , 'items'), (querySnapshot) => {
         const docs = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
         setImportedDb(docs);
       });
@@ -92,12 +97,13 @@ if (docSnap.exists()) {
 
   useEffect(() => {
     
-      
-        fetchProducts();
+        fetchUserData();
         fetchUserLists();
-
+        fetchProducts();
 
   }, []);
+
+  
 
   const calculateTotalPrice=()=>{
     let totalPrice=0;
@@ -113,8 +119,10 @@ if (docSnap.exists()) {
   };
 
   const changeAmount = async (item, amountString) => {
+    await fetchUserData();
+    console.log('i changeamount:', userData)
     const userRef = doc(database, "users", user.uid);
-    const grocerylistRef = collection(userRef, "grocerylists", 'yourgrocerylist', 'items' );
+    const grocerylistRef = collection(userRef, "grocerylists", userData.currentlist, 'items' );
     const itemDocRef = doc(grocerylistRef, item.id);
   
     let newAmount;
@@ -244,7 +252,7 @@ if (docSnap.exists()) {
             <TouchableOpacity
               style={[styles.button, styles.buttonClose,{backgroundColor: newListName === '' ? 'grey' : '#2196F3'}]}
               disabled={newListName===''}
-              onPress={() =>{ setModalVisible(!modalVisible), createNewGroceryList(newListName); if(newListName.length>0){setnewListName('')}}}>
+              onPress={() =>{ setModalVisible(!modalVisible), createNewGroceryList(newListName), setRefresh(!refresh); if(newListName.length>0){setnewListName('')}}}>
               <Text style={styles.textStyle}>Create!</Text>
             </TouchableOpacity>
           </View>
@@ -281,7 +289,7 @@ return(
 
       <ScrollView style= {{flex: 1}} contentContainerStyle={styles.scrollViewContent}>
         <View style= {{flex:1 }}>
-        <AccordionListItem title="Your Grocery List" content={generateAccordionContent()} titleStyle={styles.title}  inputContentHeight={200}/>
+        <AccordionListItem title={userData2.currentlist} content={generateAccordionContent()} titleStyle={styles.title}  inputContentHeight={200}/>
           
           
 

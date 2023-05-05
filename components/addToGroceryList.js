@@ -1,11 +1,12 @@
 import { collection, doc, getDoc, setDoc, updateDoc } from '@firebase/firestore';
 import { database, auth } from '../config/firebase';
 
-const user = auth.currentUser;
 
 let userData={};
 
 const fetchUserData = async () => {
+  const user = auth.currentUser;
+console.log(user.uid)
 
    
   const docRef = await doc(database, "users", user.uid);
@@ -15,6 +16,7 @@ if (docSnap.exists()) {
 //console.log("Document data:", docSnap.data());
 
 userData=docSnap.data();
+console.log(userData)
 } else {
 // docSnap.data() will be undefined in this case
 console.log("No such document!");
@@ -24,7 +26,7 @@ console.log("No such document!");
 const addToGroceryList = async (item) => {
     await fetchUserData();
     console.log(userData)
-    const user = auth.currentUser;
+    const user = await auth.currentUser;
   const userRef = doc(database, 'users', user.uid);
 
   const yourGroceryListsRef = collection(userRef, 'grocerylists');
