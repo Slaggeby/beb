@@ -4,6 +4,7 @@ import React, {useState} from "react";
 import {StyleSheet, View, TextInput, Button, Text, Image, SafeAreaView, TouchableOpacity, StatusBar, Alert} from "react-native"
 const backImage = require("../assets/bebLogo.png");
 import styles from '../styles/signupStyles.js';
+import createNewGroceryList from "../components/createNewGroceryList.js";
 
 import { database, auth } from '../config/firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
@@ -38,8 +39,10 @@ export default function Signup({navigation}){
         await setDoc(userRef, {
           name: name,
           email: user.email
-        });
-  
+        }
+        );
+        createNewGroceryList('');
+
         // const grocerylistRef = collection(userRef, "grocerylist");
         // await setDoc(doc(grocerylistRef), {
           
