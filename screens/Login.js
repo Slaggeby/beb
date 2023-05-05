@@ -1,5 +1,5 @@
 import React, { useState, createContext, useContext, useEffect } from 'react';
-import { StyleSheet, Text, View, Button, TextInput, Image, SafeAreaView, TouchableOpacity, StatusBar, Alert, KeyboardAvoidingView, } from "react-native";
+import { StyleSheet, Text, View, Button, TextInput, Image, SafeAreaView, TouchableOpacity, StatusBar, Alert, KeyboardAvoidingView,Keyboard } from "react-native";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config/firebase";
 import styles from '../styles/LoginStyles.js';
@@ -17,7 +17,20 @@ export default function Login({ navigation }) {
   
   const email="test@test.se"
   const password="123456"
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
+
+
+
+  useEffect(() => {
+    Keyboard.addListener('keyboardDidShow', () => setKeyboardVisible(true));
+    Keyboard.addListener('keyboardDidHide', () => setKeyboardVisible(false));
   
+    // cleanup function
+    return () => {
+      Keyboard.removeListener('keyboardDidShow');
+      Keyboard.removeListener('keyboardDidHide');
+    };
+  }, []);
 
   const onHandleLogin = async() => {
     try {
@@ -42,8 +55,11 @@ export default function Login({ navigation }) {
   return (
     <View style={styles.container}>
       
-      <Image source={backImage} style={styles.backImage} />
       
+      {!keyboardVisible && <Image style={styles.backImage} source={require("../assets/bebLogo.png")} />}
+
+
+
       <View style={styles.whiteSheet} />
       <SafeAreaView style={styles.form}>
         <Text style={styles.title}>Log In</Text>
@@ -53,7 +69,7 @@ export default function Login({ navigation }) {
         autoCapitalize="none"
         keyboardType="email-address"
         textContentType="emailAddress"
-        autoFocus={true}
+        
         value={email}
         onChangeText={(text) => setEmail(text)}
       />
