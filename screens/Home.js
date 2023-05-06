@@ -23,6 +23,7 @@ export default function Home({navigation}){
   const [showAllProducts, setShowAllProducts] = useState(false);
   const [firstProductRenderedICA, setfirstProductRenderedICA] = useState(false)
   const [viewHeight, setViewHeight] = useState(0);
+  
   const toggleShowAllProductsFunction = () =>{
     setShowAllProducts (!showAllProducts)
     setfirstProductRenderedICA((current) => !current);
@@ -31,7 +32,7 @@ export default function Home({navigation}){
   const ToggleShowProductButtonFunction = () =>{
     if (!showAllProducts){
       return (
-        <TouchableOpacity onPress ={()=>toggleShowAllProductsFunction()} style={{paddingBottom:8}}>
+        <TouchableOpacity onPress ={()=>toggleShowAllProductsFunction()}>
           <Image source={moreICA} style ={styles.iconImage} />
         </TouchableOpacity>    
       )}
@@ -148,7 +149,7 @@ export default function Home({navigation}){
                     )}
               })}
 
-                <View style={{ flexWrap: 'wrap', alignItems: 'flex-start', alignContent:"center" }}>
+                <View style={{ flexWrap: 'wrap', alignItems: 'flex-start', alignContent:"center", paddingBottom:8 }}>
                   <ToggleShowProductButtonFunction/>
                 </View>
             </View>
