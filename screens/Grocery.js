@@ -1,55 +1,109 @@
 import React, {useEffect,useState} from "react";
-import { FlatList, StyleSheet, View, TextInput, Button, Text, Image, SafeAreaView, TouchableOpacity, StatusBar, ScrollView, Pressable} from "react-native"
-
-
-import {database, auth, s} from '../config/firebase';
-import { collection, addDoc,setDoc, getDocs, doc, query, where, deleteDoc, updateDoc, onSnapshot, getDoc } from '@firebase/firestore';
+import { Modal,  View, TextInput, Text, Image,  TouchableOpacity,  ScrollView, KeyboardAvoidingView} from "react-native"
+import styles from '../styles/groceryStyles.js';
+import {database, auth} from '../config/firebase';
+import { collection, getDocs, doc, deleteDoc, updateDoc, onSnapshot, getDoc } from '@firebase/firestore';
+import  AccordionListItem  from '../components/AccordionListitem';
+import createNewGroceryList from "../components/createNewGroceryList.js";
 
 const backImage = require("../assets/bebLogo.png");
-const listIcon=require('../assets/list-icon.png')
+const listIcon=require('../assets/list.png')
+const homeIcon=require('../assets/home.png')
+const searchIcon=require('../assets/search.png')
+const accountIcon=require('../assets/account.png')
 const willysLogo =require("../assets/Willys-logotyp.png")
 const icaLogo =require("../assets/ICA-logotyp.png")
 const coopLogo =require("../assets/coop-logotyp.png")
 
-export default function Home({navigation}){
-
+export default function Grocery({navigation}){
   const user = auth.currentUser;
-  const [totalPrice,setTotalPrice]=useState('');
-   
- 
+  
+  const [newListName,setnewListName]=useState('');
+  const [modalVisible, setModalVisible] = useState(false);
+  const [accordionContentHeight, setAccordionContentHeight] = useState(0);
 
   const [importedDb, setImportedDb] = useState([]);
+ const [userData2, setUserData2] = useState({});
+ const [refresh, setRefresh] = useState(false);
+  let userLists={};
+  let userData={};
+  let testData='ricknmorty'
 
   const RemoveItem = async(item)=> {
     const userRef = doc(database, "users", user.uid);
    
-    const grocerylistRef = collection(userRef, "grocerylist");
+    const grocerylistRef = collection(userRef, 'grocerylists', userData.currentlist, 'items');
     await deleteDoc(doc(grocerylistRef,item.id));
   }
 
 
+  const fetchUserData = async () => {
+      console.log("fetchuserData ran")
+   
+      const docRef = await doc(database, "users", user.uid);
+      const docSnap = await getDoc(docRef);
+
+if (docSnap.exists()) {
+  //console.log("Document data:", docSnap.data());
+
+  userData=docSnap.data();
+  setUserData2(docSnap.data());
+} else {
+  // docSnap.data() will be undefined in this case
+  console.log("No such document!");
+}
+  }
 
 
 
-
-  
   const fetchProducts = async () => {
+    
+    await fetchUserData();
+    const currentList=await userData.currentlist;
+    console.log('FetchLog currentList from UserData', currentList)
+    console.log('FetchLog currentList from UserData2', userData2.currentlist)
+
     try {
-      const unsub = onSnapshot(collection(doc(database, "users", user.uid), "grocerylist"), (querySnapshot) => {
+
+
+      const unsub = onSnapshot(collection(doc(database, 'users', user.uid), 'grocerylists',userData.currentlist , 'items'), (querySnapshot) => {
         const docs = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
         setImportedDb(docs);
-        
       });
       return unsub;
     } catch (error) {
-      console.error("Error fetching products:", error);
+      console.error('Error fetching products:', error);
       throw error;
     }
   };
 
+
+  const fetchUserLists = async () => {
+    const colRef = collection(database, "users", user.uid, "grocerylists");
+    const querySnapshot = await getDocs(colRef);
+  
+    if (querySnapshot.empty) {
+      console.log("No grocery lists found");
+      return;
+    }
+  
+    const lists = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+    console.log("User's grocery lists:", lists);
+  
+    userLists = lists;
+  };
+  
+ 
+
   useEffect(() => {
-    fetchProducts();
+    
+        fetchUserData();
+        fetchUserLists();
+        fetchProducts();
+
   }, []);
+
+  
 
   const calculateTotalPrice=()=>{
     let totalPrice=0;
@@ -62,12 +116,13 @@ export default function Home({navigation}){
     <Text style = {styles.title}>Your total cost: {Math.round(totalPrice)} kr</Text>
     </View>
     )
-
   };
 
   const changeAmount = async (item, amountString) => {
+    await fetchUserData();
+    console.log('i changeamount:', userData)
     const userRef = doc(database, "users", user.uid);
-    const grocerylistRef = collection(userRef, "grocerylist");
+    const grocerylistRef = collection(userRef, "grocerylists", userData.currentlist, 'items' );
     const itemDocRef = doc(grocerylistRef, item.id);
   
     let newAmount;
@@ -90,8 +145,6 @@ export default function Home({navigation}){
     );
   };
 
-
-
   const generateAmountView=(item)=>{
 
     return(
@@ -103,6 +156,8 @@ export default function Home({navigation}){
                 keyboardType="numeric"
                 autoCorrect={false}
                 secureTextEntry={false}
+                color='black'
+                editable={false}
                 value={item.amount.toString()}
                 onChangeText={(text) => changeAmount(item,text)}
               />
@@ -113,12 +168,9 @@ export default function Home({navigation}){
           <Text style={{flexDirection: 'row', alignItems: 'center', alignSelf: 'center', fontSize:24}}>-</Text>
         </TouchableOpacity>
             </View>
-
-
     )
 
   }
-
   const renderBorder= (item)=>{
     innerItem=item.item
     
@@ -153,39 +205,92 @@ export default function Home({navigation}){
       else {return <View style = {{ flex: 1,borderRadius: 5,borderTopRightRadius: 50, backgroundColor: '#fafeff', margin:10, borderColor:"black", borderWidth:12, }}>
       <Image source={{ uri: innerItem.bildurl }} style ={styles.productImage} />
       <Image source={willysLogo} style ={styles.grocerImage} />
-
-      
-            <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {innerItem.id}</Text>
-             
+            <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {innerItem.id}</Text>   
             <Text style={styles.productSubtext}> {innerItem.leverantör}</Text>
             <Text style={styles.productSubtext}>{innerItem.pristext}</Text>
             <Text style={styles.productSubtext}>{innerItem.jmfpris} :-/kg</Text>
-
             {generateAmountView(item)}
             
-    </View>}
+    </View>}  
+    }
+
+   
+
+    const generateAccordionContent=()=>{
       
+    return(
+      <View style={styles.accordionContainer} >
+        <Text style={styles.accordionTitle}>Andra listor
+       </Text>
+
+       
+       <View style={styles.centeredView}>
+       <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : null}
+                style={{ flex: 1 }}>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+          setModalVisible(!modalVisible);
+        }}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+          <TextInput
+        style={styles.input}
+        placeholder="Choose Grocerylist Name!"
+        autoCapitalize="none"
+        keyboardType="default"
+        textContentType="none"
+        autoFocus={true}
+        value={newListName}
+        onChangeText={(text) => setnewListName(text)}
+        
+        
+      />
+            <TouchableOpacity
+              style={[styles.button, styles.buttonClose,{backgroundColor: newListName === '' ? 'grey' : '#2196F3'}]}
+              disabled={newListName===''}
+              onPress={() =>{ setModalVisible(!modalVisible), createNewGroceryList(newListName), setRefresh(!refresh); if(newListName.length>0){setnewListName('')}}}>
+              <Text style={styles.textStyle}>Create!</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+      </KeyboardAvoidingView >
+      <TouchableOpacity
+        style={[styles.button, styles.buttonOpen]}
+        onPress={() => setModalVisible(true)}>
+        <Text style={styles.textStyle}>New Grocerylist</Text>
+      </TouchableOpacity>
+    </View>
     
+       <Text>
+       {"\n"}
+       </Text>
+       
+      </View>
+)
     }
 
 return(
-
-    
     <View style={styles.container}>
 
       <View style={{}}>
         <Image source={backImage} style={styles.bebLogo} />
         {calculateTotalPrice()}
+
+      
+        
       </View>
 
+      
+
       <ScrollView style= {{flex: 1}} contentContainerStyle={styles.scrollViewContent}>
-        
-
-
-
         <View style= {{flex:1 }}>
-
-          <Text style = {styles.title}>Your Grocery List</Text>
+        <AccordionListItem title={userData2.currentlist} content={generateAccordionContent()} titleStyle={styles.title}  inputContentHeight={200}/>
+          
           
 
         </View> 
@@ -193,181 +298,24 @@ return(
         <View >
             {importedDb.map((item) => (
             <View  key={item.id}>
-               { renderBorder(item) }
-            
-              
-             
-              
+               { renderBorder(item) } 
             </View>
       ))}
       </View>
-
-
-        
       </ScrollView>
-
-
-
                   <View style ={styles.footerbuttonContainer}>
-                    <TouchableOpacity  onPress={() => navigation.navigate("Home")}>
-                    <Text style={styles.footerbutton}>⌂</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity  onPress={() => navigation.navigate("Account")}>
-                    <Text style={styles.footerbutton}>Account</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity  onPress={() => navigation.navigate("Grocery")}>
-                    <Image source={listIcon} style ={styles.iconImage} />
-                    </TouchableOpacity>
-                    <TouchableOpacity  onPress={() => navigation.navigate("Search")}>
-                    <Text style={styles.footerbutton}>🔍</Text>
-                    </TouchableOpacity>
-
+                  <TouchableOpacity  onPress={() => navigation.navigate("Home")}>
+                  <Image source={homeIcon} style ={styles.iconImage} />
+                  </TouchableOpacity>
+                  <TouchableOpacity  onPress={() => navigation.navigate("Search")}>
+                  <Image source={searchIcon} style ={styles.iconImage} />
+                  </TouchableOpacity>
+                  <TouchableOpacity  onPress={() => navigation.navigate("Grocery")}>
+                  <Image source={listIcon} style ={styles.iconImage} />
+                  </TouchableOpacity>
+                  <TouchableOpacity  onPress={() => navigation.navigate("Account")}>
+                  <Image source={accountIcon} style ={styles.iconImage} />
+                  </TouchableOpacity>
                   </View>
-
         </View>
-
-)
-
-}
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor:"#F9EFEB"
-        
-  
-        
-      },
-  
-      scrollViewContent: {
-        flexGrow: 1,
-      },
-  
-      title: {
-        fontSize: 26,
-        fontWeight: 'bold',
-        color: "#D82401",
-        marginLeft:10,
-        marginTop:10,
-        marginBottom:10,
-        
-      },
-      productSubtext: 
-      { fontWeight:"bold",
-       left:150,
-       fontSize:15
-      },
-  
-  
-      input: {
-        backgroundColor: "#F6F7FB",
-        height: 58,
-        marginBottom: 20,
-        fontSize: 16,
-        borderRadius: 10,
-        padding: 12,
-        marginTop:25,
-        
-      },
-      amountField: {
-        marginLeft:295,
-        width: 100,
-        height:40,
-        fontSize:24
-      },
-
-      changeAmountButtonplus:{
-        width:40,
-        height:40,
-        backgroundColor:"#d6e6ff",
-        borderRadius:10,
-        position: "absolute",
-        marginLeft:320
-      },
-      changeAmountButtonminus:{
-        width:40,
-        height:40,
-        backgroundColor:"#d6e6ff",
-        borderRadius:10,
-        position: "absolute",
-        marginLeft:240
-      },
-
-      bebLogo: {
-        
-        width: "100%",
-        height: 50,
-        top: 10,
-        resizeMode: 'contain',
-        
-      },
-      grocerImage:{
-          position: "absolute",
-        top: 50,
-        right:2,
-        resizeMode: 'contain',
-        width:70,
-        height:70,
-  
-      },
-      iconImage:{
-        
-        top:2,
-        width:40,
-        height:40,
-  
-      },
-  
-      productImage:{
-        position: "absolute",
-      top: 5,
-      left:0,
-      resizeMode: 'cover',
-      width:70,
-      height:70,
-  
-    },
-      whiteSheet: {
-        width: '100%',
-        height: '75%',
-        position: "absolute",
-        bottom: 0,
-        backgroundColor: '#fff',
-        borderTopLeftRadius: 60,
-      },
-      form: {
-        flex: 1,
-        justifyContent: 'center',
-        marginHorizontal: 30,
-      },
-      button: {
-        backgroundColor: 'red',
-        height: 58,
-        borderRadius: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 40,
-        
-      },
-      footerbuttonContainer:{
-        borderTopLeftRadius: 10,
-        borderTopRightRadius: 10,
-        position:"absolute",
-        bottom:0,
-        flex:0.3,
-        backgroundColor:"#D82401",
-        flexDirection:"row",
-        justifyContent:"space-evenly",
-        width:"100%"
-  
-        
-  
-      },
-      footerbutton:{
-        color: 'black', 
-        fontWeight: '600', 
-        fontSize: 20,
-        margin:10
-        
-      },
-})
+)}

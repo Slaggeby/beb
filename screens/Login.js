@@ -1,20 +1,29 @@
 import React, { useState, createContext, useContext, useEffect } from 'react';
-import { StyleSheet, Text, View, Button, TextInput, Image, SafeAreaView, TouchableOpacity, StatusBar, Alert } from "react-native";
+import { StyleSheet, Text, View, Button, TextInput, Image, SafeAreaView, TouchableOpacity, StatusBar, Alert, KeyboardAvoidingView,Keyboard } from "react-native";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config/firebase";
-const backImage = require("../assets/bebLogo.png");
+import styles from '../styles/LoginStyles.js';
 
+const backImage = require("../assets/bebLogo.png");
 
 export default function Login({ navigation }) {
 
-
-  //this is the real login fields, the other ones are just for ease
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-  
   const email="test@test.se"
   const password="123456"
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
+
+
+
+  useEffect(() => {
+    Keyboard.addListener('keyboardDidShow', () => setKeyboardVisible(true));
+    Keyboard.addListener('keyboardDidHide', () => setKeyboardVisible(false));
   
+    // cleanup function
+    return () => {
+      Keyboard.removeListener('keyboardDidShow');
+      Keyboard.removeListener('keyboardDidHide');
+    };
+  }, []);
 
   const onHandleLogin = async() => {
     try {
@@ -22,23 +31,26 @@ export default function Login({ navigation }) {
         await signInWithEmailAndPassword(auth, email, password);
         const user = auth.currentUser;
         if (user){ 
-
-          console.log("Login success"),
-          //Navigate homescreen
+          //console.log("Login success"),
           navigation.navigate("Home")
 
         } 
         
       }
-    } catch (err) {
+    } 
+    catch (err) {
       Alert.alert("Login error", err.message);
     }
   };
   
-  
   return (
     <View style={styles.container}>
-      <Image source={backImage} style={styles.backImage} />
+      
+      
+      {!keyboardVisible && <Image style={styles.backImage} source={require("../assets/bebLogo.png")} />}
+
+
+
       <View style={styles.whiteSheet} />
       <SafeAreaView style={styles.form}>
         <Text style={styles.title}>Log In</Text>
@@ -48,7 +60,7 @@ export default function Login({ navigation }) {
         autoCapitalize="none"
         keyboardType="email-address"
         textContentType="emailAddress"
-        autoFocus={true}
+        
         value={email}
         onChangeText={(text) => setEmail(text)}
       />
@@ -66,76 +78,15 @@ export default function Login({ navigation }) {
         <Text style={{fontWeight: 'bold', color: '#FFFFFF', fontSize: 18}}> Log In</Text>
       </TouchableOpacity>
 
-      <View style={{marginTop: 20, flexDirection: 'row', alignItems: 'center', alignSelf: 'center'}}>
-        <Text style={{color: 'gray', fontWeight: '600', fontSize: 14}}>Don't have an account? </Text>
-        <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
-          <Text style={{color: '#E7141F', fontWeight: '600', fontSize: 14}}> Sign Up</Text>
-        </TouchableOpacity>
-      </View>
-      
+
+        <View style={{marginTop: 20, flexDirection: 'row', alignItems: 'center', alignSelf: 'center'}}>
+          <Text style={{color: 'gray', fontWeight: '600', fontSize: 14}}>Don't have an account? </Text>
+          <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
+            <Text style={{color: '#E7141F', fontWeight: '600', fontSize: 14}}> Sign Up</Text>
+          </TouchableOpacity>
+        </View>
       </SafeAreaView>
       <StatusBar barStyle="light-content" />
-    
-     {/* <Button
-      style={{fontSize: 20, color: 'green'}}
-        onPress={() => navigation.navigate("Account")}
-        title="Navigate to Account">
-      </Button>
-
-      <Button
-            style={{fontSize: 20, color: 'green'}}
-              onPress={() => navigation.navigate("Home")}
-              title="Navigate to Home">
-      </Button> */}
-
     </View>
   );
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#FFFFFF",
-  },
-  title: {
-    fontSize: 36,
-    fontWeight: 'bold',
-    color: "#B4131B",
-    alignSelf: "center",
-    paddingBottom: 24,
-  },
-  input: {
-    backgroundColor: "#FEF5F5",
-    height: 58,
-    marginBottom: 20,
-    fontSize: 16,
-    borderRadius: 10,
-    padding: 12,
-  },
-  backImage: {
-    width: "100%",
-    height: 150,
-    top: 30,
-    resizeMode: 'contain',
-  },
-  whiteSheet: {
-    width: '100%',
-    height: '75%',
-    position: "absolute",
-    bottom: 0,
-    backgroundColor: '#FFFFFF',
-    borderTopLeftRadius: 60,
-  },
-  form: {
-    flex: 1,
-    justifyContent: 'center',
-    marginHorizontal: 30,
-  },
-  button: {
-    backgroundColor: '#CB131C',
-    height:58,
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 40,
-  },
-});

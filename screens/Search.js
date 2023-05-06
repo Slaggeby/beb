@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import {SafeAreaView,Text, StyleSheet,View,FlatList,TextInput, Image,TouchableOpacity, TouchableOpacityComponent} from 'react-native';
-
+import styles from '../styles/searchStyles.js';
 import { collection, addDoc, getDocs,setDoc, doc, getDoc } from '@firebase/firestore';
 import {database, auth} from '../config/firebase';
-
+import addToGroceryList from "../components/addToGroceryList.js";
 
 const backImage = require("../assets/bebLogo.png");
 const willysLogo =require("../assets/Willys-logotyp.png")
 const icaLogo =require("../assets/ICA-logotyp.png")
 const coopLogo =require("../assets/coop-logotyp.png")
-const listIcon=require('../assets/list-icon.png')
-
-
+const listIcon=require('../assets/list.png')
+const homeIcon=require('../assets/home.png')
+const searchIcon=require('../assets/search.png')
+const accountIcon=require('../assets/account.png')
 
 export default function Search({navigation}) {
     const [search, setSearch] = useState('');
@@ -19,14 +20,17 @@ export default function Search({navigation}) {
     const [masterDataSource, setMasterDataSource] = useState([]);
     const [JSONLIST, setJSONLIST] = useState('');
     const [importedDb, setImportedDb] = useState([]);
-    const user = auth.currentUser;
+    
    
     const [showCOOP, setShowCOOP] = useState(true)
     const [showICA, setShowICA] = useState(true)
     const [showWILLYS, setShowWILLYS] = useState(true)
+    const [showOnSale, setShowOnSale] = useState(true)
+
 
     const sortCOOP = () =>{ 
       setShowCOOP(!showCOOP);
+      console.log("showCOOP", showCOOP)
     };
     const sortICA = () =>{ 
       setShowICA(!showICA);
@@ -35,39 +39,27 @@ export default function Search({navigation}) {
       setShowWILLYS(!showWILLYS);
     };
 
+    const sortOnSale = () => {
+      setShowOnSale(!showOnSale)
+      console.log("showOnSale: ",showOnSale)
+    }
 
+    
 
 
 
     
-  const addToGroceryList = async (item) =>{
-  
-    const userRef = doc(database, "users", user.uid);
-    const grocerylistRef = collection(userRef, "grocerylist");
-    const itemDocRef=doc(grocerylistRef,item.id);
-    const itemDoc = await getDoc(itemDocRef);
 
-    if (itemDoc.exists()){ 
-        console.log('it works')
-        const existingAmount = itemDoc.data().amount;
-        await setDoc(itemDocRef, { item: item, amount: existingAmount + 1 })
-    }
-    else{
 
-    await setDoc(doc(grocerylistRef,item.id), {
-      item: item,
-      amount: 1
-    });
-}
-
-  }
-
-    const fetchProducts = async () => {
-        try {
+  const fetchProducts = async () => {
+    try {
           const querySnapshot = await getDocs(collection(database, "products"));
           const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
          
           setImportedDb(newData);
+
+
+
 
           let DataList = [];
           mappedData= newData.map((item) => {
@@ -75,22 +67,17 @@ export default function Search({navigation}) {
              DataList.push(item)
           })
      
-        setJSONLIST(JSON.stringify(DataList));
-    
-          
-        
-
-            
-        } catch (error) {
-          console.error("Error fetching products:", error);
-          throw error;
+        setJSONLIST(JSON.stringify(DataList));  
+      } 
+      catch (error) {
+        console.error("Error fetching products:", error);
+        throw error;
         }
-      };
+  };
 
       useEffect(() => {
         fetchProducts();
       }, []);
-
 
 
       useEffect(() => {
@@ -98,10 +85,11 @@ export default function Search({navigation}) {
           const responseJson = JSON.parse(JSONLIST);
           setFilteredDataSource(responseJson);
           setMasterDataSource(responseJson);
+          //console.log(responseJson)
         }
         
       }, [JSONLIST])
-
+      // you are not allowed to add red paprika to the database, it will not work. We do not know why. 
       const searchFilterFunction = (text) => {
         // Check if searched text is not blank
         if (text) {
@@ -112,20 +100,33 @@ export default function Search({navigation}) {
             
             function (item) {
              
-              const itemData = item.id
-                ? item.id.toUpperCase()
+              const itemData = item.titel
+                ? item.titel.toUpperCase()
                 : ''.toUpperCase();
               const textData = text.toUpperCase();
-              
-              return itemData.indexOf(textData) > -1 &&
-              (!showCOOP || item.butik ==="COOP" );
+              const isCOOP = showCOOP && item.butik === "COOP";
+              const isICA = showICA && item.butik === "ICA";
+              const isWILLYS = showWILLYS && item.butik === "willys";
+              console.log("showOnSale in filter",showOnSale)
+              console.log("onsale", item.onsale)
+              const isSale = showOnSale && item.onsale
+
+              return (
+                itemData.indexOf(textData) > -1 && (isCOOP || isICA || isWILLYS ||isSale )
+              );
+
+
+
+
           });
           setFilteredDataSource(newData);
+          //console.log(newData)
           setSearch(text);
         } else {
           // Inserted text is blank
           // Update FilteredDataSource with masterDataSource
           setFilteredDataSource(masterDataSource);
+          
           setSearch(text);
         }
       };
@@ -138,7 +139,7 @@ export default function Search({navigation}) {
             <View>
               <View style={styles.itemCointainerCOOP}>
               <Text style={styles.itemTitle}>
-                {item.id}
+                {item.titel}
               </Text>
 
               <Text style={styles.productSubtext}>
@@ -174,7 +175,7 @@ export default function Search({navigation}) {
                     <View>
                   <View style={styles.itemCointainerICA}>
                   <Text style={styles.itemTitle}>
-                    {item.id}
+                    {item.titel}
                   </Text>
 
                   <Text style={styles.productSubtext}>
@@ -208,7 +209,7 @@ export default function Search({navigation}) {
               <View>
                 <View style={styles.itemCointainerWILLYS}>
               <Text style={styles.itemTitle}>
-                {item.id}
+                {item.titel}
               </Text>
 
               <Text style={styles.productSubtext}>
@@ -240,9 +241,6 @@ export default function Search({navigation}) {
                 
         }
 
-
-
-
       const ItemSeparatorView = () => {
         return (
           // Flat List Item Separator
@@ -256,22 +254,12 @@ export default function Search({navigation}) {
         );
       };
 
-      
-
-
-
-
 return(
 <SafeAreaView style={{flex: 1}}>
         <View style={{}}>
           <Image source={backImage} style={styles.bebLogo} />
         </View>
       <View style={styles.container}>
-        
-        
-        
-       
-  
         <TextInput
           style={styles.textInputStyle}
           onChangeText={(text) => searchFilterFunction(text)}
@@ -279,31 +267,41 @@ return(
           underlineColorAndroid="transparent"
           placeholder="Search Here"
         />
-        <View style={{justifyContent:"center", flexDirection:"row"}}>
+      <View style={{justifyContent:"center", flexDirection:"row"}}>
               <View style={{height:50, width:50, justifyContent:"space-evenly"}}>
-                <Text> COOP</Text>
-                <TouchableOpacity onPress={()=>sortCOOP()} style={{backgroundColor:"white",width:15,left:20,borderColor:"black",borderWidth:1,}}>
-                  
-                <Text style={{color:"black"}}>{showCOOP ? '✓' : ' '}</Text>
-                </TouchableOpacity>
+                  <Text> COOP</Text>
+                  <TouchableOpacity onPress={()=>sortCOOP()} style={{backgroundColor:"white",width:15,left:20,borderColor:"black",borderWidth:1,}}>
+                    
+                  <Text style={{color:"black"}}>{showCOOP ? '✓' : ' '}</Text>
+                  </TouchableOpacity>
               </View>
 
               <View style={{height:50, width:50, justifyContent:"space-evenly"}}>
-                <Text> ICA</Text>
-                <TouchableOpacity onPress={()=>sortICA()} style={{backgroundColor:"white",width:15,left:20,borderColor:"black",borderWidth:1,}}>
-                  
-                <Text style={{color:"black"}}>{showICA ? '✓' : ' '}</Text>
-                </TouchableOpacity>
+                  <Text> ICA</Text>
+                  <TouchableOpacity onPress={()=>sortICA()} style={{backgroundColor:"white",width:15,left:20,borderColor:"black",borderWidth:1,}}>
+                    
+                  <Text style={{color:"black"}}>{showICA ? '✓' : ' '}</Text>
+                  </TouchableOpacity>
               </View>
 
 
               <View style={{height:50, width:50, justifyContent:"space-evenly"}}>
-                <Text> Willys</Text>
-                <TouchableOpacity onPress={()=>sortWILLYS()} style={{backgroundColor:"white",width:15,left:20,borderColor:"black",borderWidth:1,}}>
-                  
-                <Text style={{color:"black"}}>{showWILLYS ? '✓' : ' '}</Text>
-                </TouchableOpacity>
+                  <Text> Willys</Text>
+                  <TouchableOpacity onPress={()=>sortWILLYS()} style={{backgroundColor:"white",width:15,left:20,borderColor:"black",borderWidth:1,}}>
+                    
+                  <Text style={{color:"black"}}>{showWILLYS ? '✓' : ' '}</Text>
+                  </TouchableOpacity>
               </View>
+
+              <View style={{height:50, width:50, justifyContent:"space-evenly"}}>
+                  <Text> OnSale </Text>
+                  <TouchableOpacity onPress={()=>sortOnSale()} style={{backgroundColor:"white",width:15,left:20,borderColor:"black",borderWidth:1,}}>
+                    
+                  <Text style={{color:"black"}}>{showOnSale ? '✓' : ' '}</Text>
+                  </TouchableOpacity>
+              </View>
+
+
           </View>
 
 
@@ -316,147 +314,20 @@ return(
        
       </View>
       <View style ={styles.footerbuttonContainer}>
-                    <TouchableOpacity  onPress={() => navigation.navigate("Home")}>
-                    <Text style={styles.footerbutton}>⌂</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity  onPress={() => navigation.navigate("Account")}>
-                    <Text style={styles.footerbutton}>Account</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity  onPress={() => navigation.navigate("Grocery")}>
-                    <Image source={listIcon} style ={styles.iconImage} />
-                    </TouchableOpacity>
-                    <TouchableOpacity  onPress={() => navigation.navigate("Search")}>
-                    <Text style={styles.footerbutton}>🔍</Text>
-                    </TouchableOpacity>
+          <TouchableOpacity  onPress={() => navigation.navigate("Home")}>
+          <Image source={homeIcon} style ={styles.iconImage} />
+          </TouchableOpacity>
+          <TouchableOpacity  onPress={() => navigation.navigate("Search")}>
+          <Image source={searchIcon} style ={styles.iconImage} />
+          </TouchableOpacity>
+          <TouchableOpacity  onPress={() => navigation.navigate("Grocery")}>
+          <Image source={listIcon} style ={styles.iconImage} />
+          </TouchableOpacity>
+          <TouchableOpacity  onPress={() => navigation.navigate("Account")}>
+          <Image source={accountIcon} style ={styles.iconImage} />
+          </TouchableOpacity>
 
-                  </View>
+        </View>
     </SafeAreaView>
 )
 }
-const styles = StyleSheet.create({
-    container: {
-      backgroundColor: 'white',
-    },
-
-    footerbuttonContainer:{
-      borderTopLeftRadius: 10,
-      borderTopRightRadius: 10,
-      position:"absolute",
-      bottom:0,
-      height:50,
-      backgroundColor:"#D82401",
-      flexDirection:"row",
-      justifyContent:"space-evenly",
-      width:"100%"
-
-    },
-    footerbutton:{
-      color: 'black', 
-      fontWeight: '600', 
-      fontSize: 20,
-      margin:10
-      
-    },
-
-    itemCointainerCOOP:{
-      borderRadius: 5,
-      borderColor:"#00AA46", 
-      borderWidth:7,
-
-      flex:1,
-      backgroundColor:"#F9EFEB",
-      padding: 10, 
-      borderRadius: 35,
-      margin:10,
-    },
-    itemCointainerICA:{
-      borderRadius: 5,
-      borderColor:"rgba(232,23,0,255)", 
-      borderWidth:7,
-      flex:1,
-      backgroundColor:"#F9EFEB",
-      padding: 10, 
-      borderRadius: 35,
-      margin:10,
-    },
-    itemCointainerWILLYS:{
-      borderRadius: 5,
-      borderColor:"black", 
-      borderWidth:7,
-      flex:1,
-      backgroundColor:"#F9EFEB",
-      padding: 10, 
-      borderRadius: 35,
-      margin:10,
-    },
-    itemTitle: {
-      padding: 10,
-      height:50,
-      fontSize:20,
-      top:0,
-      left:25,
-      
-    },
-    button: {
-      backgroundColor: '#CB131C',
-      height:38,
-      width:100,
-      left:260,
-      borderRadius: 10,
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginTop: 15,
-      
-    },
-    iconImage:{
-        
-        top:2,
-        width:40,
-        height:40,
-  
-      },
-    bebLogo: {
-      
-      width: "100%",
-      height: 50,
-      top: 10,
-      resizeMode: 'contain',
-      
-    },
-    buttonText:{
-      fontWeight:"bold",
-      color:"white",
-    },
-
-    productSubtext: { 
-    fontWeight:"bold",
-     left:150,
-     fontSize:15
-     
-    },
-    textInputStyle: {
-      height: 40,
-      borderWidth: 1,
-      paddingLeft: 20,
-      margin: 5,
-      borderColor: '#009688',
-      backgroundColor: '#FFFFFF',
-    },
-    productImage:{
-      position: "absolute",
-    bottom:25,
-    left:25,
-    resizeMode: 'cover',
-    width:100,
-    height:100,
-  },
-  grocerImage:{
-    position: "absolute",
-  top: 10,
-  right:20,
-  resizeMode: 'contain',
-  width:70,
-  height:70,
-
-},
-  });
