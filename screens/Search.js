@@ -44,22 +44,12 @@ export default function Search({navigation}) {
       console.log("showOnSale: ",showOnSale)
     }
 
-    
-
-
-
-    
-
-
   const fetchProducts = async () => {
     try {
           const querySnapshot = await getDocs(collection(database, "products"));
           const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
          
           setImportedDb(newData);
-
-
-
 
           let DataList = [];
           mappedData= newData.map((item) => {
@@ -89,7 +79,6 @@ export default function Search({navigation}) {
         }
         
       }, [JSONLIST])
-      // you are not allowed to add red paprika to the database, it will not work. We do not know why. 
       const searchFilterFunction = (text) => {
         // Check if searched text is not blank
         if (text) {
@@ -232,8 +221,8 @@ export default function Search({navigation}) {
             <Text style={styles.buttonText}>Add to grocerylist</Text>
           </TouchableOpacity>
           </View>
-                <Image source={willysLogo} style ={styles.grocerImage} />
-              </View>
+            <Image source={willysLogo} style ={styles.grocerImage} />
+          </View>
               
             )
           }
@@ -255,79 +244,89 @@ export default function Search({navigation}) {
       };
 
 return(
-<SafeAreaView style={{flex: 1}}>
-        <View style={{}}>
-          <Image source={backImage} style={styles.bebLogo} />
-        </View>
-      <View style={styles.container}>
-        <TextInput
-          style={styles.textInputStyle}
-          onChangeText={(text) => searchFilterFunction(text)}
-          value={search}
-          underlineColorAndroid="transparent"
-          placeholder="Search Here"
-        />
+  <View style={styles.container}>
+    <View>
+      <Image source={backImage} style={styles.bebLogo} />
+    </View>
+    
+    <View>
+      <Text style = {styles.title}>Search</Text>
+    </View>
+
+    <View>
+      <TextInput
+        style={styles.textInputStyle}
+        onChangeText={(text) => searchFilterFunction(text)}
+        value={search}
+        underlineColorAndroid="transparent"
+        placeholder="Search Here"
+      />
+        
       <View style={{justifyContent:"center", flexDirection:"row"}}>
-              <View style={{height:50, width:50, justifyContent:"space-evenly"}}>
-                  <Text> COOP</Text>
-                  <TouchableOpacity onPress={()=>sortCOOP()} style={{backgroundColor:"white",width:15,left:20,borderColor:"black",borderWidth:1,}}>
-                    
-                  <Text style={{color:"black"}}>{showCOOP ? '✓' : ' '}</Text>
-                  </TouchableOpacity>
-              </View>
-
-              <View style={{height:50, width:50, justifyContent:"space-evenly"}}>
-                  <Text> ICA</Text>
-                  <TouchableOpacity onPress={()=>sortICA()} style={{backgroundColor:"white",width:15,left:20,borderColor:"black",borderWidth:1,}}>
-                    
-                  <Text style={{color:"black"}}>{showICA ? '✓' : ' '}</Text>
-                  </TouchableOpacity>
-              </View>
-
-
-              <View style={{height:50, width:50, justifyContent:"space-evenly"}}>
-                  <Text> Willys</Text>
-                  <TouchableOpacity onPress={()=>sortWILLYS()} style={{backgroundColor:"white",width:15,left:20,borderColor:"black",borderWidth:1,}}>
-                    
-                  <Text style={{color:"black"}}>{showWILLYS ? '✓' : ' '}</Text>
-                  </TouchableOpacity>
-              </View>
-
-              <View style={{height:50, width:50, justifyContent:"space-evenly"}}>
-                  <Text> OnSale </Text>
-                  <TouchableOpacity onPress={()=>sortOnSale()} style={{backgroundColor:"white",width:15,left:20,borderColor:"black",borderWidth:1,}}>
-                    
-                  <Text style={{color:"black"}}>{showOnSale ? '✓' : ' '}</Text>
-                  </TouchableOpacity>
-              </View>
-
-
+        <Text style={{paddingRight:10}}>Filter:</Text>
+        
+        <View style={{height: 20, flexDirection: 'row'}}>
+          <Image source={coopLogo} style ={{resizeMode: 'contain', height:26, width:40}} />
+          <View style={{justifyContent:'center', paddingRight:20}}> 
+            <TouchableOpacity onPress={()=>sortCOOP()} style={{backgroundColor:"white", width:20, height:20, left:8, borderColor:"black", borderWidth: 1, borderRadius: 10}}>
+              <Text style={{color:"black", left:0.5}}> {showCOOP ? '✓' : ' '} </Text>
+            </TouchableOpacity>
           </View>
-
-
-        <FlatList style={{marginBottom:200}}
-          data={filteredDataSource}
-          keyExtractor={(item, index) => index.toString()}
-          ItemSeparatorComponent={ItemSeparatorView}
-          renderItem={renderItems}
-        />
-       
-      </View>
-      <View style ={styles.footerbuttonContainer}>
-          <TouchableOpacity  onPress={() => navigation.navigate("Home")}>
-          <Image source={homeIcon} style ={styles.iconImage} />
-          </TouchableOpacity>
-          <TouchableOpacity  onPress={() => navigation.navigate("Search")}>
-          <Image source={searchIcon} style ={styles.iconImage} />
-          </TouchableOpacity>
-          <TouchableOpacity  onPress={() => navigation.navigate("Grocery")}>
-          <Image source={listIcon} style ={styles.iconImage} />
-          </TouchableOpacity>
-          <TouchableOpacity  onPress={() => navigation.navigate("Account")}>
-          <Image source={accountIcon} style ={styles.iconImage} />
-          </TouchableOpacity>
-
+          
         </View>
-    </SafeAreaView>
-)
+
+        <View style={{height: 20, flexDirection: 'row'}}>
+        <Image source={icaLogo} style ={{resizeMode: 'contain', height:20, width:40}} />
+          <View style={{justifyContent:'center', paddingRight:20}}> 
+            <TouchableOpacity onPress={()=>sortICA()} style={{backgroundColor:"white", width:20, height:20, left:8, borderColor:"black", borderWidth: 1, borderRadius: 10}}>
+              <Text style={{color:"black", left:0.5}}> {showICA ? '✓' : ' '} </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <View style={{height: 20, flexDirection: 'row'}}>
+        <Image source={willysLogo} style ={{resizeMode: 'contain', height:50, width:50, bottom:15}} />
+          <View style={{justifyContent:'center', paddingRight:20}}> 
+            <TouchableOpacity onPress={()=>sortWILLYS()} style={{backgroundColor:"white", width:20, height:20, left:8, borderColor:"black", borderWidth: 1, borderRadius: 10}}>
+              <Text style={{color:"black", left:0.5}}> {showWILLYS ? '✓' : ' '} </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <View style={{height: 20, flexDirection: 'row'}}>
+        {/* <Image source={willysLogo} style ={{resizeMode: 'contain', height:50, width:50, bottom:15}} /> */}
+        <Text>On Sale</Text>
+          <View style={{justifyContent:'center', paddingRight:20}}> 
+            <TouchableOpacity onPress={()=>sortOnSale()} style={{backgroundColor:"white", width:20, height:20, left:8, borderColor:"black", borderWidth: 1, borderRadius: 10}}>
+              <Text style={{color:"black", left:0.5}}> {showOnSale ? '✓' : ' '} </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+
+      <FlatList style={{marginBottom:200}}
+        data={filteredDataSource}
+        keyExtractor={(item, index) => index.toString()}
+        ItemSeparatorComponent={ItemSeparatorView}
+        renderItem={renderItems}
+      />
+    </View>
+
+    <View style ={styles.footerbuttonContainer}>
+      <TouchableOpacity  onPress={() => navigation.navigate("Home")}>
+        <Image source={homeIcon} style ={styles.iconImage} />
+      </TouchableOpacity>
+      <TouchableOpacity  onPress={() => navigation.navigate("Search")}>
+        <Image source={searchIcon} style ={styles.iconImage} />
+      </TouchableOpacity>
+      <TouchableOpacity  onPress={() => navigation.navigate("Grocery")}>
+        <Image source={listIcon} style ={styles.iconImage} />
+      </TouchableOpacity>
+      <TouchableOpacity  onPress={() => navigation.navigate("Account")}>
+        <Image source={accountIcon} style ={styles.iconImage} />
+      </TouchableOpacity>
+    </View>
+
+  </View>
+  )
 }

@@ -118,11 +118,11 @@ export default function Home({navigation}){
     
    return(
     <View style={styles.container}>
-        <View >
+        <View>
         <Image source={backImage} style={styles.bebLogo} />
         </View>
         <View style= {{ }}>
-          <Text style = {styles.title}>Current Offers</Text>
+          <Text style = {styles.title}>Store Offers</Text>
         </View> 
 
         <ScrollView style= {{flexGrow: 1, }} contentContainerStyle={styles.scrollViewContent}>
@@ -205,8 +205,6 @@ export default function Home({navigation}){
           <TouchableOpacity  onPress={() => navigation.navigate("Account")}>
           <Image source={accountIcon} style ={styles.iconImage} />
           </TouchableOpacity>
-
-         
         </View>
     </View>
 

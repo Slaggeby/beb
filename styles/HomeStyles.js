@@ -62,20 +62,20 @@ const styles = StyleSheet.create({
           shadowRadius: 4,
           elevation: 5,
       },
+
       productSubtext: { 
         fontWeight:"bold",
          left:150,
          fontSize:15
-         
         },
   
       productImage:{
-        position: "absolute",
+      position: "absolute",
       bottom:25,
       left:25,
       resizeMode: 'cover',
-      width:80,
-      height:80,
+      width:100,
+      height:100,
     },
   
     scrollViewContent: {
@@ -88,9 +88,9 @@ const styles = StyleSheet.create({
         color: "#D82401",
         marginLeft:10,
         marginTop:10,
-        marginBottom:10,
-        
+        marginBottom:10, 
       },
+      
       productSubtext: 
       { fontWeight:"bold",
        left:150,
@@ -106,14 +106,15 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 12,
         marginTop:25,
-        
       },
+
       bebLogo: {
         width: "100%",
         height: 50,
         top: 10,
         resizeMode: 'contain',
       },
+
       grocerImage:{
       top: 10,
       right:-10,
@@ -127,7 +128,7 @@ const styles = StyleSheet.create({
         height: '75%',
         position: "absolute",
         bottom: 0,
-        backgroundColor: '#fff',
+        backgroundColor: '#ffffff',
         borderTopLeftRadius: 60,
       },
 
@@ -136,6 +137,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginHorizontal: 30,
       },
+
       button: {
         backgroundColor: 'red',
         height: 58,
