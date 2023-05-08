@@ -126,33 +126,18 @@ export default function Search({navigation}) {
           if (item.butik ==="COOP" && showCOOP  ){
           return(
             <View>
-              <View style={styles.itemCointainerCOOP}>
-              <Text style={styles.itemTitle}>
-                {item.titel}
-              </Text>
-
-              <Text style={styles.productSubtext}>
-                {item.leverantör}
-              </Text>
-
-              <Text style={styles.productSubtext}>
-                {item.pristext}
-              </Text>
-
-              <Text style={styles.productSubtext}>
-                {item.jmfpris} kr/kg
-              </Text>
-
-              <Image source={{uri:item.bildurl}} style={styles.productImage}  />
-
-           
-
-          <TouchableOpacity onPress={()=>addToGroceryList(item)} style={styles.button}>
-            <Text style={styles.buttonText}>Add to grocerylist</Text>
-          </TouchableOpacity>
-          </View>
-               <Image source={coopLogo} style ={styles.grocerImage} />
+            <View style={styles.itemCointainerCOOP}>
+              <Text style={styles.itemTitle}> {item.titel} </Text>
+              <Text style={styles.productSubtext}> {item.leverantör} </Text>
+              <Text style={styles.productSubtext}> {item.pristext} </Text>
+              <Text style={styles.productSubtext}> {item.jmfpris} kr/kg </Text>
+              <Image source={{uri:item.bildurl}} style={styles.productImage}/>
+              <TouchableOpacity onPress={()=>addToGroceryList(item)} style={styles.button}>
+                <Text style={styles.buttonText}>Add to grocerylist</Text>
+              </TouchableOpacity>
             </View>
+            <Image source={coopLogo} style ={styles.grocerImage} />
+          </View>
            
             )
           
@@ -160,36 +145,19 @@ export default function Search({navigation}) {
           else if(item.butik ==="ICA"  && showICA){
             return(
               <View>
-                    
-                    <View>
-                  <View style={styles.itemCointainerICA}>
-                  <Text style={styles.itemTitle}>
-                    {item.titel}
-                  </Text>
-
-                  <Text style={styles.productSubtext}>
-                    {item.leverantör}
-                  </Text>
-
-                  <Text style={styles.productSubtext}>
-                    {item.pristext}
-                  </Text>
-
-                  <Text style={styles.productSubtext}>
-                    {item.jmfpris} kr/kg
-                  </Text>
-
-                  <Image source={{uri:item.bildurl}} style={styles.productImage}  />
-
-              
-
+                <View style = {styles.itemCointainerICA} >
+                  <Text style={styles.itemTitle}>{item.titel}</Text>
+                  <Text style={styles.productSubtext}>{item.leverantör}</Text>
+                  <Text style={styles.productSubtext}>{item.pristext}</Text>
+                  <Text style={styles.productSubtext}>{item.jmfpris} kr/kg</Text>
+                  <Image source={{uri:item.bildurl}} style={styles.productImage} />
                   <TouchableOpacity onPress={()=>addToGroceryList(item)} style={styles.button}>
                     <Text style={styles.buttonText}>Add to grocerylist</Text>
                   </TouchableOpacity>
-                    </View>
-                      <Image source={icaLogo} style ={styles.grocerImage} />
-                  </View>
+                </View>
+                <Image source={icaLogo} style ={styles.grocerImage} />
               </View>
+              
               
             )
           }
@@ -197,32 +165,17 @@ export default function Search({navigation}) {
             return( 
               <View>
                 <View style={styles.itemCointainerWILLYS}>
-              <Text style={styles.itemTitle}>
-                {item.titel}
-              </Text>
-
-              <Text style={styles.productSubtext}>
-                {item.leverantör}
-              </Text>
-
-              <Text style={styles.productSubtext}>
-                {item.pristext}
-              </Text>
-
-              <Text style={styles.productSubtext}>
-                {item.jmfpris} kr/kg
-              </Text>
-
-              <Image source={{uri:item.bildurl}} style={styles.productImage}  />
-
-            
-
-          <TouchableOpacity onPress={()=>addToGroceryList(item)} style={styles.button}>
-            <Text style={styles.buttonText}>Add to grocerylist</Text>
-          </TouchableOpacity>
-          </View>
-            <Image source={willysLogo} style ={styles.grocerImage} />
-          </View>
+                  <Text style={styles.itemTitle}>{item.titel}</Text>
+                  <Text style={styles.productSubtext}>{item.leverantör}</Text>
+                  <Text style={styles.productSubtext}>{item.pristext} </Text>
+                  <Text style={styles.productSubtext}>{item.jmfpris} kr/kg </Text>
+                  <Image source={{uri:item.bildurl}} style={styles.productImage}  />
+                  <TouchableOpacity onPress={()=>addToGroceryList(item)} style={styles.button}>
+                    <Text style={styles.buttonText}>Add to grocerylist</Text>
+                  </TouchableOpacity>
+                </View>
+                <Image source={willysLogo} style ={styles.grocerImage} />
+              </View>
               
             )
           }
@@ -264,7 +217,7 @@ return(
         
       <View style={{justifyContent:"center", flexDirection:"row"}}>
         <Text style={{paddingRight:10}}>Filter:</Text>
-        
+
         <View style={{height: 20, flexDirection: 'row'}}>
           <Image source={coopLogo} style ={{resizeMode: 'contain', height:26, width:40}} />
           <View style={{justifyContent:'center', paddingRight:20}}> 

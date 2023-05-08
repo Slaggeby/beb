@@ -61,46 +61,53 @@ export default function Home({navigation}){
   const renderProduct= (item)=>{
     if (item.butik ==="COOP" && item.onsale ){
       return (
-          <View style = {styles.itemCointainerCOOP}>
-            <Image source={{ uri: item.bildurl }} style ={styles.productImage} />
-            <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.titel}</Text>
-            <Text style={styles.productSubtext}> {item.leverantör}</Text>
-            <Text style={styles.productSubtext}>{item.pristext}</Text>
-            <Text style={styles.productSubtext}>{item.jmfpris} :-/kg</Text>
-            <View style={{left:200,}}>
-              <TouchableOpacity onPress={()=>addToGroceryList(item)} style={styles.AddToGroceryListButton}>
-                <Text style={{fontSize:10, color:"white",}}>Add to Grocerylist</Text>
-              </TouchableOpacity>
-            </View>
+        <View>
+          <View style={styles.itemCointainerCOOP}>
+            <Text style={styles.itemTitle}> {item.titel} </Text>
+            <Text style={styles.productSubtext}> {item.leverantör} </Text>
+            <Text style={styles.productSubtext}> {item.pristext} </Text>
+            <Text style={styles.productSubtext}> {item.jmfpris} kr/kg </Text>
+            <Image source={{uri:item.bildurl}} style={styles.productImage}/>
+            <TouchableOpacity onPress={()=>addToGroceryList(item)} style={styles.button}>
+              <Text style={styles.buttonText}>Add to grocerylist</Text>
+            </TouchableOpacity>
           </View>
+          
+        </View>
+
         )}
       else if (item.butik ==="ICA" && item.onsale){
         return <Animated.View  style = {styles.itemCointainerICA} >
-          <Image source={{ uri: item.bildurl }} style ={styles.productImage} />
-          <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.titel}</Text>
-          <Text style={styles.productSubtext}> {item.leverantör}</Text>
-          <Text style={styles.productSubtext}>{item.pristext}</Text>
-          <Text style={styles.productSubtext}>{item.jmfpris} :-/kg</Text>
-          <View style={{left:200,}}>
-            <TouchableOpacity onPress={()=>addToGroceryList(item)} style={styles.AddToGroceryListButton}>
-              <Text style={{fontSize:10, color:"white",}}>Add to Grocerylist</Text>
-            </TouchableOpacity>
+          <View>
+            <View>
+              <Text style={styles.itemTitle}>{item.titel}</Text>
+              <Text style={styles.productSubtext}>{item.leverantör}</Text>
+              <Text style={styles.productSubtext}>{item.pristext}</Text>
+              <Text style={styles.productSubtext}>{item.jmfpris} kr/kg</Text>
+              <Image source={{uri:item.bildurl}} style={styles.productImage} />
+              <TouchableOpacity onPress={()=>addToGroceryList(item)} style={styles.button}>
+                <Text style={styles.buttonText}>Add to grocerylist</Text>
+              </TouchableOpacity>
+            </View>
+            
           </View>
         </Animated.View>
       }
       else if(item.butik === "willys" && item.onsale) {
-        return <View style = {styles.itemCointainerWILLYS}>
-          <Image source={{ uri: item.bildurl }} style ={styles.productImage} />
-            <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {item.titel}</Text>
-            <Text style={styles.productSubtext}> {item.leverantör}</Text>
-            <Text style={styles.productSubtext}>{item.pristext}</Text>
-            <Text style={styles.productSubtext}>{item.jmfpris} :-/kg</Text>
-            <View style={{left:200,}}>
-              <TouchableOpacity onPress={()=>addToGroceryList(item)} style={styles.AddToGroceryListButton}>
-                <Text style={{fontSize:10, color:"white",}}>Add to Grocerylist</Text>
-              </TouchableOpacity>
-            </View>
-        </View>}
+        return <View>
+        <View style={styles.itemCointainerWILLYS}>
+          
+          <Text style={styles.itemTitle}>{item.titel}</Text>
+          <Text style={styles.productSubtext}>{item.leverantör}</Text>
+          <Text style={styles.productSubtext}>{item.pristext} </Text>
+          <Text style={styles.productSubtext}>{item.jmfpris} kr/kg </Text>
+          <Image source={{uri:item.bildurl}} style={styles.productImage}  />
+          <TouchableOpacity onPress={()=>addToGroceryList(item)} style={styles.button}>
+            <Text style={styles.buttonText}>Add to grocerylist</Text>
+          </TouchableOpacity>
+        </View>
+        
+      </View>}
   }
 
   useEffect(() => {
@@ -119,17 +126,15 @@ export default function Home({navigation}){
    return(
     <View style={styles.container}>
         <View>
-        <Image source={backImage} style={styles.bebLogo} />
+          <Image source={backImage} style={styles.bebLogo} />
         </View>
         <View style= {{ }}>
           <Text style = {styles.title}>Store Offers</Text>
         </View> 
 
-        <ScrollView style= {{flexGrow: 1, }} contentContainerStyle={styles.scrollViewContent}>
+        <ScrollView style= {{flexGrow: 1}} contentContainerStyle={styles.scrollViewContent}>
           {/* ICA */}
-          <View style={{flex:1,borderRadius: 35,
-            borderColor:"rgba(232,23,0,255)", 
-            borderWidth:0,marginTop:10,backgroundColor:"#F9EFEB"}}>
+          <View style={styles.cointainerICA}>
             <Image source={icaLogo} style ={styles.grocerImage} />
               {importedDb.map((item, index) => {
                 if (item.butik === "ICA"  ){
@@ -155,30 +160,21 @@ export default function Home({navigation}){
             </View>
             
             {/* COOP */}
-            <View style={{
-              flex:1,borderRadius: 35,
-              borderColor:"#00AA46", 
-              borderWidth:0,marginTop:10,
-              backgroundColor:"#CCFFCC",
-               margin:10}}>
-
-            <Image source={coopLogo} style ={styles.grocerImage} />
-            {importedDb.map((item) => {
-                  if (item.butik === "COOP" ){
-                    
-                    return (
-                      <View  key={item.id}>
-                    { renderProduct(item) }
-                  </View>
-                    )
-                  }
-                })}
+            <View style={styles.cointainerCOOP}>
+              <Image source={coopLogo} style ={styles.grocerImage} />
+              {importedDb.map((item) => {
+                    if (item.butik === "COOP" ){
+                      return (
+                        <View  key={item.id}>
+                        {renderProduct(item) }
+                        </View>
+                      )
+                    }
+                  })}
             </View>
 
             {/* WIllys */}
-            <View style={{flex:1, borderRadius: 35,
-              borderColor:"black", 
-              borderWidth:0,margin:10,marginBottom:50,backgroundColor:"#cfd7e3" }}>
+            <View style={styles.cointainerWILLYS}>
             <Image source={willysLogo} style ={styles.grocerImage} />
             {importedDb.map((item) => {
                   if (item.butik === "willys"){

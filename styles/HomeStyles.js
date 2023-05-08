@@ -5,7 +5,26 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor:"white"
       },
-  
+
+      title: {
+        fontSize: 26,
+        fontWeight: 'bold',
+        color: "#D82401",
+        marginLeft:10,
+        marginTop:10,
+        marginBottom:10, 
+      },
+
+      cointainerCOOP:{
+        flex:1,
+        borderRadius:35,
+        borderColor:"#00AA46", 
+        borderWidth:0,
+        marginTop:10,
+        backgroundColor:"#CCFFCC",
+        margin:10
+      },
+
       itemCointainerCOOP:{
         borderRadius: 5,
         borderColor:"#00AA46", 
@@ -23,6 +42,16 @@ const styles = StyleSheet.create({
           shadowOpacity: 0.5,
           shadowRadius: 4,
           elevation: 5,
+      },
+
+      cointainerICA:{
+        flex:1,
+        borderRadius:35,
+        borderColor:"rgba(232,23,0,255)", 
+        borderWidth:0,
+        marginTop:10,
+        backgroundColor:"#F9EFEB",
+        margin:10
       },
   
       itemCointainerICA:{
@@ -43,7 +72,17 @@ const styles = StyleSheet.create({
           shadowRadius: 4,
           elevation: 5,
       },
-  
+
+      cointainerWILLYS:{
+        flex:1,
+        borderRadius:35,
+        borderColor:"black", 
+        borderWidth:0,
+        marginTop:10,
+        backgroundColor:"#cfd7e3",
+        margin:10
+      },
+
       itemCointainerWILLYS:{
         borderRadius: 5,
         borderColor:"black", 
@@ -63,100 +102,62 @@ const styles = StyleSheet.create({
           elevation: 5,
       },
 
-      productSubtext: { 
+      itemTitle: {
+        paddingTop:5,
+        height:50,
+        fontSize:20,
         fontWeight:"bold",
-         left:150,
-         fontSize:15
-        },
-  
+        top:0,
+        left:5
+      },
+
+      productSubtext: {  
+        left:150,
+        fontSize:15
+      },
+
+      button: {
+        backgroundColor: '#CB131C',
+        height:40,
+        width:100,
+        left:225,
+        borderRadius: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 15,
+      },
+
+      buttonText:{
+        fontWeight:"bold",
+        color:"white",
+      },
+
       productImage:{
-      position: "absolute",
-      bottom:25,
-      left:25,
-      resizeMode: 'cover',
-      width:100,
-      height:100,
-    },
-  
+        position: "absolute",
+        bottom:25,
+        left:25,
+        resizeMode: 'cover',
+        width:100,
+        height:100,
+      },
+
+      grocerImage:{
+        right:-20,
+        resizeMode: 'contain',
+        width:100,
+        height:100
+      },
+
     scrollViewContent: {
         flexGrow: 1,
       },
   
-      title: {
-        fontSize: 26,
-        fontWeight: 'bold',
-        color: "#D82401",
-        marginLeft:10,
-        marginTop:10,
-        marginBottom:10, 
-      },
-      
-      productSubtext: 
-      { fontWeight:"bold",
-       left:150,
-       fontSize:15
-      },
-  
-  
-      input: {
-        backgroundColor: "#F6F7FB",
-        height: 58,
-        marginBottom: 20,
-        fontSize: 16,
-        borderRadius: 10,
-        padding: 12,
-        marginTop:25,
-      },
 
       bebLogo: {
         width: "100%",
         height: 50,
         top: 10,
         resizeMode: 'contain',
-      },
-
-      grocerImage:{
-      top: 10,
-      right:-10,
-      resizeMode: 'contain',
-      width:70,
-      height:70
-    },
-
-      whiteSheet: {
-        width: '100%',
-        height: '75%',
-        position: "absolute",
-        bottom: 0,
-        backgroundColor: '#ffffff',
-        borderTopLeftRadius: 60,
-      },
-
-      form: {
-        flex: 1,
-        justifyContent: 'center',
-        marginHorizontal: 30,
-      },
-
-      button: {
-        backgroundColor: 'red',
-        height: 58,
-        borderRadius: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 40,
-        
-      },
-  
-      AddToGroceryListButton: {
-        backgroundColor: '#CB131C',
-        height:38,
-        width:100,
-        borderRadius: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-        left:25,
-        
       },
 
       iconImage:{
