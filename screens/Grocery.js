@@ -19,11 +19,13 @@ export default function Grocery({navigation}){
   const user = auth.currentUser;
   const [newListName,setnewListName]=useState('');
   const [modalVisible, setModalVisible] = useState(false);
-  const [accordionContentHeight, setAccordionContentHeight] = useState(0);
+
+  const [accordionContentHeight, setAccordionContentHeight]=useState(0);
   const [importedDb, setImportedDb] = useState([]);
  const [userData2, setUserData2] = useState({});
  const [refresh, setRefresh] = useState(false);
-  let userLists={};
+ const [userLists, setUserLists]=useState([]);
+  // let userLists=[];
   let userData={};
   let testData='ricknmorty'
 
@@ -31,6 +33,15 @@ export default function Grocery({navigation}){
     const userRef = doc(database, "users", user.uid);
     const grocerylistRef = collection(userRef, 'grocerylists', userData.currentlist, 'items');
     await deleteDoc(doc(grocerylistRef,item.id));
+  }
+
+  const removeList=async(list)=>{
+    const userRef = doc(database, 'users', user.uid);
+    const yourGroceryListsRef = collection(userRef, 'grocerylists');
+    const yourGroceryListDocRef = doc(yourGroceryListsRef, list);
+    await deleteDoc(yourGroceryListDocRef);
+    fetchUserLists();
+
   }
 
 
@@ -62,7 +73,7 @@ if (docSnap.exists()) {
     try {
       const unsub = onSnapshot(collection(doc(database, 'users', user.uid), 'grocerylists',userData.currentlist , 'items'), (querySnapshot) => {
       const docs = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-        etImportedDb(docs);
+        setImportedDb(docs);
       });
       return unsub;
     } catch (error) {
@@ -80,22 +91,35 @@ if (docSnap.exists()) {
       console.log("No grocery lists found");
       return;
     }
-  
+    let accordionHeight=200;
     const lists = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
     console.log("User's grocery lists:", lists);
-  
-    userLists = lists;
+    await lists.map(() => (accordionHeight+=50) )
+    setAccordionContentHeight(accordionHeight);
+    setUserLists(lists)
+
   };
   
  
 
   useEffect(() => {
-        fetchUserData();
-        fetchUserLists();
-        fetchProducts();
-
+    const fetchData = async () => {
+      await fetchUserData();
+      await fetchUserLists();
+      await fetchProducts();
+    };
+  
+    fetchData();
   }, []);
 
+  const changeCurrentList=async (listName)=>{
+    const userRef = doc(database, 'users', user.uid);
+    await updateDoc(userRef, { currentlist: listName });
+
+
+
+
+  }
   
 
   const calculateTotalPrice=()=>{
@@ -210,11 +234,28 @@ if (docSnap.exists()) {
    
 
     const generateAccordionContent=()=>{
-      
+     
     return(
       <View style={styles.accordionContainer} >
-        <Text style={styles.accordionTitle}>Andra listor
+
+          <View >
+            {userLists.map((item) => (
+            <View  key={item.id}>
+              <TouchableOpacity onPress={() =>{changeCurrentList(item.id)}}>
+               <Text style={styles.accordionTitle}>{item.id}
        </Text>
+       </TouchableOpacity>
+       <TouchableOpacity style={{position:'absolute', marginLeft:300}} onPress={() =>{removeList(item.id)}} >
+               <Text style={styles.accordionTitle}>X
+       </Text>
+       </TouchableOpacity>
+
+            </View>
+      ))}
+      </View>
+
+        
+        
 
        
        <View style={styles.centeredView}>
@@ -245,7 +286,8 @@ if (docSnap.exists()) {
             <TouchableOpacity
               style={[styles.button, styles.buttonClose,{backgroundColor: newListName === '' ? 'grey' : '#2196F3'}]}
               disabled={newListName===''}
-              onPress={() =>{ setModalVisible(!modalVisible), createNewGroceryList(newListName), setRefresh(!refresh); if(newListName.length>0){setnewListName('')}}}>
+              onPress={() =>{ setModalVisible(!modalVisible), createNewGroceryList(newListName), setRefresh(!refresh),fetchUserData,fetchProducts(), fetchUserLists();
+                navigation.navigate("Grocery"); if(newListName.length>0){setnewListName('')}}}>
               <Text style={styles.textStyle}>Create!</Text>
             </TouchableOpacity>
           </View>
@@ -282,7 +324,7 @@ return(
 
       <ScrollView style= {{flex: 1}} contentContainerStyle={styles.scrollViewContent}>
         <View style= {{flex:1 }}>
-        <AccordionListItem title={userData2.currentlist} content={generateAccordionContent()} titleStyle={styles.title}  inputContentHeight={200}/>
+        <AccordionListItem title={userData2.currentlist} content={generateAccordionContent()} titleStyle={styles.title}  inputContentHeight={accordionContentHeight}/>
           
           
 

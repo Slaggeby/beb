@@ -18,7 +18,6 @@ const yourGroceryListDocRef = doc(yourGroceryListsRef, newListName);
 console.log('updated currentlist to;', newListName )
 await updateDoc(userRef, { currentlist: newListName });
 
-    
   }else{
 
     console.log('Empty name, creating your grocery')
