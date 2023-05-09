@@ -241,7 +241,7 @@ if (docSnap.exists()) {
           <View >
             {userLists.map((item) => (
             <View  key={item.id}>
-              <TouchableOpacity onPress={() =>{changeCurrentList(item.id)}}>
+              <TouchableOpacity onPress={() =>{changeCurrentList(item.id),fetchUserData(),fetchProducts(), fetchUserLists()}}>
                <Text style={styles.accordionTitle}>{item.id}
        </Text>
        </TouchableOpacity>
@@ -275,6 +275,7 @@ if (docSnap.exists()) {
         style={styles.input}
         placeholder="Choose Grocerylist Name!"
         autoCapitalize="none"
+        maxLength={11}
         keyboardType="default"
         textContentType="none"
         autoFocus={true}
@@ -286,7 +287,7 @@ if (docSnap.exists()) {
             <TouchableOpacity
               style={[styles.button, styles.buttonClose,{backgroundColor: newListName === '' ? 'grey' : '#2196F3'}]}
               disabled={newListName===''}
-              onPress={() =>{ setModalVisible(!modalVisible), createNewGroceryList(newListName), setRefresh(!refresh),fetchUserData,fetchProducts(), fetchUserLists();
+              onPress={() =>{ setModalVisible(!modalVisible), createNewGroceryList(newListName), setRefresh(!refresh),fetchUserData(),fetchProducts(), fetchUserLists();
                 navigation.navigate("Grocery"); if(newListName.length>0){setnewListName('')}}}>
               <Text style={styles.textStyle}>Create!</Text>
             </TouchableOpacity>
