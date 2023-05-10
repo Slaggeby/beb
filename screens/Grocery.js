@@ -328,7 +328,7 @@ return(
 
       
 
-      <ScrollView style= {{flex: 1}} contentContainerStyle={styles.scrollViewContent}>
+      <ScrollView style= {{flexGrow: 1, marginBottom:50}} >
         <View style= {{flex:1 }}>
         <AccordionListItem title={userData2.currentlist} content={generateAccordionContent()} titleStyle={styles.title}  inputContentHeight={accordionContentHeight}/>
           

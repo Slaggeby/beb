@@ -257,7 +257,7 @@ return(
         </View>
       </View>
 
-      <FlatList style={{marginBottom:200}}
+      <FlatList style={{marginBottom:220}}
         data={filteredDataSource}
         keyExtractor={(item, index) => index.toString()}
         ItemSeparatorComponent={ItemSeparatorView}

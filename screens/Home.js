@@ -132,7 +132,7 @@ export default function Home({navigation}){
           <Text style = {styles.title}>Store Offers</Text>
         </View> 
 
-        <ScrollView style= {{flexGrow: 1}} contentContainerStyle={styles.scrollViewContent}>
+        <ScrollView style= {{flexGrow: 1, marginBottom:50}} >
           {/* ICA */}
           <View style={styles.cointainerICA}>
             <Image source={icaLogo} style ={styles.grocerImage} />
