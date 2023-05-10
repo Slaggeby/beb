@@ -1,5 +1,5 @@
 import React, {useEffect,useState} from "react";
-import { Modal,  View, TextInput, Text, Image,  TouchableOpacity,  ScrollView, KeyboardAvoidingView} from "react-native"
+import { Modal,  View, TextInput, Text, Image,  TouchableOpacity,  ScrollView, KeyboardAvoidingView,Keyboard, Alert} from "react-native"
 import styles from '../styles/groceryStyles.js';
 import {database, auth} from '../config/firebase';
 import { collection, getDocs, doc, deleteDoc, updateDoc, onSnapshot, getDoc } from '@firebase/firestore';
@@ -23,11 +23,25 @@ export default function Grocery({navigation}){
   const [accordionContentHeight, setAccordionContentHeight]=useState(0);
   const [importedDb, setImportedDb] = useState([]);
  const [userData2, setUserData2] = useState({});
- const [refresh, setRefresh] = useState(false);
+
  const [userLists, setUserLists]=useState([]);
-  // let userLists=[];
+ 
+ const [keyboardVisible, setKeyboardVisible] = useState(false);
+
+
   let userData={};
-  let testData='ricknmorty'
+
+
+  useEffect(() => {
+    Keyboard.addListener('keyboardDidShow', () => setKeyboardVisible(true));
+    Keyboard.addListener('keyboardDidHide', () => setKeyboardVisible(false));
+  
+    // cleanup function
+    return () => {
+      Keyboard.removeListener('keyboardDidShow');
+      Keyboard.removeListener('keyboardDidHide');
+    };
+  }, []);
 
   const RemoveItem = async(item)=> {
     const userRef = doc(database, "users", user.uid);
@@ -271,11 +285,11 @@ if (docSnap.exists()) {
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
+          
           setModalVisible(!modalVisible);
         }}>
         <View style={styles.centeredView}>
-          <View style={styles.modalView}>
+          <View style={ !keyboardVisible ? styles.modalView :[styles.modalView, {marginBottom:300}]}>
           <TextInput
         style={styles.input}
         placeholder="Choose Grocerylist Name!"
@@ -292,8 +306,7 @@ if (docSnap.exists()) {
             <TouchableOpacity
               style={[styles.button, styles.buttonClose,{backgroundColor: newListName === '' ? 'grey' : '#2196F3'}]}
               disabled={newListName===''}
-              onPress={() =>{ setModalVisible(!modalVisible), createNewGroceryList(newListName), setRefresh(!refresh),fetchUserData(),fetchProducts(), fetchUserLists();
-                navigation.navigate("Grocery"); if(newListName.length>0){setnewListName('')}}}>
+              onPress={async() =>{ setModalVisible(!modalVisible), createNewGroceryList(newListName), await fetchUserData(),await fetchProducts(), await fetchUserLists(); if(newListName.length>0){setnewListName('')}}}>
               <Text style={styles.textStyle}>Create!</Text>
             </TouchableOpacity>
           </View>
