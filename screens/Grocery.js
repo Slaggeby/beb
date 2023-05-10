@@ -191,44 +191,49 @@ if (docSnap.exists()) {
   const renderBorder= (item)=>{
     innerItem=item.item
     
-    
     if (innerItem.butik ==="COOP"){
-      
-      return <View style = {{ flex: 1,borderRadius: 5,borderTopRightRadius: 50, margin:10, backgroundColor:'#fafeff', borderColor:"#00AA46", borderWidth:12,}}>
-        <Image source={{ uri: innerItem.bildurl }} style ={styles.productImage} />
-        <Image source={coopLogo} style ={styles.grocerImage} />
-        
-              <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {innerItem.id}</Text>
-               
-              <Text style={styles.productSubtext}> {innerItem.leverantör}</Text>
-              <Text style={styles.productSubtext}>{innerItem.pristext}</Text>
-              <Text style={styles.productSubtext}>{innerItem.jmfpris} :-/kg</Text>
-              {generateAmountView(item)}
-      </View>
-      }
-      else if (innerItem.butik ==="ICA"){
-        return <View style = {{ flex: 1, borderRadius: 5,borderTopRightRadius: 50, backgroundColor: '#fafeff', margin:10, borderColor:"rgba(232,23,0,255)", borderWidth:12,}}>
-        <Image source={{ uri: innerItem.bildurl }} style ={styles.productImage} />
-        <Image source={icaLogo} style ={styles.grocerImage} />
-
-              <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {innerItem.id}</Text>
-               
-              <Text style={styles.productSubtext}> {innerItem.leverantör}</Text>
-              <Text style={styles.productSubtext}>{innerItem.pristext}</Text>
-              <Text style={styles.productSubtext}>{innerItem.jmfpris} :-/kg</Text>
-              {generateAmountView(item)}
-      </View>
-      }
-      else {return <View style = {{ flex: 1,borderRadius: 5,borderTopRightRadius: 50, backgroundColor: '#fafeff', margin:10, borderColor:"black", borderWidth:12, }}>
-      <Image source={{ uri: innerItem.bildurl }} style ={styles.productImage} />
-      <Image source={willysLogo} style ={styles.grocerImage} />
-            <Text Text style={{ fontWeight:"bold",marginTop:10, left:150, fontSize:20}}> {innerItem.id}</Text>   
-            <Text style={styles.productSubtext}> {innerItem.leverantör}</Text>
-            <Text style={styles.productSubtext}>{innerItem.pristext}</Text>
-            <Text style={styles.productSubtext}>{innerItem.jmfpris} :-/kg</Text>
+      return (
+        <View>
+          <View style={styles.itemCointainerCOOP}>
+            <Text style={styles.itemTitle}> {innerItem.titel} </Text>
+            <Text style={styles.productSubtext}> {innerItem.leverantör} </Text>
+            <Text style={styles.productSubtext}> {innerItem.pristext} </Text>
+            <Text style={styles.productSubtext}> {innerItem.jmfpris} kr/kg </Text>
+            <Image source={{uri:innerItem.bildurl}} style={styles.productImage}/>
             {generateAmountView(item)}
+          </View>
+          
+        </View>
+
+        )}
+      else if (innerItem.butik ==="ICA"){
+        return <View  style = {styles.itemCointainerICA} >
+          <View>
+            <View>
+              <Text style={styles.itemTitle}>{innerItem.titel}</Text>
+              <Text style={styles.productSubtext}>{innerItem.leverantör}</Text>
+              <Text style={styles.productSubtext}>{innerItem.pristext}</Text>
+              <Text style={styles.productSubtext}>{innerItem.jmfpris} kr/kg</Text>
+              <Image source={{uri:innerItem.bildurl}} style={styles.productImage} />
+              {generateAmountView(item)}
+            </View>
             
-    </View>}  
+          </View>
+        </View>
+      }
+      else if(innerItem.butik === "willys") {
+        return <View>
+        <View style={styles.itemCointainerWILLYS}>
+          
+          <Text style={styles.itemTitle}>{innerItem.titel}</Text>
+          <Text style={styles.productSubtext}>{innerItem.leverantör}</Text>
+          <Text style={styles.productSubtext}>{innerItem.pristext} </Text>
+          <Text style={styles.productSubtext}>{innerItem.jmfpris} kr/kg </Text>
+          <Image source={{uri:innerItem.bildurl}} style={styles.productImage}  />
+          {generateAmountView(item)}
+        </View>
+        
+      </View>}
     }
 
    

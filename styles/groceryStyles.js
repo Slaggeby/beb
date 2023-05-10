@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor:"#faebeb"
+    backgroundColor:"white"
   },
 
   scrollViewContent: {
@@ -52,6 +52,24 @@ const styles = StyleSheet.create({
     height:40,
     fontSize:24
   },
+  itemCointainerCOOP:{
+    borderRadius: 5,
+    borderColor:"#00AA46", 
+    borderWidth:4,
+    flex:1,
+    backgroundColor:"white",
+    padding: 10, 
+    borderRadius: 35,
+    margin:10,
+    shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.5,
+      shadowRadius: 4,
+      elevation: 5,
+  },
 
   changeAmountButtonplus:{
     width:40,
@@ -89,13 +107,49 @@ const styles = StyleSheet.create({
 
   productImage:{
     position: "absolute",
-  top: 5,
-  left:0,
-  resizeMode: 'cover',
-  width:70,
-  height:70,
+    bottom:25,
+    left:25,
+    resizeMode: 'cover',
+    width:100,
+    height:100,
+  },
+  itemCointainerICA:{
+    borderRadius: 5,
+    borderColor:"rgba(232,23,0,255)", 
+    borderWidth:4,
+    flex:1,
+    backgroundColor:"white",
+    padding: 10, 
+    borderRadius: 35,
+    margin:10,
+    shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      elevation: 5,
+  },
 
-},
+  itemCointainerWILLYS:{
+    borderRadius: 5,
+    borderColor:"black", 
+    borderWidth:4,
+    flex:1,
+    backgroundColor:"white",
+    padding: 10, 
+    borderRadius: 35,
+    margin:10,
+    shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      elevation: 5,
+  },
   whiteSheet: {
     width: '100%',
     height: '75%',
@@ -117,6 +171,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 40,
     
+  },
+
+  itemTitle: {
+    paddingTop:5,
+    height:50,
+    fontSize:20,
+    fontWeight:"bold",
+    top:0,
+    left:5
   },
 
   iconImage:{
