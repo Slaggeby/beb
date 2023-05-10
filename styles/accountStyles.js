@@ -43,6 +43,21 @@ const styles = StyleSheet.create({
         height:100,
         borderRadius:100/2,
         
+      },modalView: {
+        marginTop: 200,
+        backgroundColor: '#D82401',
+        
+        borderRadius:70,
+        padding: 60,
+        width:'80%',
+        
+        
+      },
+      centeredView: {
+        
+        justifyContent: 'center',
+        alignItems: 'center',
+        
       },
       bebLogo:{
         width: "100%",
@@ -67,6 +82,7 @@ const styles = StyleSheet.create({
         flexDirection:"row",
         justifyContent:"space-evenly",
         width:"100%",
+        
       },
 
       whiteSheet: {
@@ -81,6 +97,11 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         marginHorizontal: 30,
+      },
+      textStyle: {
+        color: 'white',
+        fontWeight: 'bold',
+        textAlign: 'center',
       },
       button: {
         backgroundColor: 'red',

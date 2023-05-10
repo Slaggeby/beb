@@ -8,7 +8,7 @@ import createNewGroceryList from "../components/createNewGroceryList.js";
 
 import { database, auth } from '../config/firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { collection, addDoc,setDoc, getDocs, doc } from '@firebase/firestore';
 
 
@@ -59,6 +59,12 @@ export default function Signup({navigation}){
           email: user.email
         }
         );
+        updateProfile(auth.currentUser, {
+          displayName: name, photoURL: "https://www.pngarts.com/files/9/Flying-Blue-Butterflies-PNG-Transparent-File.png"
+        }).catch((error) => {
+          console.log('An error occurred', error)
+          // ...
+        });
         createNewGroceryList('');
 
         // const grocerylistRef = collection(userRef, "grocerylist");

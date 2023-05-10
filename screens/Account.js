@@ -1,5 +1,5 @@
 import React, {useEffect,useState} from "react";
-import {StyleSheet, View, TextInput, Button, Text, Image, SafeAreaView, TouchableOpacity, StatusBar} from "react-native"
+import {StyleSheet, View, TextInput, Button, Text, Image, SafeAreaView, TouchableOpacity, StatusBar,Modal,Keyboard} from "react-native"
 import styles from '../styles/accountStyles.js';
 import { getAuth, signOut, updateProfile } from 'firebase/auth';
 import {database, auth} from '../config/firebase';
@@ -12,17 +12,15 @@ const listIcon=require('../assets/list.png')
 const homeIcon=require('../assets/home.png')
 const searchIcon=require('../assets/search.png')
 const accountIcon=require('../assets/account.png')
-
+const editIcon=require('../assets/editIcon.png')
 
 
 
 export default function Account({navigation}){
   const user = auth.currentUser;
-  //console.log("user",user)
-  const [ImportedUserData, setImportedUserData]=useState([])
-  
-  //const displayName = user.displayName;
-  //console.log("displayName", displayName)
+  const userPic= user.photoURL;
+  const [modalVisible, setModalVisible] = useState(false);
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
 
   const LogOut=() =>{
     const auth = getAuth();
@@ -35,67 +33,40 @@ export default function Account({navigation}){
     });
   }
 
-
   const changeName = () =>{
-    console.log("u tried")
-
-  }
-
-  const [text, onChangeText] = React.useState('Useless Text');
-
-
-  useEffect(() => {
-    console.log("USE");
-  }, [text]);
-
-
-
-  updateProfile(auth.currentUser, {
     
-    displayName: text, photoURL: "https://example.com/jane-q-user/profile.jpg"
-  }).then(() => {
-    // Profile updated!
-    // ...
-  }).catch((error) => {
-    // An error occurred
-    // ...
-  });
+  }
+  const [name, setName] = useState('what');
+  const [newEmail, setEmail]=useState('')
+  
+
+  
  
-
-
-
-
-
-
-
     const [isActive, setIsActive] = useState(false)
     const changeTheme = () =>{
-        setIsActive(current => !current)
-        
+        setIsActive(current => !current) 
     }
 
-    useEffect(() => {
-      fetchUserData();
-    }, []);
+    const changeEmailModal=()=>{
+      updateProfile(auth.currentUser, {  
+        email: newEmail, 
+      }).then(() => {
+        // Profile updated!
+        user=auth.currentUser;
+        console.log('new Email',user.email)
+        // ...
+      }).catch((error) => {
+        // An error occurred
+        // ...
+      });
 
-    const fetchUserData = async () => {
-      try {
-        const q = query(collection(database, "users"), where("uid", "==", user.uid));
-        const unsub = onSnapshot(q, (querySnapshot) => {
-          const docs = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-          setImportedUserData(docs);
-         
-          
-        });
-        
-        return unsub;
-      } catch (error) {
-        console.error("Error fetching products:", error);
-        throw error;
-      }
-    };
+    }
 
-    
+    const changeNameModal=()=>{
+      
+      
+    }
+
    return(
     <View style={styles.container}>
 
@@ -103,43 +74,73 @@ export default function Account({navigation}){
       <Image source={bebLogo} style={styles.bebLogo}/>
       </View>
       
-
-
             <View styles={{flex: 3}}>
-                <Image source={backImage} style={styles.backImage} />
+                <Image source={userPic} style={styles.backImage} />
             </View>
 
         <View style = {{flex: 8, marginTop:100}}>
-        
-
+     
             <View styles = {styles.input}>
                 <View>
-                <TextInput
+                {/* <TextInput
                   style={styles.input}
-                  onChangeText={onChangeText}
-                  value={text}
-                />
-                  
-
-                  
-
-                <Text style={styles.input}>
+                  onChangeText={(email) => setEmail(email)}
+                  value={email}
+                /> */}
+      
+                <Text style={styles.input}>Name{"\n"}
                 {user ? user.displayName : "Loading..."}
-                </Text>
+                </Text>   
+                <TouchableOpacity style={{position: 'absolute', marginTop:155, marginLeft: 350}} onPress={()=>changeNameModal()}>
+                <Image source={editIcon} style={{height:35, resizeMode:'cover',width:35}}/>
 
-                  
+                </TouchableOpacity> 
                 </View>
+                <Modal
+                  animationType="slide"
+                  transparent={true}
+                  visible={modalVisible}
+                  onRequestClose={() => {
+                    
+                    setModalVisible(!modalVisible);
+                  }}>
+                  <View style={styles.centeredView}>
+                    <View style={ !keyboardVisible ? styles.modalView :[styles.modalView, {marginBottom:300}]}>
+                    <TextInput
+                  style={styles.input}
+                  placeholder="Type in new email!"
+                  autoCapitalize="none"
+                  
+                  keyboardType="default"
+                  textContentType="none"
+                  autoFocus={true}
+                  value={newEmail}
+                  onChangeText={(text) => setEmail(text)}
+                  
+                  
+                />
+            <TouchableOpacity
+              style={[styles.button,{backgroundColor:'green'}]}
+              disabled={name===''}
+              onPress={()=>{setModalVisible(false),changeEmailModal()}}
+              >
+              <Text style={styles.textStyle}>Update Email</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
 
                 <View>
                   <Text style = {styles.input}>Email adress{"\n"}
                   
                   {user ? user.email : "Loading..."}
-                  </Text>
-                  
+                  </Text>    
+                  <TouchableOpacity style={{position: 'absolute', marginTop:40, marginLeft: 350}} onPress={()=>{setModalVisible(true)}}>
+                 
+                <Image source={editIcon} style={{height:35, resizeMode:'cover',width:35}}/>
+                </TouchableOpacity>
                 </View>
-
             </View>
-       
         </View>
         
         <View style={{marginBottom:50,width:100,left:300,}}>
@@ -150,7 +151,6 @@ export default function Account({navigation}){
           </TouchableOpacity>
         </View>
     
-
         <View style ={styles.footerbuttonContainer}>
           <TouchableOpacity  onPress={() => navigation.navigate("Home")}>
           <Image source={homeIcon} style ={styles.iconImage} />
@@ -166,10 +166,6 @@ export default function Account({navigation}){
           </TouchableOpacity>
 
                   </View>
-       
-
-       
-
     </View>
 
    )
