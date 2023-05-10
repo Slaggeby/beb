@@ -15,31 +15,77 @@ const willysLogo =require("../assets/Willys-logotyp.png")
 const icaLogo =require("../assets/ICA-logotyp.png")
 const coopLogo =require("../assets/coop-logotyp.png")
 const moreICA =require("../assets/moreICA.png")
+const moreCOOP =require("../assets/moreCOOP.png")
+const moreWillys =require("../assets/moreWillys.png")
 
 export default function Home({navigation}){
   const user = auth.currentUser;
-  console.log('homeuser!!!',user.uid)
+  // console.log('homeuser!!!',user.uid)
   const [importedDb, setImportedDb] = useState([]);
-  const [showAllProducts, setShowAllProducts] = useState(false);
+  const [showAllCOOPProducts, setShowAllCOOPProducts] = useState(false);
+  const [showAllICAProducts, setShowAllICAProducts] = useState(false);
+  const [showAllWILLYSProducts, setShowAllWILLYSProducts] = useState(false);
   const [firstProductRenderedICA, setfirstProductRenderedICA] = useState(false)
-  const [viewHeight, setViewHeight] = useState(0);
+  const [firstProductRenderedCOOP, setfirstProductRenderedCOOP] = useState(false)
+  const [firstProductRenderedWILLYS, setfirstProductRenderedWILLYS] = useState(false)
+  // const [viewHeight, setViewHeight] = useState(0);
   
-  const toggleShowAllProductsFunction = () =>{
-    setShowAllProducts (!showAllProducts)
+  const ShowAllCOOPProductsFunction = () =>{
+    setShowAllCOOPProducts (!showAllCOOPProducts)
+    setfirstProductRenderedCOOP((current) => !current);
+  }
+
+  const ShowCOOPProduct = () =>{
+    if (!showAllCOOPProducts){
+      return (
+        <TouchableOpacity onPress ={()=>ShowAllCOOPProductsFunction()}>
+          <Image source={moreCOOP} style ={styles.iconImage} />
+        </TouchableOpacity>    
+      )}
+    else {
+      return(
+        <TouchableOpacity onPress ={()=>ShowAllCOOPProductsFunction()} style={{paddingBottom:8}}>
+          <Image source={moreCOOP} style ={styles.iconImage} />        
+        </TouchableOpacity>
+      )}
+  }
+
+  const ShowAllICAProductsFunction = () =>{
+    setShowAllICAProducts (!showAllICAProducts)
     setfirstProductRenderedICA((current) => !current);
   }
 
-  const ToggleShowProductButtonFunction = () =>{
-    if (!showAllProducts){
+  const ShowICAProduct = () =>{
+    if (!showAllICAProducts){
       return (
-        <TouchableOpacity onPress ={()=>toggleShowAllProductsFunction()}>
+        <TouchableOpacity onPress ={()=>ShowAllICAProductsFunction()}>
           <Image source={moreICA} style ={styles.iconImage} />
         </TouchableOpacity>    
       )}
     else {
       return(
-        <TouchableOpacity onPress ={()=>toggleShowAllProductsFunction()} style={{paddingBottom:8}}>
+        <TouchableOpacity onPress ={()=>ShowAllICAProductsFunction()} style={{paddingBottom:8}}>
           <Image source={moreICA} style ={styles.iconImage} />        
+        </TouchableOpacity>
+      )}
+  }
+
+  const ShowAllWILLYSProductsFunction = () =>{
+    setShowAllWILLYSProducts (!showAllWILLYSProducts)
+    setfirstProductRenderedWILLYS((current) => !current);
+  }
+
+  const ShowWILLYSProduct = () =>{
+    if (!showAllWILLYSProducts){
+      return (
+        <TouchableOpacity onPress ={()=>ShowAllWILLYSProductsFunction()}>
+          <Image source={moreWillys} style ={styles.iconImage} />
+        </TouchableOpacity>    
+      )}
+    else {
+      return(
+        <TouchableOpacity onPress ={()=>ShowAllWILLYSProductsFunction()} style={{paddingBottom:8}}>
+          <Image source={moreWillys} style ={styles.iconImage} />        
         </TouchableOpacity>
       )}
   }
@@ -59,6 +105,7 @@ export default function Home({navigation}){
   };
 
   const renderProduct= (item)=>{
+
     if (item.butik ==="COOP" && item.onsale ){
       return (
         <View>
@@ -72,12 +119,12 @@ export default function Home({navigation}){
               <Text style={styles.buttonText}>Add to grocerylist</Text>
             </TouchableOpacity>
           </View>
-          
         </View>
-
         )}
+
       else if (item.butik ==="ICA" && item.onsale){
-        return <Animated.View  style = {styles.itemCointainerICA} >
+        return (
+        <Animated.View  style = {styles.itemCointainerICA} >
           <View>
             <View>
               <Text style={styles.itemTitle}>{item.titel}</Text>
@@ -89,119 +136,139 @@ export default function Home({navigation}){
                 <Text style={styles.buttonText}>Add to grocerylist</Text>
               </TouchableOpacity>
             </View>
-            
           </View>
         </Animated.View>
-      }
+      )}
+      
       else if(item.butik === "willys" && item.onsale) {
-        return <View>
-        <View style={styles.itemCointainerWILLYS}>
-          
-          <Text style={styles.itemTitle}>{item.titel}</Text>
-          <Text style={styles.productSubtext}>{item.leverantör}</Text>
-          <Text style={styles.productSubtext}>{item.pristext} </Text>
-          <Text style={styles.productSubtext}>{item.jmfpris} kr/kg </Text>
-          <Image source={{uri:item.bildurl}} style={styles.productImage}  />
-          <TouchableOpacity onPress={()=>addToGroceryList(item)} style={styles.button}>
-            <Text style={styles.buttonText}>Add to grocerylist</Text>
-          </TouchableOpacity>
-        </View>
-        
-      </View>}
+        return (
+        <View>
+          <View style={styles.itemCointainerWILLYS}>
+            <Text style={styles.itemTitle}>{item.titel}</Text>
+            <Text style={styles.productSubtext}>{item.leverantör}</Text>
+            <Text style={styles.productSubtext}>{item.pristext} </Text>
+            <Text style={styles.productSubtext}>{item.jmfpris} kr/kg </Text>
+            <Image source={{uri:item.bildurl}} style={styles.productImage}  />
+            <TouchableOpacity onPress={()=>addToGroceryList(item)} style={styles.button}>
+              <Text style={styles.buttonText}>Add to grocerylist</Text>
+            </TouchableOpacity>
+          </View>
+      </View>
+      )}
   }
 
   useEffect(() => {
     fetchProducts();
       }, []);
 
-  useEffect(() => {
-    console.log('useEffect ran. firstProductRendered is: ', firstProductRenderedICA);
-      }, [firstProductRenderedICA])
+  // useEffect(() => {
+  //   console.log('useEffect ran. firstProductRendered is: ', firstProductRenderedICA);
+  //     }, [firstProductRenderedICA])
 
-  useEffect(() => {
-    console.log('useEffect ran. showAllProducts is: ', showAllProducts);
-      }, [showAllProducts])
+  // useEffect(() => {
+  //   console.log('useEffect ran. showAllProducts is: ', showAllICAProducts);
+  //     }, [showAllICAProducts])
     
     
    return(
     <View style={styles.container}>
-        <View>
-          <Image source={backImage} style={styles.bebLogo} />
-        </View>
-        <View style= {{ }}>
-          <Text style = {styles.title}>Store Offers</Text>
-        </View> 
+      <View>
+        <Image source={backImage} style={styles.bebLogo} />
+      </View>
+      <View style= {{ }}>
+        <Text style = {styles.title}>Store Offers</Text>
+      </View> 
 
-        <ScrollView style= {{flexGrow: 1, marginBottom:50}} >
-          {/* ICA */}
-          <View style={styles.cointainerICA}>
-            <Image source={icaLogo} style ={styles.grocerImage} />
-              {importedDb.map((item, index) => {
-                if (item.butik === "ICA"  ){
-                  if (showAllProducts ){
-                    return (
-                      <View key={item.id}>
-                        {renderProduct(item)}
-                      </View>
-                      );
+      <ScrollView style= {{flexGrow: 1, marginBottom:50}} >
+
+          {/* ICA */} 
+        <View style={styles.cointainerICA}>
+          <Image source={icaLogo} style ={styles.grocerImage} />
+            {importedDb.map((item, index) => {
+              if (item.butik === "ICA"  ){
+                if (showAllICAProducts ){
+                  return (
+                    <View key={item.id}>
+                      {renderProduct(item)}
+                    </View>);
                     }}
-                  else if (index === 0 && !showAllProducts && !firstProductRenderedICA){
-                    const firstItem = importedDb.find((item) => item.butik === "ICA" );
-                    return (   
-                      <View  key={item.id}>
-                          { renderProduct(firstItem) }
-                      </View>   
+              else if (index === 0 && !showAllICAProducts && !firstProductRenderedICA){
+                const firstItem = importedDb.find((item) => item.butik === "ICA" );
+                  return (   
+                    <View  key={item.id}>
+                      { renderProduct(firstItem) }
+                    </View>   
                     )}
               })}
-
-                <View style={{ flexWrap: 'wrap', alignItems: 'flex-start', alignContent:"center", paddingBottom:8 }}>
-                  <ToggleShowProductButtonFunction/>
-                </View>
+            <View style={{ flexWrap: 'wrap', alignItems: 'flex-start', alignContent:"center", paddingBottom:8 }}>
+              <ShowICAProduct/>
             </View>
+        </View>
             
             {/* COOP */}
-            <View style={styles.cointainerCOOP}>
-              <Image source={coopLogo} style ={styles.grocerImage} />
-              {importedDb.map((item) => {
-                    if (item.butik === "COOP" ){
-                      return (
-                        <View  key={item.id}>
-                        {renderProduct(item) }
-                        </View>
-                      )
-                    }
-                  })}
-            </View>
+        <View style={styles.cointainerCOOP}>
+          <Image source={coopLogo} style ={styles.grocerImage} />
+            {importedDb.map((item, index) => {
+              if (item.butik === "COOP"  ){
+                if (showAllCOOPProducts){
+                  return (
+                    <View key={item.id}>
+                      {renderProduct(item)}
+                    </View>);
+                  }}
+              else if (index === 1 && !showAllCOOPProducts && !firstProductRenderedCOOP){
+                const firstItem = importedDb.find((item) => item.butik === "COOP" );
+                  return (   
+                    <View  key={item.id}>
+                      { renderProduct(firstItem) }
+                    </View>   
+                  )}
+            })}
+          <View style={{ flexWrap: 'wrap', alignItems: 'flex-start', alignContent:"center", paddingBottom:8 }}>
+            <ShowCOOPProduct/>
+          </View>
+        </View>
+
 
             {/* WIllys */}
-            <View style={styles.cointainerWILLYS}>
-            <Image source={willysLogo} style ={styles.grocerImage} />
-            {importedDb.map((item) => {
-                  if (item.butik === "willys"){
-                    return (
-                      <View  key={item.id}>
-                    { renderProduct(item) }
-                  </View>
-                    )
-                  }                 
-                })}
-            </View>
-          
-        </ScrollView>
-        <View style ={styles.footerbuttonContainer}>
-          <TouchableOpacity  onPress={() => navigation.navigate("Home")}>
-          <Image source={homeIcon} style ={styles.iconImage} />
-          </TouchableOpacity>
-          <TouchableOpacity  onPress={() => navigation.navigate("Search")}>
-          <Image source={searchIcon} style ={styles.iconImage} />
-          </TouchableOpacity>
-          <TouchableOpacity  onPress={() => navigation.navigate("Grocery")}>
-          <Image source={listIcon} style ={styles.iconImage} />
-          </TouchableOpacity>
-          <TouchableOpacity  onPress={() => navigation.navigate("Account")}>
-          <Image source={accountIcon} style ={styles.iconImage} />
-          </TouchableOpacity>
+        <View style={styles.cointainerWILLYS}>
+          <Image source={willysLogo} style ={styles.grocerImage} />
+            {importedDb.map((item, index) => {
+              if (item.butik === "willys"  ){
+                if (showAllWILLYSProducts){
+                  return (
+                    <View key={item.id}>
+                      {renderProduct(item)}
+                    </View>);
+                  }}
+              else if (index === 2 && !showAllWILLYSProducts && !firstProductRenderedWILLYS){
+                const firstItem = importedDb.find((item) => item.butik === "willys" );
+                  return (   
+                    <View  key={item.id}>
+                      { renderProduct(firstItem) }
+                    </View>   
+                  )}
+            })}
+          <View style={{ flexWrap: 'wrap', alignItems: 'flex-start', alignContent:"center", paddingBottom:8 }}>
+            <ShowWILLYSProduct/>
+          </View>
         </View>
+      </ScrollView>
+
+      <View style ={styles.footerbuttonContainer}>
+        <TouchableOpacity  onPress={() => navigation.navigate("Home")}>
+          <Image source={homeIcon} style ={styles.iconImage} />
+        </TouchableOpacity>
+        <TouchableOpacity  onPress={() => navigation.navigate("Search")}>
+          <Image source={searchIcon} style ={styles.iconImage} />
+        </TouchableOpacity>
+        <TouchableOpacity  onPress={() => navigation.navigate("Grocery")}>
+          <Image source={listIcon} style ={styles.iconImage} />
+        </TouchableOpacity>
+        <TouchableOpacity  onPress={() => navigation.navigate("Account")}>
+          <Image source={accountIcon} style ={styles.iconImage} />
+        </TouchableOpacity>
+      </View>
     </View>
 
    )
