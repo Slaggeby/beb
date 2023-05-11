@@ -20,6 +20,9 @@ export default function Account({navigation}){
   const user = auth.currentUser;
   const userPic= user.photoURL;
   const [modalVisible, setModalVisible] = useState(false);
+  const [NamemodalVisible, setNameModalVisible] = useState(false);
+
+
   const [keyboardVisible, setKeyboardVisible] = useState(false);
 
   const LogOut=() =>{
@@ -32,6 +35,35 @@ export default function Account({navigation}){
       console.log('logout error')
     });
   }
+
+
+  
+
+
+
+  useEffect(() => {
+    Keyboard.addListener('keyboardDidShow', () => setKeyboardVisible(true));
+    Keyboard.addListener('keyboardDidHide', () => setKeyboardVisible(false));
+  
+    // cleanup function
+    return () => {
+      Keyboard.removeListener('keyboardDidShow');
+      Keyboard.removeListener('keyboardDidHide');
+    };
+  }, []);
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   const changeName = () =>{
     
@@ -64,7 +96,7 @@ export default function Account({navigation}){
 
     const changeNameModal=()=>{
       
-      
+      console.log("namechange")
     }
 
    return(
@@ -74,72 +106,147 @@ export default function Account({navigation}){
       <Image source={bebLogo} style={styles.bebLogo}/>
       </View>
       
-            <View styles={{flex: 3}}>
-                <Image source={userPic} style={styles.backImage} />
-            </View>
+            
 
         <View style = {{flex: 8, marginTop:100}}>
      
             <View styles = {styles.input}>
                 <View>
-                {/* <TextInput
-                  style={styles.input}
-                  onChangeText={(email) => setEmail(email)}
-                  value={email}
-                /> */}
-      
-                <Text style={styles.input}>Name{"\n"}
-                {user ? user.displayName : "Loading..."}
-                </Text>   
-                <TouchableOpacity style={{position: 'absolute', marginTop:155, marginLeft: 350}} onPress={()=>changeNameModal()}>
-                <Image source={editIcon} style={{height:35, resizeMode:'cover',width:35}}/>
-
-                </TouchableOpacity> 
-                </View>
-                <Modal
-                  animationType="slide"
-                  transparent={true}
-                  visible={modalVisible}
-                  onRequestClose={() => {
+                    <Text style={styles.input}>Name{"\n"}
+                    {user ? user.displayName : "Loading..."}
+                    </Text>   
+                    <TouchableOpacity style={{position: 'absolute', marginTop:40, marginLeft: 350}} onPress={()=>{setNameModalVisible(true)}}>
                     
-                    setModalVisible(!modalVisible);
-                  }}>
-                  <View style={styles.centeredView}>
-                    <View style={ !keyboardVisible ? styles.modalView :[styles.modalView, {marginBottom:300}]}>
-                    <TextInput
-                  style={styles.input}
-                  placeholder="Type in new email!"
-                  autoCapitalize="none"
-                  
-                  keyboardType="default"
-                  textContentType="none"
-                  autoFocus={true}
-                  value={newEmail}
-                  onChangeText={(text) => setEmail(text)}
-                  
-                  
-                />
-            <TouchableOpacity
-              style={[styles.button,{backgroundColor:'green'}]}
-              disabled={name===''}
-              onPress={()=>{setModalVisible(false),changeEmailModal()}}
-              >
-              <Text style={styles.textStyle}>Update Email</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
+                    <Image source={editIcon} style={{height:35, resizeMode:'cover',width:35}}/>
+
+                    </TouchableOpacity> 
+                </View>
+
+
+
+
+                    <Modal
+                            animationType="slide"
+                            transparent={true}
+                            visible={NamemodalVisible}
+                            onRequestClose={() => {
+                              
+                              setNameModalVisible(!modalVisible);
+                            }}>
+
+                            <View style={styles.centeredView}>
+                              <View style={ !keyboardVisible ? styles.modalView :[styles.modalView, {marginBottom:300}]}>
+                                        <TextInput
+                                      style={styles.input}
+                                      placeholder="Enter New Name!"
+                                      autoCapitalize="none"                          
+                                      keyboardType="default"
+                                      textContentType="none"
+                                      autoFocus={true}
+                                      value={name}
+                                      onChangeText={(text) => setName(text)}
+              
+                                          />
+
+                                          <TouchableOpacity style={{right:25, top:20, position:"absolute"}} onPress={()=>{setNameModalVisible(false)}}
+                                        >
+                                            <Text style={{fontSize:36}}>
+                                              X
+                                            </Text>
+                                          </TouchableOpacity>
+                                      <TouchableOpacity
+                                        style={[styles.button,{backgroundColor:'green'}]}
+                                        disabled={name===''}
+                                        onPress={()=>{setNameModalVisible(false),changeNameModal()}}
+                                        >
+                                        <Text style={styles.textStyle}>Update Name</Text>
+                                      </TouchableOpacity>
+                                </View>
+                            </View>
+                 </Modal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <Modal
+                            animationType="slide"
+                            transparent={true}
+                            visible={modalVisible}
+                            onRequestClose={() => {
+                              
+                              setNameModalVisible(!modalVisible);
+                            }}>
+
+                            <View style={styles.centeredView}>
+                              <View style={ !keyboardVisible ? styles.modalView :[styles.modalView, {marginBottom:300}]}>
+                                        <TextInput
+                                      style={styles.input}
+                                      placeholder="Type in new email!"
+                                      autoCapitalize="none"                          
+                                      keyboardType="default"
+                                      textContentType="none"
+                                      autoFocus={true}
+                                      value={newEmail}
+                                      onChangeText={(text) => setEmail(text)}
+              
+                                          />
+
+                                          <TouchableOpacity style={{right:25, top:20, position:"absolute"}} onPress={()=>{setModalVisible(false)}}
+                                        >
+                                            <Text style={{fontSize:36}}>
+                                              X
+                                            </Text>
+                                          </TouchableOpacity>
+                                      <TouchableOpacity
+                                        style={[styles.button,{backgroundColor:'green'}]}
+                                        disabled={name===''}
+                                        onPress={()=>{setModalVisible(false),changeEmailModal()}}
+                                        >
+                                        <Text style={styles.textStyle}>Update Email</Text>
+                                      </TouchableOpacity>
+                                </View>
+                            </View>
+                 </Modal>
 
                 <View>
                   <Text style = {styles.input}>Email adress{"\n"}
-                  
-                  {user ? user.email : "Loading..."}
-                  </Text>    
+                    {user ? user.email : "Loading..."}
+                  </Text> 
+
                   <TouchableOpacity style={{position: 'absolute', marginTop:40, marginLeft: 350}} onPress={()=>{setModalVisible(true)}}>
-                 
-                <Image source={editIcon} style={{height:35, resizeMode:'cover',width:35}}/>
-                </TouchableOpacity>
+                    <Image source={editIcon} style={{height:35, resizeMode:'cover',width:35}}/>
+                  </TouchableOpacity>
                 </View>
+
             </View>
         </View>
         
@@ -151,7 +258,7 @@ export default function Account({navigation}){
           </TouchableOpacity>
         </View>
     
-        <View style ={styles.footerbuttonContainer}>
+        <View  style ={styles.footerbuttonContainer}>
           <TouchableOpacity  onPress={() => navigation.navigate("Home")}>
           <Image source={homeIcon} style ={styles.iconImage} />
           </TouchableOpacity>

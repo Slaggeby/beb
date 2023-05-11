@@ -144,7 +144,7 @@ if (docSnap.exists()) {
     });
 
     return( <View>
-    <Text style = {styles.title}>Your total cost: {Math.round(totalPrice)} kr</Text>
+    <Text style = {styles.title}>Total Cost of Groceries: {Math.round(totalPrice)} kr</Text>
     </View>
     )
   };

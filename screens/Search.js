@@ -25,7 +25,7 @@ export default function Search({navigation}) {
     const [showCOOP, setShowCOOP] = useState(true)
     const [showICA, setShowICA] = useState(true)
     const [showWILLYS, setShowWILLYS] = useState(true)
-    const [showOnSale, setShowOnSale] = useState(true)
+    const [showOnSale, setShowOnSale] = useState(false)
 
 
     const sortCOOP = () =>{ 
@@ -123,7 +123,7 @@ export default function Search({navigation}) {
     
         const renderItems= ({item})=>{
 
-          if (item.butik ==="COOP" && showCOOP  ){
+          if (item.butik ==="COOP" && showCOOP && !showOnSale || item.butik ==="COOP" && item.onsale && showOnSale && showCOOP ){
           return(
             <View>
             <View style={styles.itemCointainerCOOP}>
@@ -142,7 +142,7 @@ export default function Search({navigation}) {
             )
           
           }
-          else if(item.butik ==="ICA"  && showICA){
+          else if(item.butik ==="ICA"  && showICA && !showOnSale|| item.butik ==="ICA" && item.onsale && showOnSale && showICA){
             return(
               <View>
                 <View style = {styles.itemCointainerICA} >
@@ -161,7 +161,7 @@ export default function Search({navigation}) {
               
             )
           }
-          else if(item.butik ==="willys"  && showWILLYS) {
+          else if(item.butik ==="willys"  && showWILLYS && !showOnSale || item.butik ==="willys" && item.onsale && showOnSale && showWILLYS ) {
             return( 
               <View>
                 <View style={styles.itemCointainerWILLYS}>
