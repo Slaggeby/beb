@@ -22,6 +22,7 @@ export default function Account({navigation}){
   const [modalVisible, setModalVisible] = useState(false);
   const [NamemodalVisible, setNameModalVisible] = useState(false);
 
+  const [name1,setName1] = useState(auth.currentUser.displayName)
 
   const [keyboardVisible, setKeyboardVisible] = useState(false);
 
@@ -67,8 +68,27 @@ export default function Account({navigation}){
 
   const changeName = () =>{
     
+    updateProfile(auth.currentUser, {  
+      
+      displayName: name, 
+    }).then(() => {
+      //console.log(name)
+      //console.log(auth.currentUser)
+      // Profile updated!
+      
+      
+      // ...
+    }).catch((error) => {
+      // An error occurred
+      console.log("error bitch", error)
+      // ...
+    });
+
+
+
+    
   }
-  const [name, setName] = useState('what');
+  const [name, setName] = useState(auth.currentUser.displayName);
   const [newEmail, setEmail]=useState('')
   
 
@@ -94,10 +114,7 @@ export default function Account({navigation}){
 
     }
 
-    const changeNameModal=()=>{
-      
-      console.log("namechange")
-    }
+    
 
    return(
     <View style={styles.container}>
@@ -113,7 +130,8 @@ export default function Account({navigation}){
             <View styles = {styles.input}>
                 <View>
                     <Text style={styles.input}>Name{"\n"}
-                    {user ? user.displayName : "Loading..."}
+                    {user ? name : "Loading..."}
+
                     </Text>   
                     <TouchableOpacity style={{position: 'absolute', marginTop:40, marginLeft: 350}} onPress={()=>{setNameModalVisible(true)}}>
                     
@@ -157,7 +175,7 @@ export default function Account({navigation}){
                                       <TouchableOpacity
                                         style={[styles.button,{backgroundColor:'green'}]}
                                         disabled={name===''}
-                                        onPress={()=>{setNameModalVisible(false),changeNameModal()}}
+                                        onPress={()=>{setNameModalVisible(false),changeName()}}
                                         >
                                         <Text style={styles.textStyle}>Update Name</Text>
                                       </TouchableOpacity>
