@@ -1,4 +1,4 @@
-import React, {useEffect,useState} from "react";
+import React, {useEffect,useState, useRef} from "react";
 import { FlatList, StyleSheet, View, TextInput, Text, Image, SafeAreaView, TouchableOpacity,  ScrollView, Animated} from "react-native"
 import { getAuth,} from 'firebase/auth';
 import { collection,  getDocs,query, where, onSnapshot, } from '@firebase/firestore';
@@ -28,66 +28,81 @@ export default function Home({navigation}){
   const [firstProductRenderedICA, setfirstProductRenderedICA] = useState(false)
   const [firstProductRenderedCOOP, setfirstProductRenderedCOOP] = useState(false)
   const [firstProductRenderedWILLYS, setfirstProductRenderedWILLYS] = useState(false)
-  // const [viewHeight, setViewHeight] = useState(0);
-  
+  const rotateValueICA = useRef(new Animated.Value(0)).current;
+  const rotateValueCOOP = useRef(new Animated.Value(0)).current;
+  const rotateValueWILLYS = useRef(new Animated.Value(0)).current;
+  const rotateInterpolateICA = rotateValueICA.interpolate({
+    inputRange: [0, 1], 
+    outputRange: ['0deg', '-180deg'],
+  });
+  const rotateInterpolateCOOP = rotateValueCOOP.interpolate({
+    inputRange: [0, 1], 
+    outputRange: ['0deg', '-180deg'],
+  });
+  const rotateInterpolateWILLYS = rotateValueWILLYS.interpolate({
+    inputRange: [0, 1], 
+    outputRange: ['0deg', '-180deg'],
+  });
+
   const ShowAllCOOPProductsFunction = () =>{
     setShowAllCOOPProducts (!showAllCOOPProducts)
     setfirstProductRenderedCOOP((current) => !current);
+    Animated.timing(rotateValueCOOP, {
+      toValue: !showAllCOOPProducts ? 1 : 0, // Update rotateValue based on showAllCoopProducts state
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+
+
   }
 
   const ShowCOOPProduct = () =>{
-    if (!showAllCOOPProducts){
+     
       return (
         <TouchableOpacity onPress ={()=>ShowAllCOOPProductsFunction()}>
-          <Image source={moreCOOP} style ={styles.iconImage} />
+          <Animated.Image source={moreCOOP} style ={[styles.iconImage,{transform: [{ rotate: rotateInterpolateCOOP }],}] } />
         </TouchableOpacity>    
-      )}
-    else {
-      return(
-        <TouchableOpacity onPress ={()=>ShowAllCOOPProductsFunction()} style={{paddingBottom:8}}>
-          <Image source={moreCOOP} style ={styles.iconImage} />        
-        </TouchableOpacity>
-      )}
+      )
+    
   }
 
   const ShowAllICAProductsFunction = () =>{
     setShowAllICAProducts (!showAllICAProducts)
     setfirstProductRenderedICA((current) => !current);
+    Animated.timing(rotateValueICA, {
+      toValue: !showAllICAProducts ? 1 : 0, // Update rotateValue based on showAllCoopProducts state
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
   }
 
   const ShowICAProduct = () =>{
-    if (!showAllICAProducts){
       return (
         <TouchableOpacity onPress ={()=>ShowAllICAProductsFunction()}>
-          <Image source={moreICA} style ={styles.iconImage} />
+          <Animated.Image source={moreICA} style ={[styles.iconImage,{transform: [{ rotate: rotateInterpolateICA }],}] } />
         </TouchableOpacity>    
-      )}
-    else {
-      return(
-        <TouchableOpacity onPress ={()=>ShowAllICAProductsFunction()} style={{paddingBottom:8}}>
-          <Image source={moreICA} style ={styles.iconImage} />        
-        </TouchableOpacity>
-      )}
+      )
+    
   }
 
   const ShowAllWILLYSProductsFunction = () =>{
     setShowAllWILLYSProducts (!showAllWILLYSProducts)
     setfirstProductRenderedWILLYS((current) => !current);
+    Animated.timing(rotateValueWILLYS, {
+      toValue: !showAllWILLYSProducts ? 1 : 0, // Update rotateValue based on showAllCoopProducts state
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
   }
 
   const ShowWILLYSProduct = () =>{
-    if (!showAllWILLYSProducts){
+    
       return (
         <TouchableOpacity onPress ={()=>ShowAllWILLYSProductsFunction()}>
-          <Image source={moreWillys} style ={styles.iconImage} />
+          <Animated.Image source={moreWillys} style ={[styles.iconImage,{transform: [{ rotate: rotateInterpolateWILLYS }],}] }/>
         </TouchableOpacity>    
-      )}
-    else {
-      return(
-        <TouchableOpacity onPress ={()=>ShowAllWILLYSProductsFunction()} style={{paddingBottom:8}}>
-          <Image source={moreWillys} style ={styles.iconImage} />        
-        </TouchableOpacity>
-      )}
+      )
+    
   }
 
   
@@ -124,7 +139,7 @@ export default function Home({navigation}){
 
       else if (item.butik ==="ICA" && item.onsale){
         return (
-        <Animated.View  style = {styles.itemCointainerICA} >
+        <View  style = {styles.itemCointainerICA} >
           <View>
             <View>
               <Text style={styles.itemTitle}>{item.titel}</Text>
@@ -137,7 +152,7 @@ export default function Home({navigation}){
               </TouchableOpacity>
             </View>
           </View>
-        </Animated.View>
+        </View>
       )}
       
       else if(item.butik === "willys" && item.onsale) {
@@ -192,7 +207,7 @@ export default function Home({navigation}){
                       {renderProduct(item)}
                     </View>);
                     }}
-              else if (index === 0 && !showAllICAProducts && !firstProductRenderedICA){
+              else if (index === 0 && !showAllICAProducts && !firstProductRenderedICA ){
                 const firstItem = importedDb.find((item) => item.butik === "ICA" );
                   return (   
                     <View  key={item.id}>
