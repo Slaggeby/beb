@@ -162,6 +162,7 @@ export default function Account({navigation}){
                                       textContentType="none"
                                       autoFocus={true}
                                       value={name}
+                                      maxLength={25}
                                       onChangeText={(text) => setName(text)}
               
                                           />

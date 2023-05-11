@@ -20,17 +20,20 @@ const moreWillys =require("../assets/moreWillys.png")
 
 export default function Home({navigation}){
   const user = auth.currentUser;
-  // console.log('homeuser!!!',user.uid)
+  
   const [importedDb, setImportedDb] = useState([]);
   const [showAllCOOPProducts, setShowAllCOOPProducts] = useState(false);
   const [showAllICAProducts, setShowAllICAProducts] = useState(false);
   const [showAllWILLYSProducts, setShowAllWILLYSProducts] = useState(false);
+
   const [firstProductRenderedICA, setfirstProductRenderedICA] = useState(false)
   const [firstProductRenderedCOOP, setfirstProductRenderedCOOP] = useState(false)
   const [firstProductRenderedWILLYS, setfirstProductRenderedWILLYS] = useState(false)
+
   const rotateValueICA = useRef(new Animated.Value(0)).current;
   const rotateValueCOOP = useRef(new Animated.Value(0)).current;
   const rotateValueWILLYS = useRef(new Animated.Value(0)).current;
+
   const rotateInterpolateICA = rotateValueICA.interpolate({
     inputRange: [0, 1], 
     outputRange: ['0deg', '-180deg'],
@@ -48,7 +51,7 @@ export default function Home({navigation}){
     setShowAllCOOPProducts (!showAllCOOPProducts)
     setfirstProductRenderedCOOP((current) => !current);
     Animated.timing(rotateValueCOOP, {
-      toValue: !showAllCOOPProducts ? 1 : 0, // Update rotateValue based on showAllCoopProducts state
+      toValue: !showAllCOOPProducts ? 1 : 0, 
       duration: 300,
       useNativeDriver: true,
     }).start();
@@ -70,7 +73,7 @@ export default function Home({navigation}){
     setShowAllICAProducts (!showAllICAProducts)
     setfirstProductRenderedICA((current) => !current);
     Animated.timing(rotateValueICA, {
-      toValue: !showAllICAProducts ? 1 : 0, // Update rotateValue based on showAllCoopProducts state
+      toValue: !showAllICAProducts ? 1 : 0, 
       duration: 300,
       useNativeDriver: true,
     }).start();
@@ -89,7 +92,7 @@ export default function Home({navigation}){
     setShowAllWILLYSProducts (!showAllWILLYSProducts)
     setfirstProductRenderedWILLYS((current) => !current);
     Animated.timing(rotateValueWILLYS, {
-      toValue: !showAllWILLYSProducts ? 1 : 0, // Update rotateValue based on showAllCoopProducts state
+      toValue: !showAllWILLYSProducts ? 1 : 0, 
       duration: 300,
       useNativeDriver: true,
     }).start();
@@ -176,13 +179,7 @@ export default function Home({navigation}){
     fetchProducts();
       }, []);
 
-  // useEffect(() => {
-  //   console.log('useEffect ran. firstProductRendered is: ', firstProductRenderedICA);
-  //     }, [firstProductRenderedICA])
 
-  // useEffect(() => {
-  //   console.log('useEffect ran. showAllProducts is: ', showAllICAProducts);
-  //     }, [showAllICAProducts])
     
     
    return(

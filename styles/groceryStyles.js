@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
   },
 
   itemTitle: {
-    paddingTop:5,
+    marginBottom:10,
     height:50,
     fontSize:20,
     fontWeight:"bold",
