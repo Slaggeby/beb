@@ -20,7 +20,7 @@ export default function Grocery({navigation}){
   const [newListName,setnewListName]=useState('');
   const [modalVisible, setModalVisible] = useState(false);
 
-  const [accordionContentHeight, setAccordionContentHeight]=useState(0);
+  const [accordionContentHeight, setAccordionContentHeight]=useState(200);
   const [importedDb, setImportedDb] = useState([]);
  const [userData2, setUserData2] = useState({});
 

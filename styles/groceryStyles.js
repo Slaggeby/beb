@@ -207,6 +207,7 @@ const styles = StyleSheet.create({
     backgroundColor:'#b82407', 
     marginHorizontal:20,
     padding:20,
+    borderRadius:20
 
   },
   centeredView: {
