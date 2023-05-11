@@ -202,11 +202,9 @@ return(
       <Image source={backImage} style={styles.bebLogo} />
     </View>
     
-    <View>
-      <Text style = {styles.title}>Search</Text>
-    </View>
 
-    <View>
+
+    <View style={{marginTop:7}}>
       <TextInput
         style={styles.textInputStyle}
         onChangeText={(text) => searchFilterFunction(text)}
