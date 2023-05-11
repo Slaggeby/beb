@@ -188,7 +188,7 @@ export default function Search({navigation}) {
           // Flat List Item Separator
           <View
             style={{
-              height: 5,
+              
               width: '100%',
               backgroundColor: 'white',
             }}
@@ -257,7 +257,7 @@ return(
         </View>
       </View>
 
-      <FlatList style={{marginBottom:220}}
+      <FlatList style={{marginBottom:250}}
         data={filteredDataSource}
         keyExtractor={(item, index) => index.toString()}
         ItemSeparatorComponent={ItemSeparatorView}
