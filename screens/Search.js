@@ -216,42 +216,42 @@ return(
       />
         
       <View style={{justifyContent:"center", flexDirection:"row"}}>
-        <Text style={{paddingRight:10}}>Filter:</Text>
+        
 
-        <View style={{height: 20, flexDirection: 'row'}}>
-          <Image source={coopLogo} style ={{resizeMode: 'contain', height:26, width:40}} />
+        <View style={{height: 30, flexDirection: 'row'}}>
+          <Image source={coopLogo} style ={{resizeMode: 'contain', height:36, width:40}} />
           <View style={{justifyContent:'center', paddingRight:20}}> 
-            <TouchableOpacity onPress={()=>sortCOOP()} style={{backgroundColor:"white", width:20, height:20, left:8, borderColor:"black", borderWidth: 1, borderRadius: 10}}>
-              <Text style={{color:"black", left:0.5}}> {showCOOP ? '✓' : ' '} </Text>
+            <TouchableOpacity onPress={()=>sortCOOP()} style={{backgroundColor:"white", width:30, height:30, left:8, borderColor:"black", borderWidth: 1, borderRadius: 15}}>
+              <Text style={{color:"black",fontSize:20}}> {showCOOP ? '✓' : ' '} </Text>
             </TouchableOpacity>
           </View>
           
         </View>
 
-        <View style={{height: 20, flexDirection: 'row'}}>
-        <Image source={icaLogo} style ={{resizeMode: 'contain', height:20, width:40}} />
+        <View style={{height: 30, flexDirection: 'row'}}>
+        <Image source={icaLogo} style ={{resizeMode: 'contain', height:30, width:40}} />
           <View style={{justifyContent:'center', paddingRight:20}}> 
-            <TouchableOpacity onPress={()=>sortICA()} style={{backgroundColor:"white", width:20, height:20, left:8, borderColor:"black", borderWidth: 1, borderRadius: 10}}>
-              <Text style={{color:"black", left:0.5}}> {showICA ? '✓' : ' '} </Text>
+            <TouchableOpacity onPress={()=>sortICA()} style={{backgroundColor:"white", width:30, height:30, left:8, borderColor:"black", borderWidth: 1, borderRadius: 15}}>
+              <Text style={{color:"black",fontSize:20}}> {showICA ? '✓' : ' '} </Text>
             </TouchableOpacity>
           </View>
         </View>
 
-        <View style={{height: 20, flexDirection: 'row'}}>
-        <Image source={willysLogo} style ={{resizeMode: 'contain', height:50, width:50, bottom:15}} />
+        <View style={{height: 30, flexDirection: 'row'}}>
+        <Image source={willysLogo} style ={{resizeMode: 'contain', height:60, width:50, bottom:15}} />
           <View style={{justifyContent:'center', paddingRight:20}}> 
-            <TouchableOpacity onPress={()=>sortWILLYS()} style={{backgroundColor:"white", width:20, height:20, left:8, borderColor:"black", borderWidth: 1, borderRadius: 10}}>
-              <Text style={{color:"black", left:0.5}}> {showWILLYS ? '✓' : ' '} </Text>
+            <TouchableOpacity onPress={()=>sortWILLYS()} style={{backgroundColor:"white", width:30, height:30, left:8, borderColor:"black", borderWidth: 1, borderRadius: 15}}>
+              <Text style={{color:"black",fontSize:20}}> {showWILLYS ? '✓' : ' '} </Text>
             </TouchableOpacity>
           </View>
         </View>
 
-        <View style={{height: 20, flexDirection: 'row'}}>
+        <View style={{height: 30, flexDirection: 'row'}}>
         {/* <Image source={willysLogo} style ={{resizeMode: 'contain', height:50, width:50, bottom:15}} /> */}
-        <Text>On Sale</Text>
+        <Text style={{marginTop: 6}}>On Sale</Text>
           <View style={{justifyContent:'center', paddingRight:20}}> 
-            <TouchableOpacity onPress={()=>sortOnSale()} style={{backgroundColor:"white", width:20, height:20, left:8, borderColor:"black", borderWidth: 1, borderRadius: 10}}>
-              <Text style={{color:"black", left:0.5}}> {showOnSale ? '✓' : ' '} </Text>
+            <TouchableOpacity onPress={()=>sortOnSale()} style={{backgroundColor:"white", width:30, height:30, left:8, borderColor:"black", borderWidth: 1, borderRadius: 15}}>
+              <Text style={{color:"black",fontSize:20}}> {showOnSale ? '✓' : ' '} </Text>
             </TouchableOpacity>
           </View>
         </View>
