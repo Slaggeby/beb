@@ -1,5 +1,5 @@
-import React, { useState, createContext, useContext, useEffect } from 'react';
-import { StyleSheet, Text, View, Button, TextInput, Image, SafeAreaView, TouchableOpacity, StatusBar, Alert, KeyboardAvoidingView,Keyboard } from "react-native";
+import React, { useState, useEffect } from 'react';
+import {  Text, View, TextInput, Image, SafeAreaView, TouchableOpacity, StatusBar, Alert,Keyboard } from "react-native";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config/firebase";
 import styles from '../styles/LoginStyles.js';
@@ -8,17 +8,14 @@ const backImage = require("../assets/bebLogo.png");
 
 export default function Login({ navigation }) {
 
-  const email="test@test.se"
-  const password="123456"
+  const [email, setEmail]=useState('')
+  const [password, setPassword]=useState('')
   const [keyboardVisible, setKeyboardVisible] = useState(false);
 
-
-  
   useEffect(() => {
     Keyboard.addListener('keyboardDidShow', () => setKeyboardVisible(true));
     Keyboard.addListener('keyboardDidHide', () => setKeyboardVisible(false));
-  
-    // cleanup function
+
     return () => {
       Keyboard.removeListener('keyboardDidShow');
       Keyboard.removeListener('keyboardDidHide');
@@ -33,24 +30,14 @@ export default function Login({ navigation }) {
         if (user){ 
           //console.log("Login success"),
           navigation.navigate("Home")
-
-        } 
-        
-      }
-    } 
+        }}} 
     catch (err) {
       Alert.alert("Login error", err.message);
-    }
-  };
+    }};
   
   return (
     <View style={styles.container}>
-      
-      
       {!keyboardVisible && <Image style={styles.backImage} source={require("../assets/bebLogo.png")} />}
-
-
-
       <View style={styles.whiteSheet} />
       <SafeAreaView style={styles.form}>
         <Text style={styles.title}>Log In</Text>
@@ -88,5 +75,4 @@ export default function Login({ navigation }) {
       </SafeAreaView>
       <StatusBar barStyle="light-content" />
     </View>
-  );
-}
+  )}

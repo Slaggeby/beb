@@ -1,12 +1,9 @@
 import React, {useEffect,useState} from "react";
-import {StyleSheet, View, TextInput, Button, Text, Image, SafeAreaView, TouchableOpacity, StatusBar,Modal,Keyboard} from "react-native"
+import { View, TextInput, Text, Image, TouchableOpacity,Modal,Keyboard} from "react-native"
 import styles from '../styles/accountStyles.js';
 import { getAuth, signOut, updateProfile } from 'firebase/auth';
-import {database, auth} from '../config/firebase';
-import { collection, query, where, onSnapshot, } from '@firebase/firestore';
+import {auth} from '../config/firebase';
 
-
-const backImage = require("../assets/backImage.png");
 const bebLogo = require("../assets/bebLogo.png");
 const listIcon=require('../assets/list.png')
 const homeIcon=require('../assets/home.png')
@@ -14,18 +11,13 @@ const searchIcon=require('../assets/search.png')
 const accountIcon=require('../assets/account.png')
 const editIcon=require('../assets/editIcon.png')
 
-
-
 export default function Account({navigation}){
   const user = auth.currentUser;
   const userPic= user.photoURL;
   const [modalVisible, setModalVisible] = useState(false);
   const [NamemodalVisible, setNameModalVisible] = useState(false);
-
   const [name1,setName1] = useState(auth.currentUser.displayName)
-
   const [keyboardVisible, setKeyboardVisible] = useState(false);
-
   const LogOut=() =>{
     const auth = getAuth();
     console.log('Signing out user:', auth.currentUser.email)
@@ -36,12 +28,6 @@ export default function Account({navigation}){
       console.log('logout error')
     });
   }
-
-
-  
-
-
-
   useEffect(() => {
     Keyboard.addListener('keyboardDidShow', () => setKeyboardVisible(true));
     Keyboard.addListener('keyboardDidHide', () => setKeyboardVisible(false));
@@ -52,48 +38,20 @@ export default function Account({navigation}){
       Keyboard.removeListener('keyboardDidHide');
     };
   }, []);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   const changeName = () =>{
     
     updateProfile(auth.currentUser, {  
       
       displayName: name, 
     }).then(() => {
-      //console.log(name)
-      //console.log(auth.currentUser)
-      // Profile updated!
-      
-      
-      // ...
-    }).catch((error) => {
-      // An error occurred
-      console.log("error bitch", error)
-      // ...
-    });
-
-
-
     
-  }
+    }).catch((error) => {
+     
+      console.log("error", error)
+     
+    });}
   const [name, setName] = useState(auth.currentUser.displayName);
   const [newEmail, setEmail]=useState('')
-  
-
-  
- 
     const [isActive, setIsActive] = useState(false)
     const changeTheme = () =>{
         setIsActive(current => !current) 
@@ -103,28 +61,17 @@ export default function Account({navigation}){
       updateProfile(auth.currentUser, {  
         email: newEmail, 
       }).then(() => {
-        // Profile updated!
+      
         user=auth.currentUser;
         console.log('new Email',user.email)
-        // ...
       }).catch((error) => {
-        // An error occurred
-        // ...
-      });
-
-    }
-
-    
-
+      });}
    return(
     <View style={styles.container}>
 
       <View>
       <Image source={bebLogo} style={styles.bebLogo}/>
       </View>
-      
-            
-
         <View style = {{flex: 8, marginTop:100}}>
      
             <View styles = {styles.input}>
@@ -139,18 +86,13 @@ export default function Account({navigation}){
 
                     </TouchableOpacity> 
                 </View>
-
-
-
-
                     <Modal
                             animationType="slide"
                             transparent={true}
                             visible={NamemodalVisible}
-                            onRequestClose={() => {
-                              
+                            onRequestClose={() => {   
                               setNameModalVisible(!modalVisible);
-                            }}>
+                           }}>
 
                             <View style={styles.centeredView}>
                               <View style={ !keyboardVisible ? styles.modalView :[styles.modalView, {marginBottom:300}]}>
@@ -176,46 +118,13 @@ export default function Account({navigation}){
                                       <TouchableOpacity
                                         style={[styles.button,{backgroundColor:'green'}]}
                                         disabled={name===''}
-                                        onPress={()=>{setNameModalVisible(false),changeName()}}
+                                        onPress={()=>{setNameModalVisible(false),changeNameModal()}}
                                         >
                                         <Text style={styles.textStyle}>Update Name</Text>
                                       </TouchableOpacity>
                                 </View>
                             </View>
                  </Modal>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                 <Modal
                             animationType="slide"
                             transparent={true}
@@ -290,9 +199,6 @@ export default function Account({navigation}){
           <TouchableOpacity  onPress={() => navigation.navigate("Account")}>
           <Image source={accountIcon} style ={styles.iconImage} />
           </TouchableOpacity>
-
                   </View>
     </View>
-
-   )
-}
+)}
