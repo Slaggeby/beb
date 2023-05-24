@@ -1,4 +1,5 @@
 import { collection, doc, getDoc, setDoc, } from '@firebase/firestore';
+
 import { database, auth } from '../config/firebase';
 
 
@@ -6,19 +7,14 @@ let userData = {};
 
 const fetchUserData = async () => {
   const user = auth.currentUser;
-
-
-
   const docRef = await doc(database, "users", user.uid);
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
-
-
     userData = docSnap.data();
     console.log(userData)
-  } else {
-
+  } 
+  else {
     console.log("No such document!");
   }
 };

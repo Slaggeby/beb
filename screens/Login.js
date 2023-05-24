@@ -4,10 +4,9 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config/firebase";
 import styles from '../styles/LoginStyles.js';
 
-const backImage = require("../assets/bebLogo.png");
+const backImage = require("../assets/bebLogo.png")
 
 export default function Login({ navigation }) {
-
   const [email, setEmail]=useState('')
   const [password, setPassword]=useState('')
   const [keyboardVisible, setKeyboardVisible] = useState(false);
@@ -20,24 +19,23 @@ export default function Login({ navigation }) {
       Keyboard.removeListener('keyboardDidShow');
       Keyboard.removeListener('keyboardDidHide');
     };
-  }, []);
+  });
 
   const onHandleLogin = async() => {
     try {
-      if (email !== "" && password !== "") {
+      if (email !== "" && password !== ""){
         await signInWithEmailAndPassword(auth, email, password);
         const user = auth.currentUser;
         if (user){ 
-          //console.log("Login success"),
           navigation.navigate("Home")
-        }}} 
+        }}}
     catch (err) {
       Alert.alert("Login error", err.message);
     }};
   
   return (
     <View style={styles.container}>
-      {!keyboardVisible && <Image style={styles.backImage} source={require("../assets/bebLogo.png")} />}
+      <View>{!keyboardVisible && <Image source={backImage} style={styles.bebLogo}/>}</View>
       <View style={styles.whiteSheet} />
       <SafeAreaView style={styles.form}>
         <Text style={styles.title}>Log In</Text>
@@ -47,25 +45,20 @@ export default function Login({ navigation }) {
         autoCapitalize="none"
         keyboardType="email-address"
         textContentType="emailAddress"
-        
         value={email}
-        onChangeText={(text) => setEmail(text)}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Enter password"
-        autoCapitalize="none"
-        autoCorrect={false}
-        secureTextEntry={true}
-        textContentType="password"
-        value={password}
-        onChangeText={(text) => setPassword(text)}
-      />
-      <TouchableOpacity style={styles.button} onPress={() =>onHandleLogin()}>
-        <Text style={{fontWeight: 'bold', color: '#FFFFFF', fontSize: 18}}> Log In</Text>
-      </TouchableOpacity>
-
-
+        onChangeText={(text) => setEmail(text)}/>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter password"
+          autoCapitalize="none"
+          autoCorrect={false}
+          secureTextEntry={true}
+          textContentType="password"
+          value={password}
+          onChangeText={(text) => setPassword(text)}/>
+        <TouchableOpacity style={styles.button} onPress={() =>onHandleLogin()}>
+          <Text style={{fontWeight: 'bold', color: '#FFFFFF', fontSize: 18}}> Log In</Text>
+        </TouchableOpacity>
         <View style={{marginTop: 20, flexDirection: 'row', alignItems: 'center', alignSelf: 'center'}}>
           <Text style={{color: 'gray', fontWeight: '600', fontSize: 14}}>Don't have an account? </Text>
           <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
