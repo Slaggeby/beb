@@ -12,11 +12,11 @@ const backImage = require("../assets/bebLogo.png");
 export default function Signup({ navigation }) {
   const [keyboardVisible, setKeyboardVisible] = useState(false);
   useEffect(() => {
-    Keyboard.addListener('keyboardDidShow', () => setKeyboardVisible(true));
-    Keyboard.addListener('keyboardDidHide', () => setKeyboardVisible(false));
+    const showListener=Keyboard.addListener('keyboardDidShow', () => setKeyboardVisible(true));
+    const hideListener=Keyboard.addListener('keyboardDidHide', () => setKeyboardVisible(false));
     return () => {
-      Keyboard.removeListener('keyboardDidShow');
-      Keyboard.removeListener('keyboardDidHide');
+      showListener.remove();
+      hideListener.remove();
     };
   }, []);
 
