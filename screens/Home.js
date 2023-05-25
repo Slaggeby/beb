@@ -176,12 +176,11 @@ export default function Home({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <View>
+      <View style={{ height:60,}}>
+      <Text style={styles.title}>Store Offers</Text>
         <Image source={backImage} style={styles.bebLogo} />
       </View>
-      <View style={{}}>
-        <Text style={styles.title}>Store Offers</Text>
-      </View>
+      
       <ScrollView style={{ flexGrow: 1, marginBottom: 50 }} >
 
         {/* ICA */}

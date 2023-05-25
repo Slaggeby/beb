@@ -133,7 +133,7 @@ export default function Grocery({ navigation }) {
 
   const changeAmount = async (item, amountString) => {
     await fetchUserData();
-    console.log('i changeamount:', userData)
+    //console.log('i changeamount:', userData)
     const userRef = doc(database, "users", user.uid);
     const grocerylistRef = collection(userRef, "grocerylists", userData.currentlist, 'items');
     const itemDocRef = doc(grocerylistRef, item.id);
@@ -302,11 +302,12 @@ export default function Grocery({ navigation }) {
     <View style={styles.container}>
       <View style={{}}>
         <Image source={backImage} style={styles.bebLogo} />
-        {calculateTotalPrice()}
+        <Text style={styles.pagetitle}>Current List:{userData2.currentlist} </Text>
+        <Text style={{}} >{calculateTotalPrice()}</Text>
       </View>
       <ScrollView style={{ flexGrow: 1, marginBottom: 50 }} >
         <View style={{ flex: 1 }}>
-          <AccordionListItem title={userData2.currentlist} content={generateAccordionContent()} titleStyle={styles.title} inputContentHeight={accordionContentHeight} />
+          <AccordionListItem content={generateAccordionContent()} titleStyle={styles.title} inputContentHeight={accordionContentHeight} />
         </View>
         <View >
           {importedDb.map((item) => (

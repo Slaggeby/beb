@@ -16,12 +16,33 @@ const styles = StyleSheet.create({
         marginTop: 40,
         marginBottom:140,
       },
+
+      LogOutbutton: {
+        backgroundColor: "#F6F7FB",
+        height: 58,
+        borderRadius: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        
+      },
+      
+      logoutText: {
+        fontSize: 16,
+        fontWeight:"bold",
+        color:"black",
+       
+      },
+
+
+
+
       title: {
-        fontSize: 36,
+        fontSize: 26,
         fontWeight: 'bold',
-        color: "orange",
-        alignSelf: "center",
-        paddingBottom: 24,
+        color: "#D82401",
+        marginLeft:10,
+        marginBottom:10, 
+        top:10,
       },
       input: {
         backgroundColor: "#F6F7FB",
@@ -33,6 +54,11 @@ const styles = StyleSheet.create({
         marginTop:25,
         
       },
+
+     
+
+
+
       backImage: {
         width: "100%",
         height: 140,
@@ -60,10 +86,10 @@ const styles = StyleSheet.create({
         
       },
       bebLogo:{
-        width: "100%",
+        alignSelf:"center",
         height: 50,
-        top: 30,
-        resizeMode: 'contain',
+        top:-40,
+        resizeMode: 'contain', 
       
       },
 
@@ -103,15 +129,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
       },
-      button: {
-        backgroundColor: 'red',
-        height: 58,
-        borderRadius: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 40,
-        
-      },
+      
       
 });
 

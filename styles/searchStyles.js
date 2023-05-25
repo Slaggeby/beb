@@ -11,8 +11,9 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: "#D82401",
         marginLeft:10,
-        marginTop:10,
         marginBottom:10, 
+        top:10,
+        
       },
       
       itemCointainerCOOP:{
@@ -121,10 +122,11 @@ const styles = StyleSheet.create({
       },
 
       bebLogo: {
-        width: "100%",
+        alignSelf:"center",
         height: 50,
-        top: 10,
+        top:-40,
         resizeMode: 'contain', 
+       
       },
 
       textInputStyle: {

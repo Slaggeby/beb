@@ -19,6 +19,15 @@ const styles = StyleSheet.create({
     marginBottom:10,
     
   },
+  pagetitle: {
+    fontSize: 20,
+      fontWeight: 'bold',
+      color: "#D82401",
+      marginLeft:10,
+      marginBottom:10, 
+      top:10,
+    
+  },
 
   accordionTitle: {
     fontSize: 26,

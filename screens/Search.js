@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, Text, StyleSheet, View, FlatList, TextInput, Image, TouchableOpacity } from 'react-native';
+import { Text, View, FlatList, TextInput, Image, TouchableOpacity } from 'react-native';
 import styles from '../styles/searchStyles.js';
-import { collection, addDoc, getDocs, setDoc, doc, getDoc } from '@firebase/firestore';
+import { collection, getDocs, } from '@firebase/firestore';
 import { database } from '../config/firebase';
 import addToGroceryList from "../components/addToGroceryList.js";
-
+//Images
 const backImage = require("../assets/bebLogo.png");
 const willysLogo = require("../assets/Willys-logotyp.png")
 const icaLogo = require("../assets/ICA-logotyp.png")
@@ -19,18 +19,13 @@ export default function Search({ navigation }) {
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [masterDataSource, setMasterDataSource] = useState([]);
   const [JSONLIST, setJSONLIST] = useState('');
-  const [importedDb, setImportedDb] = useState([]);
-
-
   const [showCOOP, setShowCOOP] = useState(true)
   const [showICA, setShowICA] = useState(true)
   const [showWILLYS, setShowWILLYS] = useState(true)
   const [showOnSale, setShowOnSale] = useState(false)
 
-
   const sortCOOP = () => {
     setShowCOOP(!showCOOP);
-    console.log("showCOOP", showCOOP)
   };
   const sortICA = () => {
     setShowICA(!showICA);
@@ -41,21 +36,14 @@ export default function Search({ navigation }) {
 
   const sortOnSale = () => {
     setShowOnSale(!showOnSale)
-    console.log("showOnSale: ", showOnSale)
   }
 
   const fetchProducts = async () => {
     try {
       const querySnapshot = await getDocs(collection(database, "products"));
       const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-      setImportedDb(newData);
-      let DataList = [];
-      mappedData = newData.map((item) => {
+      setJSONLIST(JSON.stringify(newData));
 
-        DataList.push(item)
-      })
-
-      setJSONLIST(JSON.stringify(DataList));
     }
     catch (error) {
       console.error("Error fetching products:", error);
@@ -73,10 +61,11 @@ export default function Search({ navigation }) {
       const responseJson = JSON.parse(JSONLIST);
       setFilteredDataSource(responseJson);
       setMasterDataSource(responseJson);
-      //console.log(responseJson)
+      
     }
 
   }, [JSONLIST])
+
   const searchFilterFunction = (text) => {
     if (text) {
       const newData = masterDataSource.filter(
@@ -90,8 +79,6 @@ export default function Search({ navigation }) {
           const isCOOP = showCOOP && item.butik === "COOP";
           const isICA = showICA && item.butik === "ICA";
           const isWILLYS = showWILLYS && item.butik === "willys";
-          console.log("showOnSale in filter", showOnSale)
-          console.log("onsale", item.onsale)
           const isSale = showOnSale && item.onsale
 
           return (
@@ -110,7 +97,6 @@ export default function Search({ navigation }) {
 
 
   const renderItems = ({ item }) => {
-
     if (item.butik === "COOP" && showCOOP && !showOnSale || item.butik === "COOP" && item.onsale && showOnSale && showCOOP) {
       return (
         <View>
@@ -169,22 +155,20 @@ export default function Search({ navigation }) {
   }
 
   const ItemSeparatorView = () => {
-    return (
-      // Flat List Item Separator
-      <View
-        style={{
-
-          width: '100%',
-          backgroundColor: 'white',
-        }} />)
+    return  ( 
+       <View style={{width: '100%',backgroundColor: 'white',}} />
+       )
   };
 
   return (
     <View style={styles.container}>
-      <View>
+      <View style={{ height:60,}}>
+        <Text style={styles.title}>Search </Text>
         <Image source={backImage} style={styles.bebLogo} />
       </View>
+      
       <View style={{ marginTop: 7 }}>
+      
         <TextInput
           style={styles.textInputStyle}
           onChangeText={(text) => searchFilterFunction(text)}
@@ -192,6 +176,7 @@ export default function Search({ navigation }) {
           underlineColorAndroid="transparent"
           placeholder="Search Here"
         />
+        <Text style={{left:10, color: "#D82401",fontWeight:"bold"}} >Filter By:</Text>
         <View style={{ justifyContent: "center", flexDirection: "row" }}>
           <View style={{ height: 30, flexDirection: 'row' }}>
             <Image source={coopLogo} style={{ resizeMode: 'contain', height: 36, width: 40 }} />
@@ -221,7 +206,7 @@ export default function Search({ navigation }) {
           </View>
 
           <View style={{ height: 30, flexDirection: 'row' }}>
-            <Text style={{ marginTop: 6 }}>On Sale</Text>
+            <Text style={{ marginTop: 6, color: "#D82401", fontWeight:"bold" }}>On sale</Text>
             <View style={{ justifyContent: 'center', paddingRight: 20 }}>
               <TouchableOpacity onPress={() => sortOnSale()} style={{ backgroundColor: "white", width: 30, height: 30, left: 8, borderColor: "black", borderWidth: 1, borderRadius: 15 }}>
                 <Text style={{ color: "black", fontSize: 20 }}> {showOnSale ? '✓' : ' '} </Text>

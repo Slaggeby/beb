@@ -68,8 +68,8 @@ export default function Account({navigation}){
       });}
    return(
     <View style={styles.container}>
-
-      <View>
+      <View style={{ height:60,}}>
+      <Text style={styles.title}>Account </Text>
       <Image source={bebLogo} style={styles.bebLogo}/>
       </View>
         <View style = {{flex: 8, marginTop:100}}>
@@ -180,9 +180,9 @@ export default function Account({navigation}){
         
         <View style={{marginBottom:50,width:100,left:300,}}>
           
-         <TouchableOpacity style={styles.button} onPress={()=>LogOut()} >
+         <TouchableOpacity style={styles.LogOutbutton} onPress={()=>LogOut()} >
 
-            <Text style={{fontWeight: 'bold', color: '#FFFFFF', fontSize: 18}}> Log Out</Text>
+            <Text style={styles.logoutText}> Log Out</Text>
           </TouchableOpacity>
         </View>
     
