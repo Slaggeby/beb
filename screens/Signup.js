@@ -11,14 +11,14 @@ const backImage = require("../assets/bebLogo.png");
 
 export default function Signup({ navigation }) {
   const [keyboardVisible, setKeyboardVisible] = useState(false);
-  // useEffect(() => {
-  //   Keyboard.addListener('keyboardDidShow', () => setKeyboardVisible(true));
-  //   Keyboard.addListener('keyboardDidHide', () => setKeyboardVisible(false));
-  //   return () => {
-  //     Keyboard.removeListener('keyboardDidShow');
-  //     Keyboard.removeListener('keyboardDidHide');
-  //   };
-  // });
+  useEffect(() => {
+    Keyboard.addListener('keyboardDidShow', () => setKeyboardVisible(true));
+    Keyboard.addListener('keyboardDidHide', () => setKeyboardVisible(false));
+    return () => {
+      Keyboard.removeListener('keyboardDidShow');
+      Keyboard.removeListener('keyboardDidHide');
+    };
+  }, []);
 
   const [email1, setEmail1] = useState('');
   const [email2, setEmail2] = useState('');

@@ -11,15 +11,15 @@ export default function Login({ navigation }) {
   const [password, setPassword]=useState('')
   const [keyboardVisible, setKeyboardVisible] = useState(false);
 
-  // useEffect(() => {
-  //   Keyboard.addListener('keyboardDidShow', () => setKeyboardVisible(true));
-  //   Keyboard.addListener('keyboardDidHide', () => setKeyboardVisible(false));
+  useEffect(() => {
+    Keyboard.addListener('keyboardDidShow', () => setKeyboardVisible(true));
+    Keyboard.addListener('keyboardDidHide', () => setKeyboardVisible(false));
 
-  //   return () => {
-  //     Keyboard.removeListener('keyboardDidShow');
-  //     Keyboard.removeListener('keyboardDidHide');
-  //   };
-  // });
+    return () => {
+      Keyboard.removeListener('keyboardDidShow');
+      Keyboard.removeListener('keyboardDidHide');
+    };
+  }, []);
 
   const onHandleLogin = async() => {
     try {
