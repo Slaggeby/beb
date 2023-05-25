@@ -1,31 +1,24 @@
 import React, { useState, useEffect } from "react";
-
-
 import { View, TextInput, Text, Image, TouchableOpacity, StatusBar, Alert, Keyboard } from "react-native"
-const backImage = require("../assets/bebLogo.png");
 import styles from '../styles/signupStyles.js';
 import createNewGroceryList from "../components/createNewGroceryList.js";
-
 import { database, auth } from '../config/firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { setDoc, doc } from '@firebase/firestore';
 
+const backImage = require("../assets/bebLogo.png");
+
 export default function Signup({ navigation }) {
-
   const [keyboardVisible, setKeyboardVisible] = useState(false);
-
-
   useEffect(() => {
     Keyboard.addListener('keyboardDidShow', () => setKeyboardVisible(true));
     Keyboard.addListener('keyboardDidHide', () => setKeyboardVisible(false));
-
     return () => {
       Keyboard.removeListener('keyboardDidShow');
       Keyboard.removeListener('keyboardDidHide');
     };
-  }, []);
-
+  });
 
   const [email1, setEmail1] = useState('');
   const [email2, setEmail2] = useState('');
@@ -33,35 +26,24 @@ export default function Signup({ navigation }) {
   const [password2, setPassword2] = useState('');
   const [user, setUser] = useState("");
   const [name, setName] = useState("")
-
   const onHandleSignup = async () => {
     if (email1 === email2 && email1 !== '' && password1 === password2 && password1 !== '' && name !== '') {
       try {
         await createUserWithEmailAndPassword(auth, email1, password1);
         const userCreds = await signInWithEmailAndPassword(auth, email1, password1);
         const user = userCreds.user;
-
         await setUser(user);
-
         const userRef = doc(database, "users", user.uid);
         await setDoc(userRef, {
           name: name,
           email: user.email
-        }
-        );
+        });
         updateProfile(auth.currentUser, {
-          displayName: name, photoURL: "https://www.pngarts.com/files/9/Flying-Blue-Butterflies-PNG-Transparent-File.png"
+          displayName: name
         }).catch((error) => {
           console.log('An error occurred', error)
-          // ...
         });
         createNewGroceryList('');
-
-        // const grocerylistRef = collection(userRef, "grocerylist");
-        // await setDoc(doc(grocerylistRef), {
-
-        // });
-
         navigation.navigate("Home");
       } catch (err) {
         Alert.alert("Login error", err.message);
@@ -73,19 +55,9 @@ export default function Signup({ navigation }) {
   };
 
   return (
-
-
-
     <View style={styles.container}>
-
-      {!keyboardVisible && <Image style={styles.backImage} source={require("../assets/bebLogo.png")} />}
-
-
-
-
-
+      <View>{!keyboardVisible && <Image source={backImage} style={styles.bebLogo}/>}</View>
       <View style={styles.form}>
-
         {!keyboardVisible && <Text style={styles.title}>Create Account</Text>}
         <TextInput
           style={!keyboardVisible ? styles.input : styles.inputNot}
@@ -93,34 +65,27 @@ export default function Signup({ navigation }) {
           autoCapitalize="none"
           keyboardType="email-address"
           textContentType="name"
-
           value={name}
           onChangeText={(text) => setName(text)}
         />
-
-
         <TextInput
           style={styles.input}
           placeholder="Enter email"
           autoCapitalize="none"
           keyboardType="email-address"
           textContentType="emailAddress"
-
           value={email1}
           onChangeText={(text) => setEmail1(text)}
         />
-
         <TextInput
           style={styles.input}
           placeholder="Re-enter email"
           autoCapitalize="none"
           keyboardType="email-address"
           textContentType="emailAddress"
-
           value={email2}
           onChangeText={(text) => setEmail2(text)}
         />
-
         <TextInput
           style={styles.input}
           placeholder="Enter password"
@@ -131,7 +96,6 @@ export default function Signup({ navigation }) {
           value={password1}
           onChangeText={(text) => setPassword1(text)}
         />
-
         <TextInput
           style={styles.input}
           placeholder="Enter password"
@@ -142,7 +106,6 @@ export default function Signup({ navigation }) {
           value={password2}
           onChangeText={(text) => setPassword2(text)}
         />
-
         <TouchableOpacity style={styles.button} onPress={() => onHandleSignup()}>
           <Text style={{ fontWeight: 'bold', color: '#FFFFFF', fontSize: 18 }}> Create Account</Text>
         </TouchableOpacity>
@@ -152,10 +115,8 @@ export default function Signup({ navigation }) {
             <Text style={{ color: '#E7141F', fontWeight: '600', fontSize: 14 }}> Log In</Text>
           </TouchableOpacity>
         </View>
-
       </View>
-      {/* <TextInput placeholder ="name" onChangeText={(text) => SetName(text)}/>
-                <Button title="signup" onPress={()=> console.log(name)}></Button> */}
+
       <StatusBar barStyle="light-content" />
     </View>
 
