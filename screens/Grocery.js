@@ -300,12 +300,12 @@ export default function Grocery({ navigation }) {
     <View style={styles.container}>
       <View style={{}}>
         <Image source={backImage} style={styles.bebLogo} />
-        <Text style={styles.pagetitle}>Current List:{userData2.currentlist} </Text>
+        <Text style={styles.pagetitle}>Current List: {userData2.currentlist} </Text>
         <Text style={{}} >{calculateTotalPrice()}</Text>
       </View>
       <ScrollView style={{ flexGrow: 1, marginBottom: 50 }} >
         <View style={{ flex: 1 }}>
-          <AccordionListItem content={generateAccordionContent()} titleStyle={styles.title} inputContentHeight={accordionContentHeight} />
+          <AccordionListItem title={userData2.currentlist} content={generateAccordionContent()} titleStyle={styles.title} inputContentHeight={accordionContentHeight} />
         </View>
         <View >
           {importedDb.map((item) => (
